@@ -12,7 +12,7 @@ extension GameScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         let contactA: SKPhysicsBody
         let contactB: SKPhysicsBody
-    
+
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
             contactA = contact.bodyA
             contactB = contact.bodyB
