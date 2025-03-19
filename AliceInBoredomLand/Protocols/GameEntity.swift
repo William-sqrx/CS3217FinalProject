@@ -14,7 +14,7 @@ protocol GameEntity {
     var attack: Int { get }
     var speed: CGFloat { get }
     var node: SKSpriteNode { get }
-    
+
     func update(deltaTime: TimeInterval)
     func takeDamage(_ amount: Int)
     var isAlive: Bool { get }

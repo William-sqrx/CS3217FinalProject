@@ -17,16 +17,16 @@ class Hero: EntityNode {
         self.manaCost = manaCost
         super.init(texture: texture, health: health, attack: attack, speed: speed)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func update(deltaTime: TimeInterval) {
         let moveDistance = CGFloat(speed) * tileSize
         let newPosition = position.x + moveDistance
 
-        if (newPosition < GameScene.width) {
+        if newPosition < GameScene.width {
             position.x = newPosition
         }
     }

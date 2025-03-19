@@ -11,21 +11,21 @@ class EntityNode: SKSpriteNode, GameEntity {
     let id = UUID()
     var health: Int
     let attack: Int
-    var node: SKSpriteNode { return self }
+    var node: SKSpriteNode { self }
     override var speed: CGFloat {
+        get { super.speed }
         set { super.speed = newValue }
-        get { return super.speed }
     }
-    
+
     var isAlive: Bool { health > 0 }
-    
+
     init(texture: SKTexture, health: Int, attack: Int, speed: CGFloat) {
         self.health = health
         self.attack = attack
         super.init(texture: texture, color: .clear, size: texture.size())
         self.speed = speed
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

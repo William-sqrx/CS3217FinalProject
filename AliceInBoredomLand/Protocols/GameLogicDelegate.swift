@@ -11,5 +11,4 @@ protocol GameLogicDelegate {
     var timeLeft: Int { get }
     mutating func decrePlayerCastleHealth() -> Void
     mutating func decreMonsterCastleHealth() -> Void
-    
 }
