@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  AliceInBoredomLand
 //
-//  Created by Wijaya William on 19/3/25.
+//  Created by daniel on 17/3/25.
 //
 
 import SwiftUI
