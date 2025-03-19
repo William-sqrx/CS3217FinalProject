@@ -11,7 +11,7 @@ class GameScene: SKScene {
     var gameLogicDelegate: GameLogicDelegate
     var entities: [GameEntity] = []
     var frameCounter = 0
-    
+
     init(gameLogicDelegate: GameLogicDelegate,
          background: SKColor = .black,
          size: CGSize = CGSize(width: GameScene.width, height: GameScene.height)) {
@@ -23,7 +23,6 @@ class GameScene: SKScene {
 
     override func update(_ currentTime: TimeInterval) {
         frameCounter += 1
-        
         if frameCounter % 30 == 0 {
             let deltaTime: TimeInterval = 1.0
 
@@ -59,13 +58,12 @@ class GameScene: SKScene {
         hero.physicsBody?.affectedByGravity = false
         hero.physicsBody?.isDynamic = true
         hero.physicsBody?.categoryBitMask = BitMask.Hero.archer
-        hero.physicsBody?.contactTestBitMask = BitMask.Monster.mage | BitMask.Monster.minion | BitMask.Monster.titan
 
         addChild(hero)
         entities.append(hero)
     }
 
-    
+
     private func spawnMonster(at tileX: Int) {
         let texture = SKTexture(imageNamed: "monster")
         let size = CGSize(width: tileSize, height: tileSize)
@@ -82,7 +80,7 @@ class GameScene: SKScene {
         addChild(monster)
         entities.append(monster)
     }
-    
+
     private func removeDeadEntities() {
         entities = entities.filter { entity in
             if !entity.isAlive {
@@ -98,7 +96,7 @@ class GameScene: SKScene {
         spawnHero(at: 1)
         spawnMonster(at: 5)
     }
-    
+
     private func handleCollisions() {
         print("colliding")
     }

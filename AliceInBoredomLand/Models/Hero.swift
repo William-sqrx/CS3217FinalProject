@@ -27,12 +27,21 @@ class Hero: EntityNode {
         self.userData = NSMutableDictionary()
         self.userData?["entity"] = self
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func update(deltaTime: TimeInterval) {
+<<<<<<< HEAD
         physicsBody?.velocity = CGVector(dx: speed, dy: 0)
+=======
+        let moveDistance = CGFloat(speed) * tileSize
+        let newPosition = position.x + moveDistance
+
+        if newPosition < GameScene.width {
+            position.x = newPosition
+        }
+>>>>>>> 3945be4a506dd920c41be00a776492f0ee812118
     }
 }

@@ -8,7 +8,7 @@
 import SpriteKit
 
 extension GameScene: SKPhysicsContactDelegate {
-    
+
     func didBegin(_ contact: SKPhysicsContact) {
         let bodyA = contact.bodyA
         let bodyB = contact.bodyB
