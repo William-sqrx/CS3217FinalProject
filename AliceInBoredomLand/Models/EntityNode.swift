@@ -19,10 +19,10 @@ class EntityNode: SKSpriteNode, GameEntity {
     
     var isAlive: Bool { health > 0 }
     
-    init(texture: SKTexture, health: Int, attack: Int, speed: CGFloat) {
+    init(texture: SKTexture, health: Int, attack: Int, speed: CGFloat, size: CGSize) {
         self.health = health
         self.attack = attack
-        super.init(texture: texture, color: .clear, size: texture.size())
+        super.init(texture: texture, color: .clear, size: size)
         self.speed = speed
     }
     

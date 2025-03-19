@@ -9,7 +9,6 @@ protocol GameLogicDelegate {
     var playerCastleHealth: Int { get }
     var isWin: Bool { get }
     var timeLeft: Int { get }
-    mutating func decrePlayerCastleHealth() -> Void
-    mutating func decreMonsterCastleHealth() -> Void
-    
+    func decrePlayerCastleHealth() -> Void
+    func decreMonsterCastleHealth() -> Void
 }

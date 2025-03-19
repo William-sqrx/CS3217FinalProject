@@ -9,8 +9,18 @@ import SpriteKit
 
 class Monster: EntityNode {
     var tilePosition: Int = 0
-    override init(texture: SKTexture, health: Int, attack: Int, speed: CGFloat) {
-        super.init(texture: texture, health: health, attack: attack, speed: speed)
+    init(texture: SKTexture, size: CGSize, health: Int, attack: Int, speed: CGFloat) {
+        super.init(texture: texture, health: health, attack: attack, speed: speed, size: size)
+        let physicsBody = SKPhysicsBody(rectangleOf: size)
+        physicsBody.affectedByGravity = false
+        physicsBody.isDynamic = true
+        physicsBody.categoryBitMask = BitMask.Monster.titan
+        physicsBody.contactTestBitMask = BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tanker
+        
+        self.physicsBody = physicsBody
+        
+        self.userData = NSMutableDictionary()
+        self.userData?["entity"] = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -18,11 +28,6 @@ class Monster: EntityNode {
     }
     
     override func update(deltaTime: TimeInterval) {
-        let moveDistance = CGFloat(speed) * tileSize
-        let newPosition = position.x + moveDistance * -1
-
-        if (newPosition > 0) {
-            position.x = newPosition
-        }
+        physicsBody?.velocity = CGVector(dx: speed * -1, dy: 0)
     }
 }
