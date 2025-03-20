@@ -13,13 +13,13 @@ struct BitMask {
     }
 
     struct Monster {
-        static let titan: UInt32 = 0x1 << 3
-        static let minion: UInt32 = 0x1 << 4
-        static let mage: UInt32 = 0x1 << 5
+        static let titan: UInt32 = 0x1 << 14
+        static let minion: UInt32 = 0x1 << 15
+        static let mage: UInt32 = 0x1 << 16
     }
 
     struct Castle {
-        static let playerCastle: UInt32 = 0x1 << 6
-        static let enemyCastle: UInt32 = 0x1 << 7
+        static let playerCastle: UInt32 = 0x1 << 29
+        static let enemyCastle: UInt32 = 0x1 << 30
     }
 }
