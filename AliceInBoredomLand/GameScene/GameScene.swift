@@ -26,7 +26,8 @@ class GameScene: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func update(_ currentTime: TimeInterval) {
+    override func update(_ currentTime: TimeInterval) { // TimeInterval is in seconds
+        // For now, ignoring the possibility of variable time steps to make alternate processing easier
         frameCounter += 1
         if frameCounter.isMultiple(of: 30) {
             let deltaTime: TimeInterval = 1.0
@@ -91,8 +92,8 @@ class GameScene: SKScene {
     }
 
     func initiateEntities() {
-//        spawnHero(at: 1, type: "archer")
-        spawnHero(at: 1)
+        spawnHero(at: 1, type: "archer")
+        // spawnHero(at: 1)
         spawnMonster(at: 5)
     }
 
