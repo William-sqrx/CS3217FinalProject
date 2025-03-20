@@ -21,27 +21,19 @@ class Hero: EntityNode {
         physicsBody.isDynamic = true
         physicsBody.categoryBitMask = BitMask.Hero.archer
         physicsBody.contactTestBitMask = BitMask.Monster.titan | BitMask.Monster.minion | BitMask.Monster.mage
-        physicsBody.linearDamping = 50.0 
-        
+        physicsBody.linearDamping = 50.0
+
         self.physicsBody = physicsBody
         self.userData = NSMutableDictionary()
         self.userData?["entity"] = self
     }
 
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override func update(deltaTime: TimeInterval) {
-<<<<<<< HEAD
         physicsBody?.velocity = CGVector(dx: speed, dy: 0)
-=======
-        let moveDistance = CGFloat(speed) * tileSize
-        let newPosition = position.x + moveDistance
-
-        if newPosition < GameScene.width {
-            position.x = newPosition
-        }
->>>>>>> 3945be4a506dd920c41be00a776492f0ee812118
     }
 }

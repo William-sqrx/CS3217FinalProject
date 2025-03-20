@@ -21,9 +21,14 @@ class GameScene: SKScene {
             self.backgroundColor = background
     }
 
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func update(_ currentTime: TimeInterval) {
         frameCounter += 1
-        if frameCounter % 30 == 0 {
+        if frameCounter.isMultiple(of: 30) {
             let deltaTime: TimeInterval = 1.0
 
             if (frameCounter / 30) % 2 == 1 {
@@ -36,11 +41,6 @@ class GameScene: SKScene {
         }
     }
 
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("Ops, bad inicialization :(")
-    }
-    
     private func spawnHero(at tileX: Int, type: String = "hero") {
         let texture = SKTexture(imageNamed: type)
         let size = CGSize(width: tileSize, height: tileSize)
@@ -62,7 +62,6 @@ class GameScene: SKScene {
         addChild(hero)
         entities.append(hero)
     }
-
 
     private func spawnMonster(at tileX: Int) {
         let texture = SKTexture(imageNamed: "monster")
@@ -90,7 +89,7 @@ class GameScene: SKScene {
             return true
         }
     }
-    
+
     func initiateEntities() {
 //        spawnHero(at: 1, type: "archer")
         spawnHero(at: 1)

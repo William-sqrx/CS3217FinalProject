@@ -12,6 +12,7 @@ class GameCastle: EntityNode {
         super.init(texture: texture, health: 500, attack: 0, speed: 0.0, size: castleSize)
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

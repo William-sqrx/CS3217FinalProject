@@ -18,19 +18,15 @@ class EntityNode: SKSpriteNode, GameEntity {
     }
 
     var isAlive: Bool { health > 0 }
-<<<<<<< HEAD
-    
-    init(texture: SKTexture, health: Int, attack: Int, speed: CGFloat, size: CGSize) {
-=======
 
-    init(texture: SKTexture, health: Int, attack: Int, speed: CGFloat) {
->>>>>>> 3945be4a506dd920c41be00a776492f0ee812118
+    init(texture: SKTexture, health: Int, attack: Int, speed: CGFloat, size: CGSize) {
         self.health = health
         self.attack = attack
         super.init(texture: texture, color: .clear, size: size)
         self.speed = speed
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

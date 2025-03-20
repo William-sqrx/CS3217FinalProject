@@ -60,7 +60,9 @@ extension GameScene: SKPhysicsContactDelegate {
     }
 
     private func applyKnockback(to entity: GameEntity, speed: CGFloat) {
-        guard let node = entity as? EntityNode else { return }
+        guard let node = entity as? EntityNode else {
+            return
+        }
         node.physicsBody?.velocity = CGVector(dx: speed, dy: 0)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {

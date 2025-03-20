@@ -22,7 +22,9 @@ class Archer: Hero {
     }
 
     func shootArrow() {
-        guard let scene = self.scene else { return }
+        guard let scene = self.scene else {
+            return
+        }
 
         let arrow = Arrow(damage: self.attack)
         scene.addChild(arrow)

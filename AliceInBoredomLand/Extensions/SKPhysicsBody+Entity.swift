@@ -12,7 +12,7 @@ private var entityKey: UInt8 = 0
 
 extension SKPhysicsBody {
     var entity: GameEntity? {
-        get { return objc_getAssociatedObject(self, &entityKey) as? GameEntity }
+        get { objc_getAssociatedObject(self, &entityKey) as? GameEntity }
         set { objc_setAssociatedObject(self, &entityKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
 }

@@ -11,14 +11,14 @@ class GameLogic: ObservableObject {
     @Published var playerCastleHealth: Int = 100
     @Published var monsterCastleHealth: Int = 100
     @Published var timeLeft: Int = 60
-    
+
     var isWin: Bool {
-        return monsterCastleHealth <= 0 && playerCastleHealth > 0
+        monsterCastleHealth <= 0 && playerCastleHealth > 0
     }
 }
 
 extension GameLogic: GameLogicDelegate {
-    
+
     func decrePlayerCastleHealth() {
         if playerCastleHealth > 0 {
             playerCastleHealth -= 1
