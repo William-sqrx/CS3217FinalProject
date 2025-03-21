@@ -9,13 +9,15 @@ import SpriteKit
 
 class Monster: EntityNode {
     var tilePosition: Int = 0
+    private var initialY: CGFloat
     init(texture: SKTexture, size: CGSize, health: Int, attack: Int, speed: CGFloat) {
+        self.initialY = 0
         super.init(texture: texture, health: health, attack: attack, speed: speed, size: size)
         let physicsBody = SKPhysicsBody(rectangleOf: size)
         physicsBody.affectedByGravity = false
         physicsBody.isDynamic = true
         physicsBody.categoryBitMask = BitMask.Monster.titan
-        physicsBody.contactTestBitMask = BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tanker
+        physicsBody.allowsRotation = false
 
         self.physicsBody = physicsBody
 
@@ -29,6 +31,9 @@ class Monster: EntityNode {
     }
 
     override func update(deltaTime: TimeInterval) {
+        if initialY == 0 { initialY = position.y }
         physicsBody?.velocity = CGVector(dx: speed * -1, dy: 0)
+        position.y = initialY
+        print("y is", position.y)
     }
 }

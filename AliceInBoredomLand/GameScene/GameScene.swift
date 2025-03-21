@@ -48,7 +48,7 @@ class GameScene: SKScene {
 
         let hero: Hero
         if type == "archer" {
-            hero = Archer(texture: texture, size: size, health: 80, attack: 5, speed: 5, manaCost: 15)
+            hero = Archer(texture: texture, size: size, health: 80, attack: 20, speed: 5, manaCost: 15)
         } else {
             hero = Hero(texture: texture, size: size, health: 100, attack: 1, speed: 30, manaCost: 10)
         }
@@ -105,15 +105,4 @@ class GameScene: SKScene {
         initiateEntities()
         physicsWorld.contactDelegate = self
     }
-
-//    // Handle touch movements
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for touch in touches {
-//            // Get the location of the touch in the scene
-//            let location = touch.location(in: self)
-//            // Update the player's position based on the touch location
-//            playerNode.position.x = location.x
-//            playerNode.position.y = location.y
-//        }
-//    }
 }

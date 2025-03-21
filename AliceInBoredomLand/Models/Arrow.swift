@@ -20,7 +20,6 @@ class Arrow: SKSpriteNode {
         self.physicsBody?.isDynamic = true
         self.physicsBody?.contactTestBitMask = BitMask.Monster.titan | BitMask.Monster.minion | BitMask.Monster.mage
         self.physicsBody?.collisionBitMask = 0
-        self.physicsBody?.velocity = CGVector(dx: 500, dy: 0)
     }
 
     @available(*, unavailable)
@@ -30,6 +29,6 @@ class Arrow: SKSpriteNode {
 
     func launch(from position: CGPoint, direction: CGFloat) {
         self.position = position
-        self.physicsBody?.velocity = CGVector(dx: speed * direction, dy: 0)
+        self.physicsBody?.velocity = CGVector(dx: 500 * direction, dy: 0)
     }
 }

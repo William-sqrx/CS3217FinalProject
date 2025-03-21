@@ -12,9 +12,11 @@ class Hero: EntityNode {
     let cardID: UUID
     let manaCost: Int
     var tilePosition: Int = 0
+    private var initialY: CGFloat
     init(texture: SKTexture, size: CGSize, health: Int, attack: Int, speed: CGFloat, manaCost: Int) {
         self.cardID = UUID()
         self.manaCost = manaCost
+        self.initialY = 0
         super.init(texture: texture, health: health, attack: attack, speed: speed, size: size)
         let physicsBody = SKPhysicsBody(rectangleOf: size)
         physicsBody.affectedByGravity = false
@@ -22,6 +24,7 @@ class Hero: EntityNode {
         physicsBody.categoryBitMask = BitMask.Hero.archer
         physicsBody.contactTestBitMask = BitMask.Monster.titan | BitMask.Monster.minion | BitMask.Monster.mage
         physicsBody.linearDamping = 50.0
+        physicsBody.allowsRotation = false
 
         self.physicsBody = physicsBody
         self.userData = NSMutableDictionary()
@@ -34,6 +37,8 @@ class Hero: EntityNode {
     }
 
     override func update(deltaTime: TimeInterval) {
+        if initialY == 0 { initialY = position.y }
+        position.y = initialY
         physicsBody?.velocity = CGVector(dx: speed, dy: 0)
     }
 }

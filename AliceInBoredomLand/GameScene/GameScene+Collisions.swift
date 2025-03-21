@@ -13,14 +13,6 @@ extension GameScene: SKPhysicsContactDelegate {
         let bodyA = contact.bodyA
         let bodyB = contact.bodyB
 
-        if let arrow = bodyA.node as? Arrow, let monster = bodyB.node?.userData?["entity"] as? Monster {
-            handleArrowHit(arrow: arrow, monster: monster)
-            return
-        } else if let monster = bodyA.node?.userData?["entity"] as? Monster, let arrow = bodyB.node as? Arrow {
-            handleArrowHit(arrow: arrow, monster: monster)
-            return
-        }
-
         var attackerBody: SKPhysicsBody
         var defenderBody: SKPhysicsBody
 
@@ -31,6 +23,14 @@ extension GameScene: SKPhysicsContactDelegate {
             attackerBody = bodyB
             defenderBody = bodyA
         }
+        
+        if let arrow = bodyA.node as? Arrow, let monster = bodyB.node?.userData?["entity"] as? Monster {
+            handleArrowHit(arrow: arrow, monster: monster)
+            return
+        } else if let monster = bodyA.node?.userData?["entity"] as? Monster, let arrow = bodyB.node as? Arrow {
+            handleArrowHit(arrow: arrow, monster: monster)
+            return
+        }
 
         guard let attackerEntity = attackerBody.node?.userData?["entity"] as? GameEntity,
               let defenderEntity = defenderBody.node?.userData?["entity"] as? GameEntity else {
@@ -38,7 +38,7 @@ extension GameScene: SKPhysicsContactDelegate {
             return
         }
 
-        let knockbackSpeed: CGFloat = 10
+        let knockbackSpeed: CGFloat = 0
 
         if let hero = attackerEntity as? Hero, let monster = defenderEntity as? Monster {
             print("Hero attacked Monster!")
@@ -56,6 +56,9 @@ extension GameScene: SKPhysicsContactDelegate {
     private func handleArrowHit(arrow: Arrow, monster: Monster) {
         print("Arrow hit Monster!")
         monster.takeDamage(arrow.damage)
+        monster.physicsBody?.velocity = CGVector(dx: monster.speed * -1, dy: 0)
+        monster.zRotation = 0
+        monster.physicsBody?.angularVelocity = 0
         arrow.removeFromParent()
     }
 
@@ -63,10 +66,14 @@ extension GameScene: SKPhysicsContactDelegate {
         guard let node = entity as? EntityNode else {
             return
         }
+        let originalY = node.position.y
         node.physicsBody?.velocity = CGVector(dx: speed, dy: 0)
+        node.physicsBody?.angularVelocity = 0
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             node.physicsBody?.velocity = .zero
+            node.physicsBody?.angularVelocity = 0
+            node.position.y = originalY
         }
     }
 }
