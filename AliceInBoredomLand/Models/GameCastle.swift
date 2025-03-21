@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-class GameCastle: EntityNode {
+/*class GameCastle: EntityNode {
     init(texture: SKTexture) {
         super.init(texture: texture, health: 500, attack: 0, speed: 0.0, size: castleSize)
     }
@@ -24,3 +24,4 @@ class GameCastle: EntityNode {
         }
     }
 }
+*/
