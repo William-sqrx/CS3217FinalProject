@@ -9,7 +9,7 @@ import SpriteKit
 
 class Archer: Hero {
     var lastShotTime: TimeInterval = 0
-    let shotCooldown: TimeInterval = 0.1
+    let shotCooldown: TimeInterval = 0.3
 
     override func update(deltaTime: TimeInterval) {
         super.update(deltaTime: deltaTime)

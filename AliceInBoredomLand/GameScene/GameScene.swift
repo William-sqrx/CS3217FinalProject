@@ -54,11 +54,14 @@ class GameScene: SKScene {
     // Note: Coordinate system has the origin be at the bottom-left as far as I can tell
     // SpritKitNodes have their origin at the center though
     private func spawnHero(atX tileX: Int, atY tileY: Int = 5, type: String = "hero") {
+        assert(0 < tileX && tileX < GameScene.numCols - 1)
+        assert(1 < tileY && tileY < GameScene.numRows)
+
         let texture = SKTexture(imageNamed: type)
 
         let hero: Hero
         if type == "archer" {
-            hero = Archer(texture: texture, size: tileSize, health: 80, attack: 20, speed: 5, manaCost: 15)
+            hero = Archer(texture: texture, size: tileSize, health: 80, attack: 20, speed: 25, manaCost: 15)
         } else {
             hero = Hero(texture: texture, size: tileSize, health: 100, attack: 1, speed: 30, manaCost: 10)
         }
@@ -77,8 +80,11 @@ class GameScene: SKScene {
     }
 
     private func spawnMonster(atX tileX: Int, atY tileY: Int = 5) {
+        assert(0 < tileX && tileX < GameScene.numCols - 1)
+        assert(1 < tileY && tileY < GameScene.numRows)
+
         let texture = SKTexture(imageNamed: "monster")
-        let monster = Monster(texture: texture, size: tileSize, health: 100, attack: 20, speed: 30.0)
+        let monster = Monster(texture: texture, size: tileSize, health: 100, attack: 20, speed: 40.0)
 
         monster.position = CGPoint(x: (CGFloat(tileX) + 1 / 2) * tileSize.width,
                                    y: (CGFloat(tileY) + 1 / 2) * tileSize.height)
