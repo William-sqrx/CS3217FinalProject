@@ -13,6 +13,8 @@ class GameScene: SKScene {
     var tasks: [Task] = []
     var frameCounter = 0
 
+    let tileSize = CGSize(width: height / Double(numRows), height: width / Double(numCols))
+
     init(gameLogicDelegate: GameLogicDelegate,
          background: SKColor = .gray,
          size: CGSize = CGSize(width: GameScene.width, height: GameScene.height)) {
@@ -49,21 +51,22 @@ class GameScene: SKScene {
         }
     }
 
-    // Note: Coordinate system has the origin be at the bottom-left as far as I cn tell
+    // Note: Coordinate system has the origin be at the bottom-left as far as I can tell
+    // Still need to add tileY, but that's for later
     private func spawnHero(at tileX: Int, type: String = "hero") {
         let texture = SKTexture(imageNamed: type)
-        let size = CGSize(width: tileSize, height: tileSize)
 
         let hero: Hero
         if type == "archer" {
-            hero = Archer(texture: texture, size: size, health: 80, attack: 20, speed: 5, manaCost: 15)
+            hero = Archer(texture: texture, size: tileSize, health: 80, attack: 20, speed: 5, manaCost: 15)
         } else {
-            hero = Hero(texture: texture, size: size, health: 100, attack: 1, speed: 30, manaCost: 10)
+            hero = Hero(texture: texture, size: tileSize, health: 100, attack: 1, speed: 30, manaCost: 10)
         }
 
-        hero.position = CGPoint(x: CGFloat(tileX) * tileSize, y: GameScene.height / 2)
+        // SKSpriteNode has origin at center
+        hero.position = CGPoint(x: (CGFloat(tileX) + 1 / 2) * tileSize.width, y: 3 * tileSize.height)
 
-        hero.physicsBody = SKPhysicsBody(rectangleOf: size)
+        hero.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
         hero.physicsBody?.affectedByGravity = false
         hero.physicsBody?.isDynamic = true
         hero.physicsBody?.categoryBitMask = BitMask.Hero.archer
@@ -74,12 +77,11 @@ class GameScene: SKScene {
 
     private func spawnMonster(at tileX: Int) {
         let texture = SKTexture(imageNamed: "monster")
-        let size = CGSize(width: tileSize, height: tileSize)
-        let monster = Monster(texture: texture, size: size, health: 100, attack: 10, speed: 30.0)
+        let monster = Monster(texture: texture, size: tileSize, health: 100, attack: 10, speed: 30.0)
 
-        monster.position = CGPoint(x: CGFloat(tileX) * tileSize, y: GameScene.height / 2)
+        monster.position = CGPoint(x: (CGFloat(tileX) + 1 / 2) * tileSize.width, y: 3 * tileSize.height)
 
-        monster.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: tileSize, height: tileSize))
+        monster.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
         monster.physicsBody?.affectedByGravity = false
         monster.physicsBody?.isDynamic = true
         monster.physicsBody?.categoryBitMask = BitMask.Monster.titan
@@ -91,12 +93,11 @@ class GameScene: SKScene {
 
     private func spawnTask() {
         let texture = SKTexture(imageNamed: "task")
-        let size = CGSize(width: tileSize, height: tileSize)
-        let task = Task(texture: texture, size: size)
+        let task = Task(texture: texture, size: tileSize)
 
-        task.position = CGPoint(x: CGFloat(8) * tileSize, y: tileSize / 2)
+        task.position = CGPoint(x: (CGFloat(GameScene.numCols) + 1 / 2) * tileSize.width, y: tileSize.height)
 
-        task.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: tileSize, height: tileSize))
+        task.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
         task.physicsBody?.affectedByGravity = false
         task.physicsBody?.isDynamic = true
         task.physicsBody?.categoryBitMask = BitMask.Task.task

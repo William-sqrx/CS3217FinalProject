@@ -10,7 +10,7 @@ import SpriteKit
 
 class Task: SKSpriteNode {
 
-    var availableFrames = 15
+    var availableFrames = 18
 
     var node: SKSpriteNode {
         self
