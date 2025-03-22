@@ -10,6 +10,7 @@ import SpriteKit
 class GameScene: SKScene {
     var gameLogicDelegate: GameLogicDelegate
     var entities: [GameEntity] = []
+    var tasks: [Task] = []
     var frameCounter = 0
 
     init(gameLogicDelegate: GameLogicDelegate,
@@ -17,7 +18,7 @@ class GameScene: SKScene {
          size: CGSize = CGSize(width: GameScene.width, height: GameScene.height)) {
             self.gameLogicDelegate = gameLogicDelegate
             self.entities = []
-            super.init(size: CGSize(width: GameScene.width, height: GameScene.height))
+            super.init(size: size)
             self.backgroundColor = background
     }
 
@@ -37,11 +38,18 @@ class GameScene: SKScene {
             } else {
                 entities.filter { $0 is Monster }.forEach { $0.update(deltaTime: deltaTime) }
             }
+            tasks.forEach { $0.update(deltaTime: deltaTime) }
+
+            if (frameCounter / 30) % 6 == 1 {
+                print("meeow")
+                spawnTask()
+            }
 
             removeDeadEntities()
         }
     }
 
+    // Note: Coordinate system has the origin be at the bottom-left as far as I cn tell
     private func spawnHero(at tileX: Int, type: String = "hero") {
         let texture = SKTexture(imageNamed: type)
         let size = CGSize(width: tileSize, height: tileSize)
@@ -79,6 +87,23 @@ class GameScene: SKScene {
 
         addChild(monster)
         entities.append(monster)
+    }
+
+    private func spawnTask() {
+        let texture = SKTexture(imageNamed: "task")
+        let size = CGSize(width: tileSize, height: tileSize)
+        let task = Task(texture: texture, size: size)
+
+        task.position = CGPoint(x: CGFloat(8) * tileSize, y: tileSize / 2)
+
+        task.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: tileSize, height: tileSize))
+        task.physicsBody?.affectedByGravity = false
+        task.physicsBody?.isDynamic = true
+        task.physicsBody?.categoryBitMask = BitMask.Task.task
+        task.physicsBody?.contactTestBitMask = BitMask.Task.task
+
+        addChild(task)
+        tasks.append(task)
     }
 
     private func removeDeadEntities() {

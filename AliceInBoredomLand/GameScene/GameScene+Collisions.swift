@@ -16,6 +16,14 @@ extension GameScene: SKPhysicsContactDelegate {
         var attackerBody: SKPhysicsBody
         var defenderBody: SKPhysicsBody
 
+        if let taskA = bodyA.node as? Task, let taskB = bodyB.node as? Task {
+            if taskA.position.x < taskB.position.x {
+                handleTaskHit(left: taskA, right: taskB)
+            } else {
+                handleTaskHit(left: taskB, right: taskA)
+            }
+        }
+
         if abs(bodyA.velocity.dx) > abs(bodyB.velocity.dx) {
             attackerBody = bodyA
             defenderBody = bodyB
@@ -23,7 +31,7 @@ extension GameScene: SKPhysicsContactDelegate {
             attackerBody = bodyB
             defenderBody = bodyA
         }
-        
+
         if let arrow = bodyA.node as? Arrow, let monster = bodyB.node?.userData?["entity"] as? Monster {
             handleArrowHit(arrow: arrow, monster: monster)
             return
@@ -60,6 +68,14 @@ extension GameScene: SKPhysicsContactDelegate {
         monster.zRotation = 0
         monster.physicsBody?.angularVelocity = 0
         arrow.removeFromParent()
+    }
+
+    private func handleTaskHit(left: Task, right: Task) {
+        right.physicsBody?.velocity = .zero
+        left.physicsBody?.velocity = .zero
+
+        left.physicsBody?.isDynamic = false
+        right.physicsBody?.isDynamic = true
     }
 
     private func applyKnockback(to entity: GameEntity, speed: CGFloat) {
