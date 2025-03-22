@@ -157,7 +157,6 @@ class GameScene: SKScene {
         spawnHero(atX: 2, atY: 3)
         spawnMonster(atX: 8)
         spawnMonster(atX: 8, atY: 3)
-        spawnMonster(atX: 8, atY: 2)
     }
 
     private func handleCollisions() {
