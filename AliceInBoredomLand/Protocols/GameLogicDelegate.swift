@@ -12,7 +12,7 @@ protocol GameLogicDelegate {
     var isWin: Bool { get }
     var timeLeft: Int { get }
 
-    func decrePlayerCastleHealth()
-    func decreMonsterCastleHealth()
+    func decrePlayerCastleHealth(amount: Int)
+    func decreMonsterCastleHealth(amount: Int)
 }
 // swiftlint:enable class_delegate_protocol

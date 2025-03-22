@@ -10,7 +10,7 @@ import SpriteKit
 
 class Task: SKSpriteNode {
 
-    var availableFrames = 18
+    var availableFrames = 14
 
     var node: SKSpriteNode {
         self
@@ -22,8 +22,8 @@ class Task: SKSpriteNode {
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.isDynamic = true
-        self.physicsBody?.contactTestBitMask = 0
-        self.physicsBody?.collisionBitMask = 0
+        self.physicsBody?.contactTestBitMask = BitMask.Task.task
+        self.physicsBody?.collisionBitMask = BitMask.Task.task
         self.physicsBody?.velocity = CGVector(dx: -100, dy: 0)
     }
 

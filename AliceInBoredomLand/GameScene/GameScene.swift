@@ -52,8 +52,8 @@ class GameScene: SKScene {
     }
 
     // Note: Coordinate system has the origin be at the bottom-left as far as I can tell
-    // Still need to add tileY, but that's for later
-    private func spawnHero(at tileX: Int, type: String = "hero") {
+    // SpritKitNodes have their origin at the center though
+    private func spawnHero(atX tileX: Int, atY tileY: Int = 5, type: String = "hero") {
         let texture = SKTexture(imageNamed: type)
 
         let hero: Hero
@@ -64,7 +64,8 @@ class GameScene: SKScene {
         }
 
         // SKSpriteNode has origin at center
-        hero.position = CGPoint(x: (CGFloat(tileX) + 1 / 2) * tileSize.width, y: 5.5 * tileSize.height)
+        hero.position = CGPoint(x: (CGFloat(tileX) + 1 / 2) * tileSize.width,
+                                y: (CGFloat(tileY) + 1 / 2) * tileSize.height)
 
         hero.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
         hero.physicsBody?.affectedByGravity = false
@@ -75,11 +76,12 @@ class GameScene: SKScene {
         entities.append(hero)
     }
 
-    private func spawnMonster(at tileX: Int) {
+    private func spawnMonster(atX tileX: Int, atY tileY: Int = 5) {
         let texture = SKTexture(imageNamed: "monster")
-        let monster = Monster(texture: texture, size: tileSize, health: 100, attack: 10, speed: 30.0)
+        let monster = Monster(texture: texture, size: tileSize, health: 100, attack: 20, speed: 30.0)
 
-        monster.position = CGPoint(x: (CGFloat(tileX) + 1 / 2) * tileSize.width, y: 5.5 * tileSize.height)
+        monster.position = CGPoint(x: (CGFloat(tileX) + 1 / 2) * tileSize.width,
+                                   y: (CGFloat(tileY) + 1 / 2) * tileSize.height)
 
         monster.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
         monster.physicsBody?.affectedByGravity = false
@@ -96,9 +98,9 @@ class GameScene: SKScene {
         let size = CGSize(width: tileSize.width, height: tileSize.height * 5)
         let playerCastle = GameCastle(texture: texture, size: size, isPlayer: true)
 
-        playerCastle.position = CGPoint(x: 1 / 2 * size.width, y: size.height)
+        playerCastle.position = CGPoint(x: 1 / 2 * tileSize.width, y: 4.5 * tileSize.height)
 
-        playerCastle.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
+        playerCastle.physicsBody = SKPhysicsBody(rectangleOf: size)
         playerCastle.physicsBody?.affectedByGravity = false
         playerCastle.physicsBody?.isDynamic = false
 
@@ -111,9 +113,10 @@ class GameScene: SKScene {
         let size = CGSize(width: tileSize.width, height: tileSize.height * 5)
         let enemyCastle = GameCastle(texture: texture, size: size, isPlayer: false)
 
-        enemyCastle.position = CGPoint(x: (CGFloat(GameScene.numCols) - 1 / 2) * tileSize.width, y: size.height)
+        enemyCastle.position = CGPoint(x: (CGFloat(GameScene.numCols) - 1 / 2) * tileSize.width,
+                                       y: 4.5 * tileSize.height)
 
-        enemyCastle.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
+        enemyCastle.physicsBody = SKPhysicsBody(rectangleOf: size)
         enemyCastle.physicsBody?.affectedByGravity = false
         enemyCastle.physicsBody?.isDynamic = false
 
@@ -150,9 +153,11 @@ class GameScene: SKScene {
     func initialiseEntities() {
         spawnPlayerCastle()
         spawnEnemyCastle()
-        spawnHero(at: 1, type: "archer")
-        // spawnHero(at: 1)
-        spawnMonster(at: 8)
+        spawnHero(atX: 1, type: "archer")
+        spawnHero(atX: 2, atY: 3)
+        spawnMonster(atX: 8)
+        spawnMonster(atX: 8, atY: 3)
+        spawnMonster(atX: 8, atY: 4)
     }
 
     private func handleCollisions() {

@@ -54,19 +54,7 @@ extension GameScene: SKPhysicsContactDelegate {
             return
         }
 
-        let knockbackSpeed: CGFloat = 0
-
-        if let hero = attackerEntity as? Hero, let monster = defenderEntity as? Monster {
-            print("Hero attacked Monster!")
-            monster.takeDamage(hero.attack)
-
-            applyKnockback(to: monster, speed: knockbackSpeed)
-        } else if let monster = attackerEntity as? Monster, let hero = defenderEntity as? Hero {
-            print("Monster attacked Hero!")
-            hero.takeDamage(monster.attack)
-
-            applyKnockback(to: hero, speed: -knockbackSpeed)
-        }
+        checkEntityHitType(attackerEntity: attackerEntity, defenderEntity: defenderEntity)
     }
 
     private func handleArrowHit(arrow: Arrow, monster: Monster) {
@@ -81,6 +69,7 @@ extension GameScene: SKPhysicsContactDelegate {
     private func handleArrowCastleHit(arrow: Arrow, castle: GameCastle) {
         print("Arrow hit Castle!")
         castle.takeDamage(arrow.damage)
+        gameLogicDelegate.decreMonsterCastleHealth(amount: arrow.damage)
         arrow.removeFromParent()
     }
 
@@ -90,6 +79,30 @@ extension GameScene: SKPhysicsContactDelegate {
 
         left.physicsBody?.isDynamic = false
         right.physicsBody?.isDynamic = false
+    }
+
+    private func checkEntityHitType(attackerEntity: GameEntity, defenderEntity: GameEntity) {
+        let knockbackSpeed: CGFloat = 0
+
+        if let hero = attackerEntity as? Hero, let monster = defenderEntity as? Monster {
+            print("Hero attacked Monster!")
+            monster.takeDamage(hero.attack)
+
+            applyKnockback(to: monster, speed: knockbackSpeed)
+        } else if let monster = attackerEntity as? Monster, let hero = defenderEntity as? Hero {
+            print("Monster attacked Hero!")
+            hero.takeDamage(monster.attack)
+
+            applyKnockback(to: hero, speed: -knockbackSpeed)
+        }
+
+        if let monster = attackerEntity as? Monster, let castle = defenderEntity as? GameCastle {
+            print("Monster attacked Castle!")
+            castle.takeDamage(monster.attack)
+            gameLogicDelegate.decrePlayerCastleHealth(amount: monster.attack)
+
+            applyKnockback(to: monster, speed: knockbackSpeed)
+        }
     }
 
     private func applyKnockback(to entity: GameEntity, speed: CGFloat) {
