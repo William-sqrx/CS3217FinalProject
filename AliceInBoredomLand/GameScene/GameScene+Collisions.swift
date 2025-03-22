@@ -40,6 +40,14 @@ extension GameScene: SKPhysicsContactDelegate {
             return
         }
 
+        if let arrow = bodyA.node as? Arrow, let castle = bodyB.node?.userData?["entity"] as? GameCastle {
+            handleArrowCastleHit(arrow: arrow, castle: castle)
+            return
+        } else if let castle = bodyA.node?.userData?["entity"] as? GameCastle, let arrow = bodyB.node as? Arrow {
+            handleArrowCastleHit(arrow: arrow, castle: castle)
+            return
+        }
+
         guard let attackerEntity = attackerBody.node?.userData?["entity"] as? GameEntity,
               let defenderEntity = defenderBody.node?.userData?["entity"] as? GameEntity else {
             print("Error: Missing entity reference in userData")
@@ -67,6 +75,12 @@ extension GameScene: SKPhysicsContactDelegate {
         monster.physicsBody?.velocity = CGVector(dx: monster.speed * -1, dy: 0)
         monster.zRotation = 0
         monster.physicsBody?.angularVelocity = 0
+        arrow.removeFromParent()
+    }
+
+    private func handleArrowCastleHit(arrow: Arrow, castle: GameCastle) {
+        print("Arrow hit Castle!")
+        castle.takeDamage(arrow.damage)
         arrow.removeFromParent()
     }
 
