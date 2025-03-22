@@ -8,6 +8,7 @@
 import UIKit.UIScreen
 
 extension GameScene {
-    static let height = UIScreen.main.bounds.height
-    static let width = UIScreen.main.bounds.width
+    // 2:1 Aspect Ratio is what matters here
+    static let height = 400.0
+    static let width = 800.0
 }

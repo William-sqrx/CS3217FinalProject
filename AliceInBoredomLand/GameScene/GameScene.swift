@@ -14,12 +14,13 @@ class GameScene: SKScene {
     var frameCounter = 0
 
     init(gameLogicDelegate: GameLogicDelegate,
-         background: SKColor = .black,
+         background: SKColor = .gray,
          size: CGSize = CGSize(width: GameScene.width, height: GameScene.height)) {
-            self.gameLogicDelegate = gameLogicDelegate
-            self.entities = []
-            super.init(size: size)
-            self.backgroundColor = background
+        self.gameLogicDelegate = gameLogicDelegate
+        self.entities = []
+        super.init(size: size)
+        self.backgroundColor = background
+        self.scaleMode = .aspectFit
     }
 
     @available(*, unavailable)

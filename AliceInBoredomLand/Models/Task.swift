@@ -10,7 +10,7 @@ import SpriteKit
 
 class Task: SKSpriteNode {
 
-    var availableFrames = 20
+    var availableFrames = 15
 
     var node: SKSpriteNode {
         self
@@ -37,7 +37,7 @@ class Task: SKSpriteNode {
             removeFromParent()
         }
 
-        if node.position.x < size.width / 2 {
+        if node.position.x < size.width {
             self.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
         } else {
             self.physicsBody?.velocity = CGVector(dx: -100, dy: 0)
