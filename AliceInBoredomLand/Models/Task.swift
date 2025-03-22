@@ -10,6 +10,8 @@ import SpriteKit
 
 class Task: SKSpriteNode {
 
+    var availableFrames = 20
+
     var node: SKSpriteNode {
         self
     }
@@ -22,7 +24,7 @@ class Task: SKSpriteNode {
         self.physicsBody?.isDynamic = true
         self.physicsBody?.contactTestBitMask = 0
         self.physicsBody?.collisionBitMask = 0
-        self.physicsBody?.velocity = CGVector(dx: -50, dy: 0)
+        self.physicsBody?.velocity = CGVector(dx: -100, dy: 0)
     }
 
     @available(*, unavailable)
@@ -31,11 +33,16 @@ class Task: SKSpriteNode {
     }
 
     func update(deltaTime: TimeInterval) {
+        if availableFrames < 0 {
+            removeFromParent()
+        }
+
         if node.position.x < size.width / 2 {
             self.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
         } else {
-            self.physicsBody?.velocity = CGVector(dx: -50, dy: 0)
+            self.physicsBody?.velocity = CGVector(dx: -100, dy: 0)
         }
+        availableFrames -= 1
     }
 
 }

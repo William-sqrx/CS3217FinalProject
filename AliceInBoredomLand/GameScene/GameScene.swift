@@ -40,8 +40,7 @@ class GameScene: SKScene {
             }
             tasks.forEach { $0.update(deltaTime: deltaTime) }
 
-            if (frameCounter / 30) % 6 == 1 {
-                print("meeow")
+            if (frameCounter / 30) % 8 == 1 {
                 spawnTask()
             }
 

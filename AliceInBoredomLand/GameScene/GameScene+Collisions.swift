@@ -75,7 +75,7 @@ extension GameScene: SKPhysicsContactDelegate {
         left.physicsBody?.velocity = .zero
 
         left.physicsBody?.isDynamic = false
-        right.physicsBody?.isDynamic = true
+        right.physicsBody?.isDynamic = false
     }
 
     private func applyKnockback(to entity: GameEntity, speed: CGFloat) {
