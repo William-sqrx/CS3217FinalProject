@@ -64,7 +64,7 @@ class GameScene: SKScene {
         }
 
         // SKSpriteNode has origin at center
-        hero.position = CGPoint(x: (CGFloat(tileX) + 1 / 2) * tileSize.width, y: 3.5 * tileSize.height)
+        hero.position = CGPoint(x: (CGFloat(tileX) + 1 / 2) * tileSize.width, y: 5.5 * tileSize.height)
 
         hero.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
         hero.physicsBody?.affectedByGravity = false
@@ -79,7 +79,7 @@ class GameScene: SKScene {
         let texture = SKTexture(imageNamed: "monster")
         let monster = Monster(texture: texture, size: tileSize, health: 100, attack: 10, speed: 30.0)
 
-        monster.position = CGPoint(x: (CGFloat(tileX) + 1 / 2) * tileSize.width, y: 3.5 * tileSize.height)
+        monster.position = CGPoint(x: (CGFloat(tileX) + 1 / 2) * tileSize.width, y: 5.5 * tileSize.height)
 
         monster.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
         monster.physicsBody?.affectedByGravity = false
@@ -152,7 +152,7 @@ class GameScene: SKScene {
         spawnEnemyCastle()
         spawnHero(at: 1, type: "archer")
         // spawnHero(at: 1)
-        spawnMonster(at: 9)
+        spawnMonster(at: 8)
     }
 
     private func handleCollisions() {
