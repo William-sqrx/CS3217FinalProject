@@ -12,3 +12,9 @@ todo:
 - import simple graphics
 - implement tile based movements
 - testing
+
+
+Image source(s):
+
+- <a href="https://lovepik.com/images/png-flat-line.html">Flat Line Png vectors by Lovepik.com</a>
+- <a target="_blank" href="https://icons8.com/icon/62901/task-completed">Task Completed</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
