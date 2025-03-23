@@ -10,16 +10,42 @@ import SpriteKit
 
 struct ContentView: View {
     @StateObject var gameLogic = GameLogic()
+    private let gameScene: GameScene
 
-    var gameScene: GameScene {
-        let scene = GameScene(gameLogicDelegate: gameLogic)
-        return scene
+    init() {
+        let scene = GameScene(gameLogicDelegate: GameLogic())
+        scene.scaleMode = .resizeFill
+        self.gameScene = scene
     }
 
     var body: some View {
         ZStack {
             SpriteView(scene: gameScene)
                 .ignoresSafeArea()
+            VStack {
+                Spacer()
+                HStack {
+                    // Button to spawn an Archer
+                    Button("Spawn Archer") {
+                        let tileX = 1 // or pick any valid tile
+                        gameScene.spawnHero(at: 1, type: "archer")
+                    }
+
+                    // Button to spawn a Swordsman
+                    Button("Spawn Swordsman") {
+                        let tileX = 1
+                        gameScene.spawnHero(at: tileX, type: "hero")
+                    }
+                    
+                    Button("Spawn Tank") {
+                        let tileX = 1
+                        gameScene.spawnHero(at: tileX, type: "tank")
+                    }
+                    
+                    // Add more buttons for different hero types...
+                }
+                .padding()
+            }
         }
     }
 }

@@ -26,7 +26,7 @@ class GameScene: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func update(_ currentTime: TimeInterval) { // TimeInterval is in seconds
+    override func update(_ currentTime: TimeInterval) {
         // For now, ignoring the possibility of variable time steps to make alternate processing easier
         frameCounter += 1
         if frameCounter.isMultiple(of: 30) {
@@ -40,20 +40,32 @@ class GameScene: SKScene {
 
             removeDeadEntities()
         }
+        
+        entities.compactMap { $0 as? Arrow }.forEach { arrow in
+            arrow.updateArrow(deltaTime: 1.0)
+        }
     }
 
-    private func spawnHero(at tileX: Int, type: String = "hero") {
+    func spawnHero(at tileX: Int, type: String = "hero") {
         let texture = SKTexture(imageNamed: type)
         let size = CGSize(width: tileSize, height: tileSize)
 
         let hero: Hero
-        if type == "archer" {
-            hero = Archer(texture: texture, size: size, health: 80, attack: 20, speed: 5, manaCost: 15)
-        } else {
+        
+        switch type {
+        case "archer":
+            hero = Archer(texture: texture, size: size, health: 80, attack: 1, speed: 5, manaCost: 15)
+        case "tank":
+            hero = Tank(texture: texture, size: size)
+        case "swordsman":
+            hero = Swordsman(texture: texture, size: size)
+        default:
             hero = Hero(texture: texture, size: size, health: 100, attack: 1, speed: 30, manaCost: 10)
         }
 
         hero.position = CGPoint(x: CGFloat(tileX) * tileSize, y: GameScene.height / 2)
+        print("spawning hero")
+        print("at", CGFloat(tileX) * tileSize, GameScene.height / 2)
 
         hero.physicsBody = SKPhysicsBody(rectangleOf: size)
         hero.physicsBody?.affectedByGravity = false
@@ -82,6 +94,7 @@ class GameScene: SKScene {
     }
 
     private func removeDeadEntities() {
+        print(entities.count)
         entities = entities.filter { entity in
             if !entity.isAlive {
                 entity.node.removeFromParent()
@@ -92,9 +105,9 @@ class GameScene: SKScene {
     }
 
     func initiateEntities() {
-        spawnHero(at: 1, type: "archer")
+//        spawnHero(at: 1, type: "archer")
         // spawnHero(at: 1)
-        spawnMonster(at: 5)
+        spawnMonster(at: 7)
     }
 
     private func handleCollisions() {
@@ -104,5 +117,19 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         initiateEntities()
         physicsWorld.contactDelegate = self
+    }
+}
+
+extension GameScene {
+    func isMonsterInRange(_ archerPosition: CGPoint, range: CGFloat) -> Bool {
+        let monsters = entities.compactMap { $0 as? Monster }
+
+        for monster in monsters {
+            let distance = (monster.position - archerPosition).length()
+            if distance <= range {
+                return true
+            }
+        }
+        return false
     }
 }

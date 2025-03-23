@@ -10,9 +10,14 @@ import SpriteKit
 class Archer: Hero {
     var lastShotTime: TimeInterval = 0
     let shotCooldown: TimeInterval = 0.1
+    let attackRange: CGFloat = 500.0
 
     override func update(deltaTime: TimeInterval) {
         super.update(deltaTime: deltaTime)
+
+        guard let scene = scene as? GameScene, scene.isMonsterInRange(position, range: attackRange) else {
+            return
+        }
 
         let currentTime = CACurrentMediaTime()
         if currentTime - lastShotTime > shotCooldown {
@@ -20,6 +25,7 @@ class Archer: Hero {
             lastShotTime = currentTime
         }
     }
+
 
     func shootArrow() {
         guard let scene = self.scene else {
