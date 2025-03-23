@@ -13,8 +13,10 @@ struct ContentView: View {
     private let gameScene: GameScene
 
     init() {
-        let scene = GameScene(gameLogicDelegate: GameLogic())
+        let logic = GameLogic()
+        let scene = GameScene(gameLogicDelegate: logic)
         scene.scaleMode = .resizeFill
+        self._gameLogic = StateObject(wrappedValue: logic)
         self.gameScene = scene
     }
 
@@ -41,6 +43,9 @@ struct ContentView: View {
                         let tileX = 1
                         gameScene.spawnHero(atX: tileX, type: "tank")
                     }
+                    
+                    Text("Mana: \(gameLogic.mana)")
+                        .padding()
 
                     // Add more buttons for different hero types...
                 }

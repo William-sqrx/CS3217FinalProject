@@ -26,6 +26,8 @@ class Task: SKSpriteNode {
         self.physicsBody?.contactTestBitMask = BitMask.Task.task
         self.physicsBody?.collisionBitMask = BitMask.Task.task
         self.physicsBody?.velocity = CGVector(dx: -100, dy: 0)
+        self.userData = NSMutableDictionary()
+        self.userData?["entity"] = self
     }
 
     @available(*, unavailable)
@@ -47,7 +49,10 @@ class Task: SKSpriteNode {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("meow") // Replace with actual functionality later
+        if let scene = self.scene as? GameScene,
+        let logic = scene.gameLogicDelegate as? GameLogic {
+            logic.increaseMana(by: 10)
+        }
         removeFromParent()
     }
 }

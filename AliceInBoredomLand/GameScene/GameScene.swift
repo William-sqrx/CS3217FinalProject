@@ -61,11 +61,13 @@ class GameScene: SKScene {
         assert(0 < tileX && tileX < GameScene.numCols - 1)
         assert(1 < tileY && tileY < GameScene.numRows)
 
+        guard let logic = gameLogicDelegate as? GameLogic else { return }
+
         let texture = SKTexture(imageNamed: type)
 
         let hero: Hero
 
-        switch type {
+        switch type.lowercased() {
         case "archer":
             hero = Archer(texture: texture, size: tileSize, health: 80, attack: 1, speed: 5, manaCost: 15)
         case "tank":
@@ -76,9 +78,17 @@ class GameScene: SKScene {
             hero = Hero(texture: texture, size: tileSize, health: 100, attack: 1, speed: 30, manaCost: 10)
         }
 
-        // SKSpriteNode has origin at center
-        hero.position = CGPoint(x: (CGFloat(tileX) + 1 / 2) * tileSize.width,
-                                y: (CGFloat(tileY) + 1 / 2) * tileSize.height)
+        if logic.mana < hero.manaCost {
+            print("Not enough mana to spawn \(type)")
+            return
+        }
+
+        logic.decreaseMana(by: hero.manaCost)
+
+        hero.position = CGPoint(
+            x: (CGFloat(tileX) + 0.5) * tileSize.width,
+            y: (CGFloat(tileY) + 0.5) * tileSize.height
+        )
 
         hero.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
         hero.physicsBody?.affectedByGravity = false
@@ -129,7 +139,7 @@ class GameScene: SKScene {
         let size = CGSize(width: tileSize.width, height: tileSize.height * 5)
         let enemyCastle = GameCastle(texture: texture, size: size, isPlayer: false)
 
-        enemyCastle.position = CGPoint(x: (CGFloat(GameScene.numCols) - 1 / 2) * tileSize.width,
+        enemyCastle.position = CGPoint(x: (CGFloat(GameScene.numCols) - 2.5) * tileSize.width,
                                        y: 4.5 * tileSize.height)
 
         enemyCastle.physicsBody = SKPhysicsBody(rectangleOf: size)
@@ -144,7 +154,7 @@ class GameScene: SKScene {
         let texture = SKTexture(imageNamed: "task")
         let task = Task(texture: texture, size: tileSize)
 
-        task.position = CGPoint(x: (CGFloat(GameScene.numCols) - 1 / 2) * tileSize.width, y: 1.5 * tileSize.height)
+        task.position = CGPoint(x: (CGFloat(GameScene.numCols) - 1 / 2) * tileSize.width, y: 1 * tileSize.height)
 
         task.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
         task.physicsBody?.affectedByGravity = false
@@ -157,7 +167,6 @@ class GameScene: SKScene {
     }
 
     private func removeDeadEntities() {
-        print(entities.count)
         entities = entities.filter { entity in
             if !entity.isAlive {
                 entity.node.removeFromParent()
@@ -168,16 +177,15 @@ class GameScene: SKScene {
     }
 
     func initialiseEntities() {
-        spawnPlayerCastle()
-        spawnEnemyCastle()
-        spawnHero(atX: 1, type: "archer")
-        spawnHero(atX: 2, atY: 3)
-        spawnMonster(atX: 8)
-        spawnMonster(atX: 8, atY: 3)
+//        spawnPlayerCastle()
+//        spawnEnemyCastle()
+//        spawnHero(atX: 1, type: "archer")
+        spawnHero(atX: 2, atY: 3, type: "swordsman")
+//        spawnMonster(atX: 8)
+//        spawnMonster(atX: 8, atY: 3)
     }
 
     private func handleCollisions() {
-        print("colliding")
     }
 
     override func didMove(to view: SKView) {

@@ -50,7 +50,6 @@ extension GameScene: SKPhysicsContactDelegate {
 
         guard let attackerEntity = attackerBody.node?.userData?["entity"] as? GameEntity,
               let defenderEntity = defenderBody.node?.userData?["entity"] as? GameEntity else {
-            print("Error: Missing entity reference in userData")
             return
         }
 
@@ -58,7 +57,6 @@ extension GameScene: SKPhysicsContactDelegate {
     }
 
     private func handleArrowHit(arrow: Arrow, monster: Monster) {
-        print("Arrow hit Monster!")
         monster.takeDamage(arrow.damage)
         monster.physicsBody?.velocity = CGVector(dx: monster.speed * -1, dy: 0)
         monster.zRotation = 0
@@ -67,7 +65,6 @@ extension GameScene: SKPhysicsContactDelegate {
     }
 
     private func handleArrowCastleHit(arrow: Arrow, castle: GameCastle) {
-        print("Arrow hit Castle!")
         castle.takeDamage(arrow.damage)
         gameLogicDelegate.decreMonsterCastleHealth(amount: arrow.damage)
         arrow.removeFromParent()
@@ -84,24 +81,31 @@ extension GameScene: SKPhysicsContactDelegate {
     private func checkEntityHitType(attackerEntity: GameEntity, defenderEntity: GameEntity) {
         let knockbackSpeed: CGFloat = 0
 
-        if let hero = attackerEntity as? Hero, let monster = defenderEntity as? Monster {
+        switch (attackerEntity, defenderEntity) {
+        case let (hero as Hero, monster as Monster):
             print("Hero attacked Monster!")
             monster.takeDamage(hero.attack)
-
             applyKnockback(to: monster, speed: knockbackSpeed)
-        } else if let monster = attackerEntity as? Monster, let hero = defenderEntity as? Hero {
+
+        case let (monster as Monster, hero as Hero):
             print("Monster attacked Hero!")
             hero.takeDamage(monster.attack)
-
             applyKnockback(to: hero, speed: -knockbackSpeed)
-        }
 
-        if let monster = attackerEntity as? Monster, let castle = defenderEntity as? GameCastle {
+        case let (hero as Hero, castle as GameCastle):
+            print("Hero attacked Castle!")
+            castle.takeDamage(hero.attack)
+            gameLogicDelegate.decrePlayerCastleHealth(amount: hero.attack)
+            applyKnockback(to: hero, speed: knockbackSpeed)
+
+        case let (monster as Monster, castle as GameCastle):
             print("Monster attacked Castle!")
             castle.takeDamage(monster.attack)
             gameLogicDelegate.decrePlayerCastleHealth(amount: monster.attack)
+            applyKnockback(to: monster, speed: -knockbackSpeed)
 
-            applyKnockback(to: monster, speed: knockbackSpeed)
+        default:
+            break
         }
     }
 

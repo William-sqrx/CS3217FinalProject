@@ -34,6 +34,5 @@ class Monster: EntityNode {
         if initialY == 0 { initialY = position.y }
         physicsBody?.velocity = CGVector(dx: speed * -1, dy: 0)
         position.y = initialY
-        print("y is", position.y)
     }
 }
