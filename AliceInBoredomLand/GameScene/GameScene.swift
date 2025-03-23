@@ -54,7 +54,7 @@ class GameScene: SKScene {
 
         tasks.forEach { $0.update(deltaTime: deltaTime) }
 
-        if frameIndex % 8 == 1 {
+        if frameIndex % 6 == 1 {
             spawnTask()
         }
 
@@ -126,7 +126,7 @@ class GameScene: SKScene {
         view.presentScene(newScene, transition: SKTransition.fade(withDuration: 0.5))
     }
 
-    func spawnHero(atX tileX: Int, atY tileY: Int = 5, type: String = "hero") {
+    func spawnHero(atX tileX: Int = 1, atY tileY: Int = 5, type: String = "hero") {
         assert(0 < tileX && tileX < GameScene.numCols - 1)
         assert(1 < tileY && tileY < GameScene.numRows)
 
@@ -136,17 +136,18 @@ class GameScene: SKScene {
 
         let typeLowercased = type.lowercased()
         let texture = SKTexture(imageNamed: typeLowercased)
+        let size = getNodeSize()
 
         let hero: Hero = {
             switch typeLowercased {
             case "archer":
-                return Archer(texture: texture, size: tileSize)
+                return Archer(texture: texture, size: size)
             case "tank":
-                return Tank(texture: texture, size: tileSize)
+                return Tank(texture: texture, size: size)
             case "swordsman":
-                return Swordsman(texture: texture, size: tileSize)
+                return Swordsman(texture: texture, size: size)
             default:
-                return Swordsman(texture: texture, size: tileSize)
+                return Swordsman(texture: texture, size: size)
             }
         }()
 
@@ -157,17 +158,14 @@ class GameScene: SKScene {
 
         logic.decreaseMana(by: hero.manaCost)
 
-        hero.position = CGPoint(
-            x: (CGFloat(tileX) + 0.5) * tileSize.width,
-            y: (CGFloat(tileY) + 0.5) * tileSize.height
-        )
+        hero.position = adjustNodeOrigin(node: hero, position: getPosition(tileX: tileX, tileY: tileY))
 
         let bitmask: UInt32 = {
             switch typeLowercased {
             case "archer":
                 return BitMask.Hero.archer
             case "tank":
-                return BitMask.Hero.tanker
+                return BitMask.Hero.tank
             case "swordsman":
                 return BitMask.Hero.swordsman
             default:
@@ -175,7 +173,7 @@ class GameScene: SKScene {
             }
         }()
 
-        let body = SKPhysicsBody(rectangleOf: tileSize)
+        let body = SKPhysicsBody(rectangleOf: size)
         body.affectedByGravity = false
         body.isDynamic = true
         body.categoryBitMask = bitmask
@@ -198,7 +196,7 @@ class GameScene: SKScene {
         monster.physicsBody?.affectedByGravity = false
         monster.physicsBody?.isDynamic = true
         monster.physicsBody?.categoryBitMask = BitMask.Monster.titan
-        monster.physicsBody?.contactTestBitMask = BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tanker
+        monster.physicsBody?.contactTestBitMask = BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tank
 
         addChild(monster)
         entities.append(monster)
@@ -224,13 +222,8 @@ class GameScene: SKScene {
         let size = getNodeSize(numTileY: 5)
         let enemyCastle = GameCastle(texture: texture, size: size, isPlayer: false)
 
-<<<<<<< HEAD
-        enemyCastle.position = CGPoint(x: (CGFloat(GameScene.numCols) - 2.5) * tileSize.width,
-                                       y: 4.5 * tileSize.height)
-=======
         enemyCastle.position = adjustNodeOrigin(node: enemyCastle,
                                                 position: getPosition(tileX: GameScene.numCols - 1, tileY: 2))
->>>>>>> 5ced4dc8d3ac95d629172b1f394681699316d9ad
 
         enemyCastle.physicsBody = SKPhysicsBody(rectangleOf: size)
         enemyCastle.physicsBody?.affectedByGravity = false
@@ -245,12 +238,8 @@ class GameScene: SKScene {
         let size = getNodeSize()
         let task = Task(texture: texture, size: size)
 
-<<<<<<< HEAD
-        task.position = CGPoint(x: (CGFloat(GameScene.numCols) - 1 / 2) * tileSize.width, y: 1 * tileSize.height)
-=======
         task.position = adjustNodeOrigin(node: task,
                                          position: getPosition(tileX: GameScene.numCols - 1, tileY: 1))
->>>>>>> 5ced4dc8d3ac95d629172b1f394681699316d9ad
 
         task.physicsBody = SKPhysicsBody(rectangleOf: size)
         task.physicsBody?.affectedByGravity = false
@@ -275,15 +264,11 @@ class GameScene: SKScene {
     func initialiseEntities() {
         spawnPlayerCastle()
         spawnEnemyCastle()
-<<<<<<< HEAD
-//        spawnMonster(atX: 8)
         spawnMonster(atX: 3, atY: 3)
-=======
         spawnHero(atX: 1, type: "archer")
         spawnHero(atX: 1, atY: 3)
         spawnHero(atX: 1, atY: 2, type: "tank")
         spawnMonster(atX: 8, atY: 3)
->>>>>>> 5ced4dc8d3ac95d629172b1f394681699316d9ad
     }
 
     private func handleCollisions() {

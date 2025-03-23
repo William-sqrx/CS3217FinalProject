@@ -21,7 +21,6 @@ class Hero: EntityNode {
         let physicsBody = SKPhysicsBody(rectangleOf: size)
         physicsBody.affectedByGravity = false
         physicsBody.isDynamic = true
-        physicsBody.categoryBitMask = BitMask.Hero.archer
         physicsBody.contactTestBitMask = BitMask.Monster.titan | BitMask.Monster.minion | BitMask.Monster.mage
             | BitMask.Castle.playerCastle | BitMask.Castle.enemyCastle
         physicsBody.allowsRotation = false

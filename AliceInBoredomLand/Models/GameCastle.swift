@@ -20,7 +20,7 @@ class GameCastle: EntityNode {
         physicsBody.isDynamic = false
         physicsBody.categoryBitMask = (isPlayer ? BitMask.Castle.playerCastle : BitMask.Castle.enemyCastle)
         physicsBody.contactTestBitMask = BitMask.Monster.mage | BitMask.Monster.minion | BitMask.Monster.titan |
-                                         BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tanker
+                                         BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tank
         physicsBody.linearDamping = 50.0
         physicsBody.allowsRotation = false
 

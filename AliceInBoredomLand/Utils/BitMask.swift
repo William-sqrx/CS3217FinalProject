@@ -7,7 +7,7 @@
 
 struct BitMask {
     struct Hero {
-        static let tanker: UInt32 = 0x1 << 0
+        static let tank: UInt32 = 0x1 << 0
         static let swordsman: UInt32 = 0x1 << 1
         static let archer: UInt32 = 0x1 << 2
     }

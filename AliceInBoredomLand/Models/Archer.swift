@@ -12,19 +12,11 @@ class Archer: Hero {
     let shotCooldown: TimeInterval = 0.1
     let attackRange: CGFloat = 500.0
 
-    override init(texture: SKTexture,
-                  size: CGSize,
-                  health: Int = 90,
-                  attack: Int = 2,
-                  speed: CGFloat = 25,
-                  manaCost: Int = 10) {
-
-        super.init(texture: texture,
-                   size: size,
-                   health: health,
-                   attack: attack,
-                   speed: speed,
-                   manaCost: manaCost)
+    override init(texture: SKTexture, size: CGSize,
+                  health: Int = 90, attack: Int = 2, speed: CGFloat = 25, manaCost: Int = 10) {
+        super.init(texture: texture, size: size,
+                   health: health, attack: attack, speed: speed, manaCost: manaCost)
+        self.physicsBody?.categoryBitMask = BitMask.Hero.archer
     }
 
     @available(*, unavailable)
