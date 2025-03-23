@@ -13,6 +13,6 @@ extension CGPoint {
     }
 
     func length() -> CGFloat {
-        sqrt(x*x + y*y)
+        sqrt(x * x + y * y)
     }
 }

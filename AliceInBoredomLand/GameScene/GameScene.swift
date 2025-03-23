@@ -49,7 +49,7 @@ class GameScene: SKScene {
 
             removeDeadEntities()
         }
-        
+
         entities.compactMap { $0 as? Arrow }.forEach { arrow in
             arrow.updateArrow(deltaTime: 1.0)
         }
@@ -57,23 +57,23 @@ class GameScene: SKScene {
 
     // Note: Coordinate system has the origin be at the bottom-left as far as I can tell
     // SpritKitNodes have their origin at the center though
-    private func spawnHero(atX tileX: Int, atY tileY: Int = 5, type: String = "hero") {
+    func spawnHero(atX tileX: Int, atY tileY: Int = 5, type: String = "hero") {
         assert(0 < tileX && tileX < GameScene.numCols - 1)
         assert(1 < tileY && tileY < GameScene.numRows)
 
         let texture = SKTexture(imageNamed: type)
 
         let hero: Hero
-        
+
         switch type {
         case "archer":
-            hero = Archer(texture: texture, size: size, health: 80, attack: 1, speed: 5, manaCost: 15)
+            hero = Archer(texture: texture, size: tileSize, health: 80, attack: 1, speed: 5, manaCost: 15)
         case "tank":
-            hero = Tank(texture: texture, size: size)
+            hero = Tank(texture: texture, size: tileSize)
         case "swordsman":
-            hero = Swordsman(texture: texture, size: size)
+            hero = Swordsman(texture: texture, size: tileSize)
         default:
-            hero = Hero(texture: texture, size: size, health: 100, attack: 1, speed: 30, manaCost: 10)
+            hero = Hero(texture: texture, size: tileSize, health: 100, attack: 1, speed: 30, manaCost: 10)
         }
 
         // SKSpriteNode has origin at center

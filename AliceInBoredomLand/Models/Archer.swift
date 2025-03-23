@@ -26,7 +26,6 @@ class Archer: Hero {
         }
     }
 
-
     func shootArrow() {
         guard let scene = self.scene else {
             return

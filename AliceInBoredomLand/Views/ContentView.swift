@@ -28,20 +28,20 @@ struct ContentView: View {
                     // Button to spawn an Archer
                     Button("Spawn Archer") {
                         let tileX = 1 // or pick any valid tile
-                        gameScene.spawnHero(at: 1, type: "archer")
+                        gameScene.spawnHero(atX: tileX, type: "archer")
                     }
 
                     // Button to spawn a Swordsman
                     Button("Spawn Swordsman") {
                         let tileX = 1
-                        gameScene.spawnHero(at: tileX, type: "hero")
+                        gameScene.spawnHero(atX: tileX, type: "hero")
                     }
-                    
+
                     Button("Spawn Tank") {
                         let tileX = 1
-                        gameScene.spawnHero(at: tileX, type: "tank")
+                        gameScene.spawnHero(atX: tileX, type: "tank")
                     }
-                    
+
                     // Add more buttons for different hero types...
                 }
                 .padding()

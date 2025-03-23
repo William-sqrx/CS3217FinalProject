@@ -1,5 +1,5 @@
 //
-//  Swordman.swift
+//  Swordsman.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 21/3/25.
@@ -26,9 +26,5 @@ class Swordsman: Hero {
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override func update(deltaTime: TimeInterval) {
-        super.update(deltaTime: deltaTime)
     }
 }

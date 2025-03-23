@@ -17,7 +17,7 @@ class Arrow: SKSpriteNode {
         let texture = SKTexture(imageNamed: "arrow")
         startPosition = .zero
         super.init(texture: texture, color: .clear, size: CGSize(width: 20, height: 5))
-        
+
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.isDynamic = true
@@ -37,7 +37,7 @@ class Arrow: SKSpriteNode {
 
         self.physicsBody?.velocity = CGVector(dx: 500 * direction, dy: 0)
     }
-    
+
     func updateArrow(deltaTime: TimeInterval) {
         let distTraveled = (self.position - startPosition).length()
         if distTraveled >= maxRange {

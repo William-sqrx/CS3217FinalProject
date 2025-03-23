@@ -18,6 +18,7 @@ class Task: SKSpriteNode {
 
     init(texture: SKTexture, size: CGSize) {
         super.init(texture: texture, color: .clear, size: size)
+        self.isUserInteractionEnabled = true
 
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.affectedByGravity = false
@@ -45,4 +46,8 @@ class Task: SKSpriteNode {
         availableFrames -= 1
     }
 
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("meow") // Replace with actual functionality later
+        removeFromParent()
+    }
 }
