@@ -227,7 +227,7 @@ class GameScene: SKScene {
     func initialiseEntities() {
         spawnPlayerCastle()
         spawnEnemyCastle()
-        
+
         spawnMonster(atY: 5)
         spawnMonster(atX: 7, atY: 5)
         spawnMonster(atX: 6, atY: 5)
