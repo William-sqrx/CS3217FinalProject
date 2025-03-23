@@ -13,7 +13,9 @@ class GameScene: SKScene {
     var tasks: [Task] = []
     var frameCounter = 0
 
-    let tileSize = CGSize(width: height / Double(numRows), height: width / Double(numCols))
+    // Please use getNodeSize instead of this directly
+    let tileSize = CGSize(width: width / Double(numCols),
+                          height: (height - rowSpacing * Double(numRows - 1)) / Double(numRows))
 
     init(gameLogicDelegate: GameLogicDelegate,
          background: SKColor = .gray,
@@ -187,12 +189,12 @@ class GameScene: SKScene {
         assert(1 < tileY && tileY < GameScene.numRows)
 
         let texture = SKTexture(imageNamed: "monster")
-        let monster = Monster(texture: texture, size: tileSize, health: 100, attack: 20, speed: 40.0)
+        let size = getNodeSize()
+        let monster = Monster(texture: texture, size: size, health: 100, attack: 20, speed: 40.0)
 
-        monster.position = CGPoint(x: (CGFloat(tileX) + 1 / 2) * tileSize.width,
-                                   y: (CGFloat(tileY) + 1 / 2) * tileSize.height)
+        monster.position = adjustNodeOrigin(node: monster, position: getPosition(tileX: tileX, tileY: tileY))
 
-        monster.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
+        monster.physicsBody = SKPhysicsBody(rectangleOf: size)
         monster.physicsBody?.affectedByGravity = false
         monster.physicsBody?.isDynamic = true
         monster.physicsBody?.categoryBitMask = BitMask.Monster.titan
@@ -204,10 +206,10 @@ class GameScene: SKScene {
 
     private func spawnPlayerCastle() {
         let texture = SKTexture(imageNamed: "player-castle")
-        let size = CGSize(width: tileSize.width, height: tileSize.height * 5)
+        let size = getNodeSize(numTileY: 5)
         let playerCastle = GameCastle(texture: texture, size: size, isPlayer: true)
 
-        playerCastle.position = CGPoint(x: 1 / 2 * tileSize.width, y: 4.5 * tileSize.height)
+        playerCastle.position = adjustNodeOrigin(node: playerCastle, position: getPosition(tileX: 0, tileY: 2))
 
         playerCastle.physicsBody = SKPhysicsBody(rectangleOf: size)
         playerCastle.physicsBody?.affectedByGravity = false
@@ -219,11 +221,16 @@ class GameScene: SKScene {
 
     private func spawnEnemyCastle() {
         let texture = SKTexture(imageNamed: "enemy-castle")
-        let size = CGSize(width: tileSize.width, height: tileSize.height * 5)
+        let size = getNodeSize(numTileY: 5)
         let enemyCastle = GameCastle(texture: texture, size: size, isPlayer: false)
 
+<<<<<<< HEAD
         enemyCastle.position = CGPoint(x: (CGFloat(GameScene.numCols) - 2.5) * tileSize.width,
                                        y: 4.5 * tileSize.height)
+=======
+        enemyCastle.position = adjustNodeOrigin(node: enemyCastle,
+                                                position: getPosition(tileX: GameScene.numCols - 1, tileY: 2))
+>>>>>>> 5ced4dc8d3ac95d629172b1f394681699316d9ad
 
         enemyCastle.physicsBody = SKPhysicsBody(rectangleOf: size)
         enemyCastle.physicsBody?.affectedByGravity = false
@@ -235,11 +242,17 @@ class GameScene: SKScene {
 
     private func spawnTask() {
         let texture = SKTexture(imageNamed: "task")
-        let task = Task(texture: texture, size: tileSize)
+        let size = getNodeSize()
+        let task = Task(texture: texture, size: size)
 
+<<<<<<< HEAD
         task.position = CGPoint(x: (CGFloat(GameScene.numCols) - 1 / 2) * tileSize.width, y: 1 * tileSize.height)
+=======
+        task.position = adjustNodeOrigin(node: task,
+                                         position: getPosition(tileX: GameScene.numCols - 1, tileY: 1))
+>>>>>>> 5ced4dc8d3ac95d629172b1f394681699316d9ad
 
-        task.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
+        task.physicsBody = SKPhysicsBody(rectangleOf: size)
         task.physicsBody?.affectedByGravity = false
         task.physicsBody?.isDynamic = true
         task.physicsBody?.categoryBitMask = BitMask.Task.task
@@ -262,8 +275,15 @@ class GameScene: SKScene {
     func initialiseEntities() {
         spawnPlayerCastle()
         spawnEnemyCastle()
+<<<<<<< HEAD
 //        spawnMonster(atX: 8)
         spawnMonster(atX: 3, atY: 3)
+=======
+        spawnHero(atX: 1, type: "archer")
+        spawnHero(atX: 1, atY: 3)
+        spawnHero(atX: 1, atY: 2, type: "tank")
+        spawnMonster(atX: 8, atY: 3)
+>>>>>>> 5ced4dc8d3ac95d629172b1f394681699316d9ad
     }
 
     private func handleCollisions() {
