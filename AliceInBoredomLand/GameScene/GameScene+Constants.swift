@@ -14,6 +14,7 @@ extension GameScene {
 
     static let numRows = 7 // 5 Lanes, 1 For Tasks, 1 for Hero Selection if applicable
     static let numCols = 10
+    static let rowSpacing = 10.0
 
     static let knockbackSpeed: CGFloat = 5
 }

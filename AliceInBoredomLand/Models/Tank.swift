@@ -12,7 +12,7 @@ class Tank: Hero {
                   size: CGSize,
                   health: Int = 200,
                   attack: Int = 2,
-                  speed: CGFloat = 10,
+                  speed: CGFloat = 20,
                   manaCost: Int = 20) {
 
         super.init(texture: texture,

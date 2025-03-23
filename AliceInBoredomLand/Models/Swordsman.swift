@@ -12,7 +12,7 @@ class Swordsman: Hero {
                   size: CGSize,
                   health: Int = 120,
                   attack: Int = 3,
-                  speed: CGFloat = 25,
+                  speed: CGFloat = 35,
                   manaCost: Int = 15) {
 
         super.init(texture: texture,
