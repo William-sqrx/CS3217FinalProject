@@ -32,6 +32,7 @@ class GameScene: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // Todo: Rework in a format that allows for actually using currentTime, instead of assuming even time steps
     override func update(_ currentTime: TimeInterval) {
         frameCounter += 1
 
@@ -160,24 +161,6 @@ class GameScene: SKScene {
 
         hero.position = adjustNodeOrigin(node: hero, position: getPosition(tileX: tileX, tileY: tileY))
 
-        let bitmask: UInt32 = {
-            switch typeLowercased {
-            case "archer":
-                return BitMask.Hero.archer
-            case "tank":
-                return BitMask.Hero.tank
-            case "swordsman":
-                return BitMask.Hero.swordsman
-            default:
-                return BitMask.Hero.swordsman
-            }
-        }()
-
-        let body = SKPhysicsBody(rectangleOf: size)
-        body.affectedByGravity = false
-        body.isDynamic = true
-        body.categoryBitMask = bitmask
-
         addChild(hero)
         entities.append(hero)
     }
@@ -192,12 +175,6 @@ class GameScene: SKScene {
 
         monster.position = adjustNodeOrigin(node: monster, position: getPosition(tileX: tileX, tileY: tileY))
 
-        monster.physicsBody = SKPhysicsBody(rectangleOf: size)
-        monster.physicsBody?.affectedByGravity = false
-        monster.physicsBody?.isDynamic = true
-        monster.physicsBody?.categoryBitMask = BitMask.Monster.titan
-        monster.physicsBody?.contactTestBitMask = BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tank
-
         addChild(monster)
         entities.append(monster)
     }
@@ -208,10 +185,6 @@ class GameScene: SKScene {
         let playerCastle = GameCastle(texture: texture, size: size, isPlayer: true)
 
         playerCastle.position = adjustNodeOrigin(node: playerCastle, position: getPosition(tileX: 0, tileY: 2))
-
-        playerCastle.physicsBody = SKPhysicsBody(rectangleOf: size)
-        playerCastle.physicsBody?.affectedByGravity = false
-        playerCastle.physicsBody?.isDynamic = false
 
         addChild(playerCastle)
         entities.append(playerCastle)
@@ -225,10 +198,6 @@ class GameScene: SKScene {
         enemyCastle.position = adjustNodeOrigin(node: enemyCastle,
                                                 position: getPosition(tileX: GameScene.numCols - 1, tileY: 2))
 
-        enemyCastle.physicsBody = SKPhysicsBody(rectangleOf: size)
-        enemyCastle.physicsBody?.affectedByGravity = false
-        enemyCastle.physicsBody?.isDynamic = false
-
         addChild(enemyCastle)
         entities.append(enemyCastle)
     }
@@ -240,12 +209,6 @@ class GameScene: SKScene {
 
         task.position = adjustNodeOrigin(node: task,
                                          position: getPosition(tileX: GameScene.numCols - 1, tileY: 1))
-
-        task.physicsBody = SKPhysicsBody(rectangleOf: size)
-        task.physicsBody?.affectedByGravity = false
-        task.physicsBody?.isDynamic = true
-        task.physicsBody?.categoryBitMask = BitMask.Task.task
-        task.physicsBody?.contactTestBitMask = BitMask.Task.task
 
         addChild(task)
         tasks.append(task)
