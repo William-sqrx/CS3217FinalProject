@@ -43,7 +43,7 @@ struct ContentView: View {
                         let tileX = 1
                         gameScene.spawnHero(atX: tileX, type: "tank")
                     }
-                    
+
                     Text("Mana: \(gameLogic.mana)")
                         .padding()
 

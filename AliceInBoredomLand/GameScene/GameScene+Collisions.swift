@@ -13,16 +13,25 @@ extension GameScene: SKPhysicsContactDelegate {
         let bodyA = contact.bodyA
         let bodyB = contact.bodyB
 
-        var attackerBody: SKPhysicsBody
-        var defenderBody: SKPhysicsBody
-
-        if let taskA = bodyA.node as? Task, let taskB = bodyB.node as? Task {
-            if taskA.position.x < taskB.position.x {
-                handleTaskHit(left: taskA, right: taskB)
-            } else {
-                handleTaskHit(left: taskB, right: taskA)
-            }
+        if handleTaskCollision(bodyA: bodyA, bodyB: bodyB) {
+            return
         }
+        if handleArrowVsMonster(bodyA: bodyA, bodyB: bodyB) {
+            return
+        }
+        if handleArrowVsCastle(bodyA: bodyA, bodyB: bodyB) {
+            return
+        }
+
+        if let (attacker, defender) = getAttackerAndDefender(from: bodyA, and: bodyB) {
+            checkEntityHitType(attackerEntity: attacker, defenderEntity: defender)
+        }
+    }
+
+    private func getAttackerAndDefender(from bodyA: SKPhysicsBody, and bodyB: SKPhysicsBody)
+    -> (attacker: GameEntity, defender: GameEntity)? {
+        let attackerBody: SKPhysicsBody
+        let defenderBody: SKPhysicsBody
 
         if abs(bodyA.velocity.dx) > abs(bodyB.velocity.dx) {
             attackerBody = bodyA
@@ -32,28 +41,53 @@ extension GameScene: SKPhysicsContactDelegate {
             defenderBody = bodyA
         }
 
-        if let arrow = bodyA.node as? Arrow, let monster = bodyB.node?.userData?["entity"] as? Monster {
-            handleArrowHit(arrow: arrow, monster: monster)
-            return
-        } else if let monster = bodyA.node?.userData?["entity"] as? Monster, let arrow = bodyB.node as? Arrow {
-            handleArrowHit(arrow: arrow, monster: monster)
-            return
-        }
-
-        if let arrow = bodyA.node as? Arrow, let castle = bodyB.node?.userData?["entity"] as? GameCastle {
-            handleArrowCastleHit(arrow: arrow, castle: castle)
-            return
-        } else if let castle = bodyA.node?.userData?["entity"] as? GameCastle, let arrow = bodyB.node as? Arrow {
-            handleArrowCastleHit(arrow: arrow, castle: castle)
-            return
-        }
-
         guard let attackerEntity = attackerBody.node?.userData?["entity"] as? GameEntity,
               let defenderEntity = defenderBody.node?.userData?["entity"] as? GameEntity else {
-            return
+            return nil
         }
 
-        checkEntityHitType(attackerEntity: attackerEntity, defenderEntity: defenderEntity)
+        return (attackerEntity, defenderEntity)
+    }
+
+    private func handleTaskCollision(bodyA: SKPhysicsBody, bodyB: SKPhysicsBody) -> Bool {
+        guard let taskA = bodyA.node as? Task,
+              let taskB = bodyB.node as? Task else { return false }
+
+        let (left, right) = taskA.position.x < taskB.position.x ? (taskA, taskB) : (taskB, taskA)
+        handleTaskHit(left: left, right: right)
+        return true
+    }
+
+    private func handleArrowVsMonster(bodyA: SKPhysicsBody, bodyB: SKPhysicsBody) -> Bool {
+        if let arrow = bodyA.node as? Arrow,
+           let monster = bodyB.node?.userData?["entity"] as? Monster {
+            handleArrowHit(arrow: arrow, monster: monster)
+            return true
+        }
+
+        if let monster = bodyA.node?.userData?["entity"] as? Monster,
+           let arrow = bodyB.node as? Arrow {
+            handleArrowHit(arrow: arrow, monster: monster)
+            return true
+        }
+
+        return false
+    }
+
+    private func handleArrowVsCastle(bodyA: SKPhysicsBody, bodyB: SKPhysicsBody) -> Bool {
+        if let arrow = bodyA.node as? Arrow,
+           let castle = bodyB.node?.userData?["entity"] as? GameCastle {
+            handleArrowCastleHit(arrow: arrow, castle: castle)
+            return true
+        }
+
+        if let castle = bodyA.node?.userData?["entity"] as? GameCastle,
+           let arrow = bodyB.node as? Arrow {
+            handleArrowCastleHit(arrow: arrow, castle: castle)
+            return true
+        }
+
+        return false
     }
 
     private func handleArrowHit(arrow: Arrow, monster: Monster) {
@@ -82,6 +116,7 @@ extension GameScene: SKPhysicsContactDelegate {
         let knockbackSpeed: CGFloat = 0
 
         switch (attackerEntity, defenderEntity) {
+
         case let (hero as Hero, monster as Monster):
             print("Hero attacked Monster!")
             monster.takeDamage(hero.attack)
@@ -93,13 +128,19 @@ extension GameScene: SKPhysicsContactDelegate {
             applyKnockback(to: hero, speed: -knockbackSpeed)
 
         case let (hero as Hero, castle as GameCastle):
-            print("Hero attacked Castle!")
+            guard !castle.isPlayer else {
+                return
+            }
+            print("Hero attacked Enemy Castle!")
             castle.takeDamage(hero.attack)
-            gameLogicDelegate.decrePlayerCastleHealth(amount: hero.attack)
+            gameLogicDelegate.decreMonsterCastleHealth(amount: hero.attack)
             applyKnockback(to: hero, speed: knockbackSpeed)
 
         case let (monster as Monster, castle as GameCastle):
-            print("Monster attacked Castle!")
+            guard castle.isPlayer else {
+                return
+            }
+            print("Monster attacked Player Castle!")
             castle.takeDamage(monster.attack)
             gameLogicDelegate.decrePlayerCastleHealth(amount: monster.attack)
             applyKnockback(to: monster, speed: -knockbackSpeed)

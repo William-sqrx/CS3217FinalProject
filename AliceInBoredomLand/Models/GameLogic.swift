@@ -16,7 +16,7 @@ class GameLogic: ObservableObject {
     var isWin: Bool {
         monsterCastleHealth <= 0 && playerCastleHealth > 0
     }
-    
+
     func increaseMana(by amount: Int) {
         mana += amount
     }

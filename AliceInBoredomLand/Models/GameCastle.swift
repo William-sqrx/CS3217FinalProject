@@ -8,7 +8,11 @@
 import SpriteKit
 
 class GameCastle: EntityNode {
+    let isPlayer: Bool
+
     init(texture: SKTexture, size: CGSize, isPlayer: Bool) {
+        self.isPlayer = isPlayer
+
         super.init(texture: texture, health: 500, attack: 0, speed: 0.0, size: size)
 
         let physicsBody = SKPhysicsBody(rectangleOf: size)
@@ -16,7 +20,7 @@ class GameCastle: EntityNode {
         physicsBody.isDynamic = false
         physicsBody.categoryBitMask = (isPlayer ? BitMask.Castle.playerCastle : BitMask.Castle.enemyCastle)
         physicsBody.contactTestBitMask = BitMask.Monster.mage | BitMask.Monster.minion | BitMask.Monster.titan |
-        BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tanker // everything
+                                         BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tanker
         physicsBody.linearDamping = 50.0
         physicsBody.allowsRotation = false
 

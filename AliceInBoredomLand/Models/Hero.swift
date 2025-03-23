@@ -23,7 +23,7 @@ class Hero: EntityNode {
         physicsBody.isDynamic = true
         physicsBody.categoryBitMask = BitMask.Hero.archer
         physicsBody.contactTestBitMask = BitMask.Monster.titan | BitMask.Monster.minion | BitMask.Monster.mage
-        physicsBody.linearDamping = 50.0
+            | BitMask.Castle.playerCastle | BitMask.Castle.enemyCastle
         physicsBody.allowsRotation = false
 
         self.physicsBody = physicsBody

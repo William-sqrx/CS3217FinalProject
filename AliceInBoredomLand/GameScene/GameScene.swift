@@ -31,55 +31,125 @@ class GameScene: SKScene {
     }
 
     override func update(_ currentTime: TimeInterval) {
-        // For now, ignoring the possibility of variable time steps to make alternate processing easier
         frameCounter += 1
+
         if frameCounter.isMultiple(of: 30) {
-            let deltaTime: TimeInterval = 1.0
-
-            if (frameCounter / 30) % 2 == 1 {
-                entities.filter { $0 is Hero }.forEach { $0.update(deltaTime: deltaTime) }
-            } else {
-                entities.filter { $0 is Monster }.forEach { $0.update(deltaTime: deltaTime) }
-            }
-            tasks.forEach { $0.update(deltaTime: deltaTime) }
-
-            if (frameCounter / 30) % 8 == 1 {
-                spawnTask()
-            }
-
-            removeDeadEntities()
+            performFrameLogic()
         }
 
-        entities.compactMap { $0 as? Arrow }.forEach { arrow in
-            arrow.updateArrow(deltaTime: 1.0)
+        updateProjectiles()
+    }
+
+    private func performFrameLogic() {
+        let deltaTime: TimeInterval = 1.0
+        let frameIndex = frameCounter / 30
+
+        if frameIndex % 2 == 1 {
+            entities.compactMap { $0 as? Hero }.forEach { $0.update(deltaTime: deltaTime) }
+        } else {
+            entities.compactMap { $0 as? Monster }.forEach { $0.update(deltaTime: deltaTime) }
+        }
+
+        tasks.forEach { $0.update(deltaTime: deltaTime) }
+
+        if frameIndex % 8 == 1 {
+            spawnTask()
+        }
+
+        checkWinLose()
+        removeDeadEntities()
+    }
+
+    private func updateProjectiles() {
+        entities.compactMap { $0 as? Arrow }.forEach { $0.updateArrow(deltaTime: 1.0) }
+    }
+
+    private func checkWinLose() {
+        guard let logic = gameLogicDelegate as? GameLogic else {
+            return
+        }
+
+        if logic.monsterCastleHealth <= 0 {
+            showEndGameLabel(text: "You Win 🎉")
+            isPaused = true
+            return
+        }
+
+        if logic.playerCastleHealth <= 0 {
+            showEndGameLabel(text: "You Lose 💀")
+            isPaused = true
+            return
         }
     }
 
-    // Note: Coordinate system has the origin be at the bottom-left as far as I can tell
-    // SpritKitNodes have their origin at the center though
+    private func showEndGameLabel(text: String) {
+        let label = SKLabelNode(text: text)
+        label.fontSize = 50
+        label.fontColor = .white
+        label.fontName = "Avenir-Heavy"
+        label.position = CGPoint(x: GameScene.width / 2, y: GameScene.height / 2 + 50)
+        label.name = "end_game_label"
+        addChild(label)
+
+        let restartLabel = SKLabelNode(text: "Tap to Restart")
+        restartLabel.fontSize = 30
+        restartLabel.fontColor = .yellow
+        restartLabel.fontName = "Avenir"
+        restartLabel.position = CGPoint(x: GameScene.width / 2, y: GameScene.height / 2 - 50)
+        restartLabel.name = "restart_button"
+        addChild(restartLabel)
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard isPaused else {
+            return
+        }
+
+        for touch in touches {
+            let location = touch.location(in: self)
+            if let node = self.atPoint(location) as? SKLabelNode, node.name == "restart_button" {
+                restartGame()
+            }
+        }
+    }
+
+    private func restartGame() {
+        guard let view = self.view else {
+            return
+        }
+
+        let newLogic = GameLogic()
+        let newScene = GameScene(gameLogicDelegate: newLogic)
+        newScene.scaleMode = self.scaleMode
+        view.presentScene(newScene, transition: SKTransition.fade(withDuration: 0.5))
+    }
+
     func spawnHero(atX tileX: Int, atY tileY: Int = 5, type: String = "hero") {
         assert(0 < tileX && tileX < GameScene.numCols - 1)
         assert(1 < tileY && tileY < GameScene.numRows)
 
-        guard let logic = gameLogicDelegate as? GameLogic else { return }
-
-        let texture = SKTexture(imageNamed: type)
-
-        let hero: Hero
-
-        switch type.lowercased() {
-        case "archer":
-            hero = Archer(texture: texture, size: tileSize, health: 80, attack: 1, speed: 5, manaCost: 15)
-        case "tank":
-            hero = Tank(texture: texture, size: tileSize)
-        case "swordsman":
-            hero = Swordsman(texture: texture, size: tileSize)
-        default:
-            hero = Hero(texture: texture, size: tileSize, health: 100, attack: 1, speed: 30, manaCost: 10)
+        guard let logic = gameLogicDelegate as? GameLogic else {
+            return
         }
 
-        if logic.mana < hero.manaCost {
-            print("Not enough mana to spawn \(type)")
+        let typeLowercased = type.lowercased()
+        let texture = SKTexture(imageNamed: typeLowercased)
+
+        let hero: Hero = {
+            switch typeLowercased {
+            case "archer":
+                return Archer(texture: texture, size: tileSize)
+            case "tank":
+                return Tank(texture: texture, size: tileSize)
+            case "swordsman":
+                return Swordsman(texture: texture, size: tileSize)
+            default:
+                return Swordsman(texture: texture, size: tileSize)
+            }
+        }()
+
+        guard logic.mana >= hero.manaCost else {
+            print("Not enough mana to spawn \(typeLowercased)")
             return
         }
 
@@ -90,10 +160,23 @@ class GameScene: SKScene {
             y: (CGFloat(tileY) + 0.5) * tileSize.height
         )
 
-        hero.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
-        hero.physicsBody?.affectedByGravity = false
-        hero.physicsBody?.isDynamic = true
-        hero.physicsBody?.categoryBitMask = BitMask.Hero.archer
+        let bitmask: UInt32 = {
+            switch typeLowercased {
+            case "archer":
+                return BitMask.Hero.archer
+            case "tank":
+                return BitMask.Hero.tanker
+            case "swordsman":
+                return BitMask.Hero.swordsman
+            default:
+                return BitMask.Hero.swordsman
+            }
+        }()
+
+        let body = SKPhysicsBody(rectangleOf: tileSize)
+        body.affectedByGravity = false
+        body.isDynamic = true
+        body.categoryBitMask = bitmask
 
         addChild(hero)
         entities.append(hero)
@@ -177,12 +260,10 @@ class GameScene: SKScene {
     }
 
     func initialiseEntities() {
-//        spawnPlayerCastle()
-//        spawnEnemyCastle()
-//        spawnHero(atX: 1, type: "archer")
-        spawnHero(atX: 2, atY: 3, type: "swordsman")
+        spawnPlayerCastle()
+        spawnEnemyCastle()
 //        spawnMonster(atX: 8)
-//        spawnMonster(atX: 8, atY: 3)
+        spawnMonster(atX: 3, atY: 3)
     }
 
     private func handleCollisions() {

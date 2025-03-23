@@ -11,7 +11,7 @@ class Swordsman: Hero {
     override init(texture: SKTexture,
                   size: CGSize,
                   health: Int = 120,
-                  attack: Int = 3,
+                  attack: Int = 300,
                   speed: CGFloat = 25,
                   manaCost: Int = 15) {
 
