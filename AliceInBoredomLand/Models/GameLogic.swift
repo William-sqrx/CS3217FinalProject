@@ -19,15 +19,15 @@ class GameLogic: ObservableObject {
 
 extension GameLogic: GameLogicDelegate {
 
-    func decrePlayerCastleHealth() {
+    func decrePlayerCastleHealth(amount: Int) {
         if playerCastleHealth > 0 {
-            playerCastleHealth -= 1
+            playerCastleHealth -= amount
         }
     }
 
-    func decreMonsterCastleHealth() {
+    func decreMonsterCastleHealth(amount: Int) {
         if monsterCastleHealth > 0 {
-            monsterCastleHealth -= 1
+            monsterCastleHealth -= amount
         }
     }
 }

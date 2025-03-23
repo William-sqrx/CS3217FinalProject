@@ -22,6 +22,7 @@ class Arrow: SKSpriteNode {
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.isDynamic = true
         self.physicsBody?.contactTestBitMask = BitMask.Monster.titan | BitMask.Monster.minion | BitMask.Monster.mage
+        | BitMask.Castle.playerCastle | BitMask.Castle.enemyCastle
         self.physicsBody?.collisionBitMask = 0
     }
 

@@ -22,4 +22,10 @@ struct BitMask {
         static let playerCastle: UInt32 = 0x1 << 29
         static let enemyCastle: UInt32 = 0x1 << 30
     }
+
+    struct Task {
+        static let task: UInt32 = 0x1 << 31
+    }
+
+    static let all = 0x1
 }
