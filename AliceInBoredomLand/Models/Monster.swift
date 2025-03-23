@@ -17,7 +17,10 @@ class Monster: EntityNode {
         physicsBody.affectedByGravity = false
         physicsBody.isDynamic = true
         physicsBody.categoryBitMask = BitMask.Monster.titan
-        physicsBody.contactTestBitMask = BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tank
+        physicsBody.collisionBitMask = BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tank |
+        BitMask.Castle.enemyCastle | BitMask.Castle.playerCastle
+        physicsBody.contactTestBitMask = BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tank |
+        BitMask.Castle.enemyCastle | BitMask.Castle.playerCastle
         physicsBody.allowsRotation = false
 
         self.physicsBody = physicsBody

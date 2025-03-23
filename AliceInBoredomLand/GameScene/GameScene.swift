@@ -165,7 +165,7 @@ class GameScene: SKScene {
         entities.append(hero)
     }
 
-    private func spawnMonster(atX tileX: Int, atY tileY: Int = 5) {
+    private func spawnMonster(atX tileX: Int = 8, atY tileY: Int = 5) {
         assert(0 < tileX && tileX < GameScene.numCols - 1)
         assert(1 < tileY && tileY < GameScene.numRows)
 
@@ -227,11 +227,13 @@ class GameScene: SKScene {
     func initialiseEntities() {
         spawnPlayerCastle()
         spawnEnemyCastle()
-        spawnMonster(atX: 3, atY: 3)
-        spawnHero(atX: 1, type: "archer")
-        spawnHero(atX: 1, atY: 3)
-        spawnHero(atX: 1, atY: 2, type: "tank")
-        spawnMonster(atX: 8, atY: 3)
+        
+        spawnMonster(atY: 5)
+        spawnMonster(atX: 7, atY: 5)
+        spawnMonster(atX: 6, atY: 5)
+
+        spawnHero(atY: 5, type: "archer")
+        spawnHero(atY: 2, type: "tank")
     }
 
     private func handleCollisions() {

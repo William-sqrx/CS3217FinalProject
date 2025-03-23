@@ -11,7 +11,7 @@ import SpriteKit
 struct ContentView: View {
     @StateObject var gameLogic = GameLogic()
     private let gameScene: GameScene
-    private let tileY = 3
+    private let tileY = 5
 
     init() {
         let logic = GameLogic()
