@@ -19,11 +19,15 @@ class Arrow: SKSpriteNode {
         super.init(texture: texture, color: .clear, size: CGSize(width: 20, height: 5))
 
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
+        self.physicsBody?.mass = 0
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.isDynamic = true
+        // Likely needs changing later
+        self.physicsBody?.categoryBitMask = 0
+        self.physicsBody?.collisionBitMask = 0
         self.physicsBody?.contactTestBitMask = BitMask.Monster.titan | BitMask.Monster.minion | BitMask.Monster.mage
         | BitMask.Castle.playerCastle | BitMask.Castle.enemyCastle
-        self.physicsBody?.collisionBitMask = 0
+
     }
 
     @available(*, unavailable)

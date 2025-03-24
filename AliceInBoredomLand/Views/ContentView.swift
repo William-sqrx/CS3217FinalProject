@@ -11,6 +11,7 @@ import SpriteKit
 struct ContentView: View {
     @StateObject var gameLogic = GameLogic()
     private let gameScene: GameScene
+    private let tileY = 5
 
     init() {
         let logic = GameLogic()
@@ -29,19 +30,16 @@ struct ContentView: View {
                 HStack {
                     // Button to spawn an Archer
                     Button("Spawn Archer") {
-                        let tileX = 1 // or pick any valid tile
-                        gameScene.spawnHero(atX: tileX, type: "archer")
+                        gameScene.spawnHero(atY: tileY, type: "archer")
                     }
 
                     // Button to spawn a Swordsman
                     Button("Spawn Swordsman") {
-                        let tileX = 1
-                        gameScene.spawnHero(atX: tileX, type: "hero")
+                        gameScene.spawnHero(atY: tileY, type: "hero")
                     }
 
                     Button("Spawn Tank") {
-                        let tileX = 1
-                        gameScene.spawnHero(atX: tileX, type: "tank")
+                        gameScene.spawnHero(atY: tileY, type: "tank")
                     }
 
                     Text("Mana: \(gameLogic.mana)")
