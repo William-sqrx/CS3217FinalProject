@@ -120,8 +120,11 @@ class GameScene: SKScene {
             return
         }
 
-        let newLogic = GameLogic()
-        let newScene = GameScene(gameLogicDelegate: newLogic)
+        if let logic = gameLogicDelegate as? GameLogic {
+            logic.reset()
+        }
+
+        let newScene = GameScene(gameLogicDelegate: gameLogicDelegate)
         newScene.scaleMode = self.scaleMode
         view.presentScene(newScene, transition: SKTransition.fade(withDuration: 0.5))
     }
@@ -190,7 +193,7 @@ class GameScene: SKScene {
 
         let texture = SKTexture(imageNamed: "monster")
         let size = getNodeSize()
-        let monster = Monster(texture: texture, size: size, health: 100, attack: 20, speed: 40.0)
+        let monster = Monster(texture: texture, size: size, health: 100, attack: 200, speed: 40.0)
 
         monster.position = adjustNodeOrigin(node: monster, position: getPosition(tileX: tileX, tileY: tileY))
 
@@ -224,13 +227,8 @@ class GameScene: SKScene {
         let size = getNodeSize(numTileY: 5)
         let enemyCastle = GameCastle(texture: texture, size: size, isPlayer: false)
 
-<<<<<<< HEAD
         enemyCastle.position = CGPoint(x: (CGFloat(GameScene.numCols) - 2.5) * tileSize.width,
                                        y: 4.5 * tileSize.height)
-=======
-        enemyCastle.position = adjustNodeOrigin(node: enemyCastle,
-                                                position: getPosition(tileX: GameScene.numCols - 1, tileY: 2))
->>>>>>> 5ced4dc8d3ac95d629172b1f394681699316d9ad
 
         enemyCastle.physicsBody = SKPhysicsBody(rectangleOf: size)
         enemyCastle.physicsBody?.affectedByGravity = false
@@ -245,12 +243,8 @@ class GameScene: SKScene {
         let size = getNodeSize()
         let task = Task(texture: texture, size: size)
 
-<<<<<<< HEAD
-        task.position = CGPoint(x: (CGFloat(GameScene.numCols) - 1 / 2) * tileSize.width, y: 1 * tileSize.height)
-=======
         task.position = adjustNodeOrigin(node: task,
                                          position: getPosition(tileX: GameScene.numCols - 1, tileY: 1))
->>>>>>> 5ced4dc8d3ac95d629172b1f394681699316d9ad
 
         task.physicsBody = SKPhysicsBody(rectangleOf: size)
         task.physicsBody?.affectedByGravity = false
@@ -275,15 +269,8 @@ class GameScene: SKScene {
     func initialiseEntities() {
         spawnPlayerCastle()
         spawnEnemyCastle()
-<<<<<<< HEAD
 //        spawnMonster(atX: 8)
         spawnMonster(atX: 3, atY: 3)
-=======
-        spawnHero(atX: 1, type: "archer")
-        spawnHero(atX: 1, atY: 3)
-        spawnHero(atX: 1, atY: 2, type: "tank")
-        spawnMonster(atX: 8, atY: 3)
->>>>>>> 5ced4dc8d3ac95d629172b1f394681699316d9ad
     }
 
     private func handleCollisions() {

@@ -26,6 +26,13 @@ class GameLogic: ObservableObject {
             mana -= amount
         }
     }
+
+    func reset() {
+        playerCastleHealth = 100
+        monsterCastleHealth = 100
+        timeLeft = 60
+        mana = 0
+    }
 }
 
 extension GameLogic: GameLogicDelegate {
