@@ -174,7 +174,7 @@ class GameScene: SKScene {
 
         let texture = SKTexture(imageNamed: "monster")
         let size = getNodeSize()
-        let monster = Monster(texture: texture, size: size, health: 100, attack: 200, speed: 40.0)
+        let monster = Monster(texture: texture, size: size, health: 50, attack: 30, speed: 40.0)
 
         monster.position = adjustNodeOrigin(node: monster, position: getPosition(tileX: tileX, tileY: tileY))
 
@@ -229,8 +229,7 @@ class GameScene: SKScene {
     func initialiseEntities() {
         spawnPlayerCastle()
         spawnEnemyCastle()
-//        spawnMonster(atX: 8)
-        spawnMonster(atX: 3, atY: 3)
+        spawnMonster(atX: 3)
     }
 
     private func handleCollisions() {
