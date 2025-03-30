@@ -23,8 +23,8 @@ class Task: SKSpriteNode {
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.isDynamic = true
-        self.physicsBody?.contactTestBitMask = BitMask.Task.task
-        self.physicsBody?.collisionBitMask = BitMask.Task.task
+        self.physicsBody?.contactTestBitMask = OldBitMask.Task.task
+        self.physicsBody?.collisionBitMask = OldBitMask.Task.task
         self.physicsBody?.velocity = CGVector(dx: -100, dy: 0)
         self.userData = NSMutableDictionary()
         self.userData?["entity"] = self

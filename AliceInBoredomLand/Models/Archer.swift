@@ -16,7 +16,7 @@ class Archer: Hero {
                   health: Int = 90, attack: Int = 2, speed: CGFloat = 25, manaCost: Int = 10) {
         super.init(texture: texture, size: size,
                    health: health, attack: attack, speed: speed, manaCost: manaCost)
-        self.physicsBody?.categoryBitMask = BitMask.Hero.archer
+        self.physicsBody?.categoryBitMask = OldBitMask.Hero.archer
     }
 
     @available(*, unavailable)

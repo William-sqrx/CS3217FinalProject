@@ -1,11 +1,11 @@
 //
-//  BitMask.swift
+//  OldBitMask.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 17/3/25.
 //
 
-struct BitMask {
+struct OldBitMask {
     struct Hero {
         static let tank: UInt32 = 0b1 << 0
         static let swordsman: UInt32 = 0b1 << 1

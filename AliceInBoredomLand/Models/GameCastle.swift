@@ -18,9 +18,9 @@ class GameCastle: EntityNode {
         let physicsBody = SKPhysicsBody(rectangleOf: size)
         physicsBody.affectedByGravity = false
         physicsBody.isDynamic = false
-        physicsBody.categoryBitMask = (isPlayer ? BitMask.Castle.playerCastle : BitMask.Castle.enemyCastle)
-        physicsBody.contactTestBitMask = BitMask.Monster.mage | BitMask.Monster.minion | BitMask.Monster.titan |
-                                         BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tank
+        physicsBody.categoryBitMask = (isPlayer ? OldBitMask.Castle.playerCastle : OldBitMask.Castle.enemyCastle)
+        physicsBody.contactTestBitMask = OldBitMask.Monster.mage | OldBitMask.Monster.minion | OldBitMask.Monster.titan |
+                                         OldBitMask.Hero.archer | OldBitMask.Hero.swordsman | OldBitMask.Hero.tank
         physicsBody.linearDamping = 50.0
         physicsBody.allowsRotation = false
 

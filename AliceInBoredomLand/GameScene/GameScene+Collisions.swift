@@ -29,7 +29,7 @@ extension GameScene: SKPhysicsContactDelegate {
     }
 
     private func getAttackerAndDefender(from bodyA: SKPhysicsBody, and bodyB: SKPhysicsBody)
-    -> (attacker: GameEntity, defender: GameEntity)? {
+    -> (attacker: OldGameEntity, defender: OldGameEntity)? {
         let attackerBody: SKPhysicsBody
         let defenderBody: SKPhysicsBody
 
@@ -41,8 +41,8 @@ extension GameScene: SKPhysicsContactDelegate {
             defenderBody = bodyA
         }
 
-        guard let attackerEntity = attackerBody.node?.userData?["entity"] as? GameEntity,
-              let defenderEntity = defenderBody.node?.userData?["entity"] as? GameEntity else {
+        guard let attackerEntity = attackerBody.node?.userData?["entity"] as? OldGameEntity,
+              let defenderEntity = defenderBody.node?.userData?["entity"] as? OldGameEntity else {
             return nil
         }
 
@@ -112,7 +112,7 @@ extension GameScene: SKPhysicsContactDelegate {
         right.physicsBody?.isDynamic = false
     }
 
-    private func checkEntityHitType(attackerEntity: GameEntity, defenderEntity: GameEntity) {
+    private func checkEntityHitType(attackerEntity: OldGameEntity, defenderEntity: OldGameEntity) {
         let knockbackSpeed: CGFloat = 0
 
         switch (attackerEntity, defenderEntity) {
@@ -150,7 +150,7 @@ extension GameScene: SKPhysicsContactDelegate {
         }
     }
 
-    private func applyKnockback(to entity: GameEntity, speed: CGFloat) {
+    private func applyKnockback(to entity: OldGameEntity, speed: CGFloat) {
         guard let node = entity as? EntityNode else {
             return
         }

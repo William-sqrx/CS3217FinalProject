@@ -9,7 +9,7 @@ import SpriteKit
 
 class GameScene: SKScene {
     var gameLogicDelegate: GameLogicDelegate
-    var entities: [GameEntity] = []
+    var entities: [OldGameEntity] = []
     var tasks: [Task] = []
     var frameCounter = 0
 

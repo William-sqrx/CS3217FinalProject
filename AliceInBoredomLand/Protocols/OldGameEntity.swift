@@ -8,7 +8,7 @@
 import SwiftUI
 import SpriteKit
 
-protocol GameEntity {
+protocol OldGameEntity {
     var id: UUID { get }
     var health: Int { get set }
     var attack: Int { get }

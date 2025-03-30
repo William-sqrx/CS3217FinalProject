@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-class EntityNode: SKSpriteNode, GameEntity {
+class EntityNode: SKSpriteNode, OldGameEntity {
     let id = UUID()
     var health: Int
     let attack: Int

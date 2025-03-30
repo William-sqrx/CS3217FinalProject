@@ -16,11 +16,11 @@ class Monster: EntityNode {
         let physicsBody = SKPhysicsBody(rectangleOf: size)
         physicsBody.affectedByGravity = false
         physicsBody.isDynamic = true
-        physicsBody.categoryBitMask = BitMask.Monster.titan
-        physicsBody.collisionBitMask = BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tank |
-        BitMask.Castle.enemyCastle | BitMask.Castle.playerCastle
-        physicsBody.contactTestBitMask = BitMask.Hero.archer | BitMask.Hero.swordsman | BitMask.Hero.tank |
-        BitMask.Castle.enemyCastle | BitMask.Castle.playerCastle
+        physicsBody.categoryBitMask = OldBitMask.Monster.titan
+        physicsBody.collisionBitMask = OldBitMask.Hero.archer | OldBitMask.Hero.swordsman | OldBitMask.Hero.tank |
+        OldBitMask.Castle.enemyCastle | OldBitMask.Castle.playerCastle
+        physicsBody.contactTestBitMask = OldBitMask.Hero.archer | OldBitMask.Hero.swordsman | OldBitMask.Hero.tank |
+        OldBitMask.Castle.enemyCastle | OldBitMask.Castle.playerCastle
         physicsBody.allowsRotation = false
 
         self.physicsBody = physicsBody
