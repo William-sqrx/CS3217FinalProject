@@ -8,17 +8,17 @@
 import Foundation
 
 // Assumes that the corresponding collision area is a square rectangle for the time being
-protocol PhysicsEntity {
-    var x: Double { get set }
-    var y: Double { get set }
-    var velocityX: Double { get set }
-    var velocityY: Double { get set }
-    var width: Double { get set }
-    var height: Double { get set }
+struct PhysicsEntity {
+    var x: Double
+    var y: Double
+    var velocityX: Double
+    var velocityY: Double
+    var width: Double
+    var height: Double
 
-    var entityCategories: PhysicsBitMask { get }
-    var collidesWith: PhysicsBitMask { get set }
-    var notifiesCollisionsWith: PhysicsBitMask { get set }
-    var affectsSelfOnCollision: Bool { get }
-    var affectsOthersOnCollision: Bool { get }
+    var entityCategories: PhysicsBitMask
+    var collidesWith: PhysicsBitMask
+    var notifiesCollisionsWith: PhysicsBitMask
+    var affectsSelfOnCollision: Bool
+    let affectsOthersOnCollision: Bool
 }

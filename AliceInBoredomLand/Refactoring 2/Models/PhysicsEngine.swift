@@ -12,6 +12,6 @@ protocol PhysicsEngine {
 
     func update(dt: TimeInterval) -> [PhysicsEvent]
 
-    func addEntity(_ entity: PhysicsEntity)
-    func removeEntity(_ entity: PhysicsEntity)
+    mutating func addEntity(_ entity: PhysicsEntity)
+    mutating func removeEntity(_ entity: PhysicsEntity)
 }
