@@ -39,10 +39,12 @@ class GameEngine {
         let deltaTime: TimeInterval = 1.0
         let frameIndex = frameCounter / 30
 
+        // pending rework: need to find a way to sync physics updates into objects properly
+        // also need to figure out whether GameEntity should have a update function, since we'd need to capture the physicsengine as well?
         if frameIndex % 2 == 1 {
-            entities.compactMap { $0 as? OldHero }.forEach { $0.update(deltaTime: deltaTime) }
+            entities.compactMap { $0 as? Hero }.forEach { $0.update(deltaTime: deltaTime) }
         } else {
-            entities.compactMap { $0 as? OldMonster }.forEach { $0.update(deltaTime: deltaTime) }
+            entities.compactMap { $0 as? Monster }.forEach { $0.update(deltaTime: deltaTime) }
         }
 
         tasks.forEach { $0.update(deltaTime: deltaTime) }
@@ -74,7 +76,7 @@ class GameEngine {
             case "archer":
                 // return Archer(texture: texture, size: size)
             case "tank":
-                // return Tank(texture: texture, size: size)
+                return Tank(posX: position.x, posY: position.y, size: size)
             case "swordsman":
                 return Swordsman(posX: position.x, posY: position.y, size: size)
             default:
@@ -97,46 +99,39 @@ class GameEngine {
         assert(0 < tileX && tileX < GameEngine.numCols - 1)
         assert(1 < tileY && tileY < GameEngine.numRows)
 
-        let texture = SKTexture(imageNamed: "monster")
         let size = getNodeSize()
-        let monster = OldMonster(texture: texture, size: size, health: 50, attack: 30, speed: 40.0)
-
-        monster.position = adjustNodeOrigin(node: monster, position: getPosition(tileX: tileX, tileY: tileY))
+        let position = adjustEntityOrigin(size: size, position: getPosition(tileX: tileX, tileY: tileY))
+        let monster = Monster(health: 80, attack: 40, speed: 20, posX: position.x, posY: position.y, size: size)
 
         addChild(monster)
         entities.append(monster)
     }
 
     private func spawnPlayerCastle() {
-        let texture = SKTexture(imageNamed: "player-castle")
         let size = getNodeSize(numTileY: 5)
-        let playerCastle = OldGameCastle(texture: texture, size: size, isPlayer: true)
+        let position = adjustEntityOrigin(size: size, position: getPosition(tileX: 0, tileY: 2))
+        let playerCastle = GameCastle(isPlayer: true, posX: position.x, posY: position.y, size: size)
 
-        playerCastle.position = adjustNodeOrigin(node: playerCastle, position: getPosition(tileX: 0, tileY: 2))
 
         addChild(playerCastle)
         entities.append(playerCastle)
     }
 
     private func spawnEnemyCastle() {
-        let texture = SKTexture(imageNamed: "enemy-castle")
         let size = getNodeSize(numTileY: 5)
-        let enemyCastle = OldGameCastle(texture: texture, size: size, isPlayer: false)
-
-        enemyCastle.position = adjustNodeOrigin(node: enemyCastle,
-                                                position: getPosition(tileX: GameEngine.numCols - 1, tileY: 2))
+        let position = adjustEntityOrigin(size: size, position: getPosition(tileX: GameEngine.numCols - 1, tileY: 2))
+        let enemyCastle = GameCastle(isPlayer: false, posX: position.x, posY: position.y, size: size)
 
         addChild(enemyCastle)
         entities.append(enemyCastle)
     }
 
     private func spawnTask() {
-        let texture = SKTexture(imageNamed: "task")
         let size = getNodeSize()
+        let position = adjustEntityOrigin(size: size, position: getPosition(tileX: GameEngine.numCols - 1, tileY: 1))
+        // Pending task reformatting
         let task = Task(texture: texture, size: size)
 
-        task.position = adjustNodeOrigin(node: task,
-                                         position: getPosition(tileX: GameEngine.numCols - 1, tileY: 1))
         addChild(task)
         tasks.append(task)
     }
@@ -144,6 +139,7 @@ class GameEngine {
     private func removeDeadEntities() {
         entities = entities.filter { entity in
             if !entity.isAlive {
+                // Pending modification
                 entity.node.removeFromParent()
                 return false
             }
@@ -156,19 +152,11 @@ class GameEngine {
         spawnEnemyCastle()
         spawnMonster(atX: 3)
     }
-
-    private func handleCollisions() {
-    }
-
-    override func didMove(to view: SKView) {
-        initialiseEntities()
-        physicsWorld.contactDelegate = self
-    }
 }
 
 extension GameEngine {
     func isMonsterInRange(_ archerPosition: CGPoint, range: CGFloat) -> Bool {
-        let monsters = entities.compactMap { $0 as? OldMonster }
+        let monsters = entities.compactMap { $0 as? Monster }
 
         for monster in monsters {
             let distance = (monster.position - archerPosition).length()

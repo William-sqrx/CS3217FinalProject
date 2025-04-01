@@ -43,6 +43,7 @@ class PhysicsEngineImpl: NSObject, PhysicsEngine {
     init(boundarySize: CGSize) {
         self.boundarySize = boundarySize
         physicsScene = SKScene(size: boundarySize)
+        physicsScene.physicsWorld.contactDelegate = self
     }
 
     private func convertToInternalType(_ entity: PhysicsEntity) -> SKPhysicsBody {

@@ -7,6 +7,7 @@
 
 import SpriteKit
 
+/*
 class Archer: OldHero {
     var lastShotTime: TimeInterval = 0
     let shotCooldown: TimeInterval = 0.1
@@ -50,3 +51,4 @@ class Archer: OldHero {
         arrow.launch(from: self.position, direction: direction)
     }
 }
+*/
