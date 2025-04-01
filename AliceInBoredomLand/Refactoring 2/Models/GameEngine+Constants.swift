@@ -1,5 +1,5 @@
 //
-//  GameScene+Constants.swift
+//  GameEngine+Constants.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 18/3/25.
@@ -7,7 +7,7 @@
 
 import UIKit.UIScreen
 
-extension GameScene {
+extension GameEngine {
     // Aspect Ratio is what matters here, UI uses implicit scaling I believe
     static let height = 700.0
     static let width = 1_000.0

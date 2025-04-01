@@ -16,24 +16,22 @@ class GameCastle: GameEntity {
     var posX: CGFloat
     var posY: CGFloat
 
-    var width: Double
-    var height: Double
+    var size: CGSize
     var physicsEntity: PhysicsEntity
 
-    init(isPlayer: Bool, posX: CGFloat, posY: CGFloat, width: Double, height: Double) {
+    init(isPlayer: Bool, posX: CGFloat, posY: CGFloat, size: CGSize) {
         self.isPlayer = isPlayer
         self.health = 500
         self.attack = 0
         self.speed = 0
         self.posX = posX
         self.posY = posY
-        self.width = width
-        self.height = height
+        self.size = size
         let entityCategories = PhysicsBitMask(isPlayer ? PhysicsBitMask.playerEntity : PhysicsBitMask.enemyEntity)
         let collidesWith = PhysicsBitMask(isPlayer ? PhysicsBitMask.enemyEntity : PhysicsBitMask.playerEntity)
 
         self.physicsEntity = PhysicsEntity(x: posX, y: posY, velocityX: 0, velocityY: speed,
-                                           width: width, height: height,
+                                           width: size.width, height: size.height,
                                            entityCategories: entityCategories, collidesWith: collidesWith,
                                            affectsSelfOnCollision: false)
 

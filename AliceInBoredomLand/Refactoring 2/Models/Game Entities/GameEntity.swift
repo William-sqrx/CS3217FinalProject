@@ -5,8 +5,7 @@
 //  Created by Wijaya William on 18/3/25.
 //
 
-import SwiftUI
-import SpriteKit
+import Foundation
 
 protocol GameEntity {
     var health: Int { get set }
@@ -16,8 +15,7 @@ protocol GameEntity {
     var posY: CGFloat { get set }
     var isAlive: Bool { get }
 
-    var width: Double { get }
-    var height: Double { get }
+    var size: CGSize { get }
     var physicsEntity: PhysicsEntity { get set }
 
     mutating func takeDamage(_ amount: Int)
