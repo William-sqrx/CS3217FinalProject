@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-class Swordsman: Hero {
+class OldSwordsman: OldHero {
     override init(texture: SKTexture, size: CGSize,
                   health: Int = 100, attack: Int = 150, speed: CGFloat = 45, manaCost: Int = 15) {
         super.init(texture: texture, size: size,

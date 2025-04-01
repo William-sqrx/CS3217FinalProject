@@ -6,15 +6,16 @@
 //
 
 struct PhysicsBitMask {
+    static let none: UInt32 = 0
+    static let all = UInt32.max
+
     static let playerEntity: UInt32 = 0b1 << 0
     static let enemyEntity: UInt32 = 0b1 << 10
-    private var bitMask: UInt32
+    static let task: UInt32 = 0b1 << 31
 
-    struct Task {
-        static let task: UInt32 = 0b1 << 31
-    }
+    var bitMask: UInt32
 
-    init(bitMask: UInt32) {
+    init(_ bitMask: UInt32) {
         self.bitMask = bitMask
     }
 
@@ -24,4 +25,7 @@ struct PhysicsBitMask {
     mutating func setBitMask(_ bitMask: UInt32) {
         self.bitMask = bitMask
     }
+}
+
+extension PhysicsBitMask: Equatable {
 }

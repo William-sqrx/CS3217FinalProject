@@ -48,9 +48,9 @@ class GameScene: SKScene {
         let frameIndex = frameCounter / 30
 
         if frameIndex % 2 == 1 {
-            entities.compactMap { $0 as? Hero }.forEach { $0.update(deltaTime: deltaTime) }
+            entities.compactMap { $0 as? OldHero }.forEach { $0.update(deltaTime: deltaTime) }
         } else {
-            entities.compactMap { $0 as? Monster }.forEach { $0.update(deltaTime: deltaTime) }
+            entities.compactMap { $0 as? OldMonster }.forEach { $0.update(deltaTime: deltaTime) }
         }
 
         tasks.forEach { $0.update(deltaTime: deltaTime) }
@@ -142,16 +142,16 @@ class GameScene: SKScene {
         let texture = SKTexture(imageNamed: typeLowercased)
         let size = getNodeSize()
 
-        let hero: Hero = {
+        let hero: OldHero = {
             switch typeLowercased {
             case "archer":
                 return Archer(texture: texture, size: size)
             case "tank":
                 return Tank(texture: texture, size: size)
             case "swordsman":
-                return Swordsman(texture: texture, size: size)
+                return OldSwordsman(texture: texture, size: size)
             default:
-                return Swordsman(texture: texture, size: size)
+                return OldSwordsman(texture: texture, size: size)
             }
         }()
 
@@ -174,7 +174,7 @@ class GameScene: SKScene {
 
         let texture = SKTexture(imageNamed: "monster")
         let size = getNodeSize()
-        let monster = Monster(texture: texture, size: size, health: 50, attack: 30, speed: 40.0)
+        let monster = OldMonster(texture: texture, size: size, health: 50, attack: 30, speed: 40.0)
 
         monster.position = adjustNodeOrigin(node: monster, position: getPosition(tileX: tileX, tileY: tileY))
 
@@ -185,7 +185,7 @@ class GameScene: SKScene {
     private func spawnPlayerCastle() {
         let texture = SKTexture(imageNamed: "player-castle")
         let size = getNodeSize(numTileY: 5)
-        let playerCastle = GameCastle(texture: texture, size: size, isPlayer: true)
+        let playerCastle = OldGameCastle(texture: texture, size: size, isPlayer: true)
 
         playerCastle.position = adjustNodeOrigin(node: playerCastle, position: getPosition(tileX: 0, tileY: 2))
 
@@ -196,7 +196,7 @@ class GameScene: SKScene {
     private func spawnEnemyCastle() {
         let texture = SKTexture(imageNamed: "enemy-castle")
         let size = getNodeSize(numTileY: 5)
-        let enemyCastle = GameCastle(texture: texture, size: size, isPlayer: false)
+        let enemyCastle = OldGameCastle(texture: texture, size: size, isPlayer: false)
 
         enemyCastle.position = adjustNodeOrigin(node: enemyCastle,
                                                 position: getPosition(tileX: GameScene.numCols - 1, tileY: 2))
@@ -243,7 +243,7 @@ class GameScene: SKScene {
 
 extension GameScene {
     func isMonsterInRange(_ archerPosition: CGPoint, range: CGFloat) -> Bool {
-        let monsters = entities.compactMap { $0 as? Monster }
+        let monsters = entities.compactMap { $0 as? OldMonster }
 
         for monster in monsters {
             let distance = (monster.position - archerPosition).length()

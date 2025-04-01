@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-class GameCastle: EntityNode {
+class OldGameCastle: EntityNode {
     let isPlayer: Bool
 
     init(texture: SKTexture, size: CGSize, isPlayer: Bool) {
