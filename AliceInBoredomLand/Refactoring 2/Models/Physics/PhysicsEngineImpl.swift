@@ -10,11 +10,13 @@ import SpriteKit
 
 class PhysicsEngineImpl: NSObject, PhysicsEngine {
     var boundarySize: CGSize
-    var physicsBodies: [PhysicsEntity] = []
+    var physicsBodies: [PhysicsEntity] {
+        physicsArraySynchronizer.getOuterArray()
+    }
     var physicsEvents: [PhysicsEvent] = []
 
+    private var physicsArraySynchronizer: ArraySynchronizer<SKPhysicsBody, PhysicsEntity> = ArraySynchronizer()
     private var physicsScene: SKScene
-    private var internalBodies: [SKPhysicsBody] = []
 
     func update(dt: TimeInterval) -> [PhysicsEvent] {
         physicsScene.update(dt)
@@ -25,24 +27,22 @@ class PhysicsEngineImpl: NSObject, PhysicsEngine {
         let node = SKNode()
         node.physicsBody = convertToInternalType(entity)
         if let physicsBody = node.physicsBody {
-            physicsBodies.append(entity)
-            internalBodies.append(physicsBody)
+            physicsArraySynchronizer.add(innerElement: physicsBody, outerElement: entity)
             physicsScene.addChild(node)
         }
     }
 
     func removeEntity(_ entity: PhysicsEntity) {
-        let temp = convertToInternalType(entity)
-        for idx in internalBodies.indices where internalBodies[idx] == temp {
-            internalBodies[idx].node?.removeFromParent()
+        if let internalEntity = physicsArraySynchronizer.getInnerElement(outerElement: entity) {
+            internalEntity.node?.removeFromParent()
+            physicsArraySynchronizer.removeInnerElement(internalEntity)
         }
-        physicsBodies.removeAll(where: { $0 == entity })
-        internalBodies.removeAll(where: { $0 == temp })
     }
 
     init(boundarySize: CGSize) {
         self.boundarySize = boundarySize
         physicsScene = SKScene(size: boundarySize)
+        physicsScene.isPaused = true
         physicsScene.physicsWorld.contactDelegate = self
     }
 
@@ -70,27 +70,19 @@ class PhysicsEngineImpl: NSObject, PhysicsEngine {
 
         return physicsBody
     }
-
-    private func getCorrespondingExternalEntity(_ physicsBody: SKPhysicsBody) -> PhysicsEntity? {
-        for entity in physicsBodies where physicsBody == convertToInternalType(entity) {
-            return entity
-        }
-        assert(false, "Could not find corresponding external representation to internal representation")
-        return nil
-    }
 }
 
 extension PhysicsEngineImpl: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
-        if let bodyA = getCorrespondingExternalEntity(contact.bodyA),
-           let bodyB = getCorrespondingExternalEntity(contact.bodyB) {
+        if let bodyA = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyA),
+           let bodyB = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyB) {
             physicsEvents.append(PhysicsEvent(bodyA: bodyA, bodyB: bodyB))
         }
     }
 
     func didEnd(_ contact: SKPhysicsContact) {
-        if let bodyA = getCorrespondingExternalEntity(contact.bodyA),
-           let bodyB = getCorrespondingExternalEntity(contact.bodyB) {
+        if let bodyA = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyA),
+           let bodyB = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyB)  {
             physicsEvents.removeAll(where: { $0.bodyA == bodyA && $0.bodyB == bodyB })
             physicsEvents.removeAll(where: { $0.bodyA == bodyB && $0.bodyB == bodyA })
         }

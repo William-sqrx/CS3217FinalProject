@@ -29,18 +29,19 @@ class GameEngine {
         frameCounter += 1
 
         if frameCounter.isMultiple(of: 30) {
-            performFrameLogic()
+            performFrameLogic(currentTime)
         }
 
         updateProjectiles()
     }
 
-    private func performFrameLogic() {
+    private func performFrameLogic(_ currentTime: TimeInterval) {
         let deltaTime: TimeInterval = 1.0
         let frameIndex = frameCounter / 30
 
         // pending rework: need to find a way to sync physics updates into objects properly
-        // also need to figure out whether GameEntity should have a update function, since we'd need to capture the physicsengine as well?
+        // also need to figure out whether GameEntity should have a update function
+        // since we'd need to capture the physicsengine as well?
         if frameIndex % 2 == 1 {
             entities.compactMap { $0 as? Hero }.forEach { $0.update(deltaTime: deltaTime) }
         } else {
@@ -48,6 +49,8 @@ class GameEngine {
         }
 
         tasks.forEach { $0.update(deltaTime: deltaTime) }
+        // Fix collision handling on the game layer later
+        physicsEngine.update(dt: currentTime)
 
         if frameIndex % 6 == 1 {
             spawnTask()
@@ -91,7 +94,7 @@ class GameEngine {
 
         logic.decreaseMana(by: 15)
 
-        addChild(hero)
+        physicsEngine.addEntity(hero.physicsEntity)
         entities.append(hero)
     }
 
@@ -103,7 +106,7 @@ class GameEngine {
         let position = adjustEntityOrigin(size: size, position: getPosition(tileX: tileX, tileY: tileY))
         let monster = Monster(health: 80, attack: 40, speed: 20, posX: position.x, posY: position.y, size: size)
 
-        addChild(monster)
+        physicsEngine.addEntity(monster.physicsEntity)
         entities.append(monster)
     }
 
@@ -112,8 +115,7 @@ class GameEngine {
         let position = adjustEntityOrigin(size: size, position: getPosition(tileX: 0, tileY: 2))
         let playerCastle = GameCastle(isPlayer: true, posX: position.x, posY: position.y, size: size)
 
-
-        addChild(playerCastle)
+        physicsEngine.addEntity(playerCastle.physicsEntity)
         entities.append(playerCastle)
     }
 
@@ -122,7 +124,7 @@ class GameEngine {
         let position = adjustEntityOrigin(size: size, position: getPosition(tileX: GameEngine.numCols - 1, tileY: 2))
         let enemyCastle = GameCastle(isPlayer: false, posX: position.x, posY: position.y, size: size)
 
-        addChild(enemyCastle)
+        physicsEngine.addEntity(enemyCastle.physicsEntity)
         entities.append(enemyCastle)
     }
 
@@ -139,8 +141,7 @@ class GameEngine {
     private func removeDeadEntities() {
         entities = entities.filter { entity in
             if !entity.isAlive {
-                // Pending modification
-                entity.node.removeFromParent()
+                physicsEngine.removeEntity(entity.physicsEntity)
                 return false
             }
             return true
@@ -167,4 +168,3 @@ extension GameEngine {
         return false
     }
 }
-

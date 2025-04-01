@@ -5,8 +5,6 @@
 //  Created by daniel on 30/3/25.
 //
 
-import Foundation
-
 // Assumes that the corresponding collision area is a square rectangle for the time being
 struct PhysicsEntity {
     var x: Double

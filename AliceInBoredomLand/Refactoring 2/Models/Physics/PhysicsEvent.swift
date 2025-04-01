@@ -11,3 +11,6 @@ struct PhysicsEvent {
     var bodyA: PhysicsEntity
     var bodyB: PhysicsEntity
 }
+
+extension PhysicsEvent: Equatable {
+}

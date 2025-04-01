@@ -5,7 +5,7 @@
 //  Created by Wijaya William on 18/3/25.
 //
 
-import UIKit.UIScreen
+import Foundation
 
 extension GameEngine {
     // Aspect Ratio is what matters here, UI uses implicit scaling I believe
