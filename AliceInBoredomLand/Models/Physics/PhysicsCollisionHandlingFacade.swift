@@ -7,10 +7,7 @@
 
 import Foundation
 
-// Intentional invocation of Protocol-Delegate Pattern here, weak ref not needed here
-// swiftlint:disable class_delegate_protocol
-protocol PhysicsCollisionHandlingDelegate {
+protocol PhysicsCollisionHandlingFacade {
     func handleCollision(from entity: PhysicsEntity, to otherEntity: PhysicsEntity)
     -> (PhysicsEntity, PhysicsEntity)
 }
-// swiftlint:enable class_delegate_protocol

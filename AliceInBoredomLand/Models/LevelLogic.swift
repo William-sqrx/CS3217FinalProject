@@ -1,5 +1,5 @@
 //
-//  GameLogicImpl.swift
+//  LevelLogic.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 19/3/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class GameLogicImpl: ObservableObject {
+class LevelLogic: ObservableObject {
     @Published var playerCastleHealth: Int = 100
     @Published var monsterCastleHealth: Int = 100
     @Published var timeLeft: Int = 60
@@ -35,7 +35,7 @@ class GameLogicImpl: ObservableObject {
     }
 }
 
-extension GameLogicImpl: GameLogicDelegate {
+extension LevelLogic: LevelLogicFacade {
 
     func decrePlayerCastleHealth(amount: Int) {
         if playerCastleHealth > 0 {

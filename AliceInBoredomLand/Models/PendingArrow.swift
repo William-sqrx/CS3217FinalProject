@@ -1,5 +1,5 @@
 //
-//  Arrow.swift
+//  PendingArrow.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 19/3/25.
@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-class Arrow: SKSpriteNode {
+class PendingArrow: SKSpriteNode {
     let damage: Int
     let maxRange: CGFloat = 800
     private var startPosition: CGPoint
@@ -25,8 +25,8 @@ class Arrow: SKSpriteNode {
         // Likely needs changing later
         self.physicsBody?.categoryBitMask = 0
         self.physicsBody?.collisionBitMask = 0
-        // self.physicsBody?.contactTestBitMask = OldBitMask.Monster.titan | OldBitMask.Monster.minion | OldBitMask.Monster.mage
-        // | OldBitMask.Castle.playerCastle | OldBitMask.Castle.enemyCastle
+        // self.physicsBody?.contactTestBitMask = BitMask.Monster.titan | BitMask.Monster.minion | BitMask.Monster.mage
+        // | BitMask.Castle.playerCastle | BitMask.Castle.enemyCastle
 
     }
 
@@ -43,7 +43,7 @@ class Arrow: SKSpriteNode {
     }
 
     func updateArrow(deltaTime: TimeInterval) {
-        let distTraveled = (self.position - startPosition).length()
+        let distTraveled = position.x - startPosition.x
         if distTraveled >= maxRange {
             self.removeFromParent()
         }

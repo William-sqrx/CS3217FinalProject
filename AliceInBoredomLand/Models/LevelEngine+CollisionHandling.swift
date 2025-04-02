@@ -1,5 +1,5 @@
 //
-//  GameEngine+CollisionHandling.swift
+//  LevelEngineImpl+CollisionHandling.swift
 //  AliceInBoredomLand
 //
 //  Created by daniel on 2/4/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension GameEngine {
+extension LevelEngine {
     func handleEvents(events: [PhysicsEvent]) {
         for event in events {
             if let (entityA, entityB) = getAttackerAndDefender(from: event.entityA, and: event.entityB) {
@@ -17,9 +17,9 @@ extension GameEngine {
     }
 
     private func getAttackerAndDefender(from bodyA: PhysicsEntity, and bodyB: PhysicsEntity)
-    -> (attacker: GameEntity, defender: GameEntity)? {
-        guard let entityA = hitboxGameEntitySynchronizer.getOuterElement(innerElement: bodyA),
-              let entityB = hitboxGameEntitySynchronizer.getOuterElement(innerElement: bodyB) else {
+    -> (attacker: LevelEntity, defender: LevelEntity)? {
+        guard let entityA = hitboxLevelEntitySynchronizer.getOuterElement(innerElement: bodyA),
+              let entityB = hitboxLevelEntitySynchronizer.getOuterElement(innerElement: bodyB) else {
             return nil
         }
         if abs(bodyA.velocityX) > abs(bodyB.velocityX) {
@@ -29,7 +29,7 @@ extension GameEngine {
         }
     }
 
-    private func applyKnockback(to entity: GameEntity, speed: CGFloat) {
+    private func applyKnockback(to entity: LevelEntity, speed: CGFloat) {
         var temp = entity.physicsEntity
         temp.velocityX = speed
         temp.velocityY = 0
@@ -43,7 +43,7 @@ extension GameEngine {
         }
     }
 
-    private func processEntityHitType(attackerEntity: GameEntity, defenderEntity: GameEntity) {
+    private func processEntityHitType(attackerEntity: LevelEntity, defenderEntity: LevelEntity) {
         let knockbackSpeed: CGFloat = 2
 
         switch (attackerEntity, defenderEntity) {
@@ -58,7 +58,7 @@ extension GameEngine {
             hero.takeDamage(monster.attack)
             applyKnockback(to: hero, speed: -knockbackSpeed)
 
-        case (let hero as Hero, var castle as GameCastle):
+        case (let hero as Hero, var castle as Castle):
             guard !castle.isPlayer else {
                 return
             }
@@ -67,7 +67,7 @@ extension GameEngine {
             gameLogicDelegate.decreMonsterCastleHealth(amount: hero.attack)
             applyKnockback(to: hero, speed: knockbackSpeed)
 
-        case (let monster as Monster, var castle as GameCastle):
+        case (let monster as Monster, var castle as Castle):
             guard castle.isPlayer else {
                 return
             }
@@ -101,12 +101,12 @@ private func handleArrowVsMonster(bodyA: SKPhysicsBody, bodyB: SKPhysicsBody) ->
 
 private func handleArrowVsCastle(bodyA: SKPhysicsBody, bodyB: SKPhysicsBody) -> Bool {
     if let arrow = bodyA.node as? Arrow,
-       let castle = bodyB.node?.userData?["entity"] as? GameCastle {
+       let castle = bodyB.node?.userData?["entity"] as? LevelCastle {
         handleArrowCastleHit(arrow: arrow, castle: castle)
         return true
     }
 
-    if let castle = bodyA.node?.userData?["entity"] as? GameCastle,
+    if let castle = bodyA.node?.userData?["entity"] as? LevelCastle,
        let arrow = bodyB.node as? Arrow {
         handleArrowCastleHit(arrow: arrow, castle: castle)
         return true
@@ -120,7 +120,7 @@ private func handleArrowHit(arrow: Arrow, monster: Monster) {
     arrow.removeFromParent()
 }
 
-private func handleArrowCastleHit(arrow: Arrow, castle: GameCastle) {
+private func handleArrowCastleHit(arrow: Arrow, castle: LevelCastle) {
     castle.takeDamage(arrow.damage)
     gameLogicDelegate.decreMonsterCastleHealth(amount: arrow.damage)
     arrow.removeFromParent()

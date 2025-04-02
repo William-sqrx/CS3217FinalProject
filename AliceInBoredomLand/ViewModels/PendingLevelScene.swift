@@ -1,5 +1,5 @@
 //
-//  GameScene.swift
+//  PendingLevelScene.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 17/3/25.
@@ -7,15 +7,15 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
-    var gameLogicDelegate: GameLogicDelegate
-    var entities: [GameEntity] = []
+class PendingLevelScene: SKScene {
+    var gameLogicDelegate: LevelLogicFacade
+    var entities: [LevelEntity] = []
     var tasks: [Task] = []
     var frameCounter = 0
     static let width: CGFloat = 700
     static let height: CGFloat = 1_000
 
-    init(gameLogicDelegate: GameLogicDelegate,
+    init(gameLogicDelegate: LevelLogicFacade,
          background: SKColor = .gray,
          size: CGSize = CGSize(width: 700, height: 1_000)) {
         self.gameLogicDelegate = gameLogicDelegate
@@ -32,24 +32,24 @@ class GameScene: SKScene {
 
     private func checkWinLose() {
         if gameLogicDelegate.monsterCastleHealth <= 0 {
-            showEndGameLabel(text: "You Win 🎉")
+            showEndLevelLabel(text: "You Win 🎉")
             isPaused = true
             return
         }
 
         if gameLogicDelegate.playerCastleHealth <= 0 {
-            showEndGameLabel(text: "You Lose 💀")
+            showEndLevelLabel(text: "You Lose 💀")
             isPaused = true
             return
         }
     }
 
-    private func showEndGameLabel(text: String) {
+    private func showEndLevelLabel(text: String) {
         let label = SKLabelNode(text: text)
         label.fontSize = 50
         label.fontColor = .white
         label.fontName = "Avenir-Heavy"
-        label.position = CGPoint(x: GameScene.width / 2, y: GameScene.height / 2 + 50)
+        label.position = CGPoint(x: PendingLevelScene.width / 2, y: PendingLevelScene.height / 2 + 50)
         label.name = "end_game_label"
         addChild(label)
 
@@ -57,7 +57,7 @@ class GameScene: SKScene {
         restartLabel.fontSize = 30
         restartLabel.fontColor = .yellow
         restartLabel.fontName = "Avenir"
-        restartLabel.position = CGPoint(x: GameScene.width / 2, y: GameScene.height / 2 - 50)
+        restartLabel.position = CGPoint(x: PendingLevelScene.width / 2, y: PendingLevelScene.height / 2 - 50)
         restartLabel.name = "restart_button"
         addChild(restartLabel)
     }
@@ -71,20 +71,20 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.location(in: self)
             if let node = self.atPoint(location) as? SKLabelNode, node.name == "restart_button" {
-                restartGame()
+                restartLevel()
             }
         }
     }
      */
 
-    private func restartGame() {
+    private func restartLevel() {
         guard let view = self.view else {
             return
         }
 
         gameLogicDelegate.reset()
 
-        let newScene = GameScene(gameLogicDelegate: gameLogicDelegate)
+        let newScene = PendingLevelScene(gameLogicDelegate: gameLogicDelegate)
         newScene.scaleMode = self.scaleMode
         view.presentScene(newScene, transition: SKTransition.fade(withDuration: 0.5))
     }

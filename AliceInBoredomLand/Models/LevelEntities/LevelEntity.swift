@@ -1,5 +1,5 @@
 //
-//  GameEntity.swift
+//  LevelEntity.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 18/3/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol GameEntity {
+protocol LevelEntity {
     var health: Int { get set }
     var attack: Int { get }
     var speed: CGFloat { get }
@@ -23,7 +23,7 @@ protocol GameEntity {
     mutating func takeDamage(_ amount: Int)
 }
 
-extension GameEntity {
+extension LevelEntity {
     var isAlive: Bool {
         health > 0
     }

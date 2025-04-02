@@ -1,5 +1,5 @@
 //
-//  PhysicsEngineImpl.swift
+//  PhysicsEngine.swift
 //  AliceInBoredomLand
 //
 //  Created by daniel on 30/3/25.
@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-class PhysicsEngineImpl: NSObject, PhysicsEngine {
+class PhysicsEngine: NSObject, PhysicsEngineFacade {
     var boundarySize: CGSize
     var physicsBodies: [PhysicsEntity] {
         physicsArraySynchronizer.getOuterArray()
@@ -80,7 +80,7 @@ class PhysicsEngineImpl: NSObject, PhysicsEngine {
     }
 }
 
-extension PhysicsEngineImpl: SKPhysicsContactDelegate {
+extension PhysicsEngine: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         if let bodyA = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyA),
            let bodyB = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyB) {

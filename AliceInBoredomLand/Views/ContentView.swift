@@ -9,13 +9,13 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    @StateObject var gameLogic = GameLogicImpl()
-    private let gameScene: GameScene
+    @StateObject var gameLogic = LevelLogic()
+    private let gameScene: PendingLevelScene
     private let tileY = 5
 
     init() {
-        let logic = GameLogicImpl()
-        let scene = GameScene(gameLogicDelegate: logic)
+        let logic = LevelLogic()
+        let scene = PendingLevelScene(gameLogicDelegate: logic)
         scene.scaleMode = .resizeFill
         self._gameLogic = StateObject(wrappedValue: logic)
         self.gameScene = scene

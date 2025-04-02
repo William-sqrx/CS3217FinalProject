@@ -1,13 +1,11 @@
 //
-//  GameLogicDelegate.swift
+//  LevelLogicFacade.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 17/3/25.
 //
 
-// Intentional invocation of Protocol-Delegate Pattern here, weak ref not needed here
-// swiftlint:disable class_delegate_protocol
-protocol GameLogicDelegate {
+protocol LevelLogicFacade {
     var monsterCastleHealth: Int { get }
     var playerCastleHealth: Int { get }
     var isWin: Bool { get }
@@ -21,4 +19,3 @@ protocol GameLogicDelegate {
 
     func reset()
 }
-// swiftlint:enable class_delegate_protocol

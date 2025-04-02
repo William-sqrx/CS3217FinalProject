@@ -28,7 +28,7 @@ class Archer: Hero {
     override func update(deltaTime: TimeInterval) {
         super.update(deltaTime: deltaTime)
 
-        guard let scene = scene as? GameScene, scene.isMonsterInRange(position, range: attackRange) else {
+        guard let scene = scene as? LevelScene, scene.isMonsterInRange(position, range: attackRange) else {
             return
         }
 

@@ -1,5 +1,5 @@
 //
-//  GameEngine.swift
+//  LevelEngine.swift
 //  AliceInBoredomLand
 //
 //  Created by daniel on 30/3/25.
@@ -7,21 +7,21 @@
 
 import Foundation
 
-class GameEngine {
-    var gameLogicDelegate: GameLogicDelegate
+class LevelEngine: LevelEngineFacade {
+    var gameLogicDelegate: LevelLogicFacade
     var grid: Grid
-    var entities: [GameEntity] = []
+    var entities: [LevelEntity] = []
     var tasks: [Task] = []
     var isPaused: Bool = false
 
     var frameCounter = 0
     var physicsEngine: PhysicsEngine
-    var hitboxGameEntitySynchronizer: ArraySynchronizer<PhysicsEntity, GameEntity> = ArraySynchronizer()
+    var hitboxLevelEntitySynchronizer: ArraySynchronizer<PhysicsEntity, LevelEntity> = ArraySynchronizer()
 
-    init(gameLogicDelegate: GameLogicDelegate, grid: Grid) {
+    init(gameLogicDelegate: LevelLogicFacade, grid: Grid) {
         self.gameLogicDelegate = gameLogicDelegate
         self.grid = grid
-        physicsEngine = PhysicsEngineImpl(boundarySize: CGSize(width: GameEngine.height, height: GameEngine.width))
+        physicsEngine = PhysicsEngine(boundarySize: CGSize(width: grid.height, height: grid.width))
     }
 
     // Todo: Rework in a format that allows for actually using currentTime, instead of assuming even time steps
@@ -39,7 +39,7 @@ class GameEngine {
         let frameIndex = frameCounter / 30
 
         // pending rework: need to find a way to sync physics updates into objects properly
-        // also need to figure out whether GameEntity should have a update function
+        // also need to figure out whether LevelEntity should have a update function
         // since we'd need to capture the physicsengine as well?
         if frameIndex % 2 == 1 {
             entities.compactMap { $0 as? Hero }.forEach { $0.update(dt: currentTime) }
@@ -59,12 +59,12 @@ class GameEngine {
     }
 
     private func updateProjectiles() {
-        entities.compactMap { $0 as? Arrow }.forEach { $0.updateArrow(deltaTime: 1.0) }
+        entities.compactMap { $0 as? PendingArrow }.forEach { $0.updateArrow(deltaTime: 1.0) }
     }
 
     func spawnHero(atX tileX: Int = 1, atY tileY: Int = 5, type: String = "hero") {
-        assert(0 < tileX && tileX < GameEngine.numCols - 1)
-        assert(1 < tileY && tileY < GameEngine.numRows)
+        assert(0 < tileX && tileX < grid.numCols - 1)
+        assert(1 < tileY && tileY < grid.numLanes)
 
         let typeLowercased = type.lowercased()
         let size = grid.getNodeSize()
@@ -91,48 +91,48 @@ class GameEngine {
         gameLogicDelegate.decreaseMana(by: 15)
 
         physicsEngine.addEntity(hero.physicsEntity)
-        hitboxGameEntitySynchronizer.add(innerElement: hero.physicsEntity, outerElement: hero)
+        hitboxLevelEntitySynchronizer.add(innerElement: hero.physicsEntity, outerElement: hero)
         entities.append(hero)
     }
 
-    private func spawnMonster(atX tileX: Int = 8, atY tileY: Int = 5) {
-        assert(0 < tileX && tileX < GameEngine.numCols - 1)
-        assert(1 < tileY && tileY < GameEngine.numRows)
+    func spawnMonster(atX tileX: Int = 8, atY tileY: Int = 5) {
+        assert(0 < tileX && tileX < grid.numCols - 1)
+        assert(1 < tileY && tileY < grid.numLanes)
 
         let size = grid.getNodeSize()
         let position = grid.adjustEntityOrigin(size: size, position: grid.getPosition(tileX: tileX, tileY: tileY))
         let monster = Monster(health: 80, attack: 40, speed: 20, posX: position.x, posY: position.y, size: size)
 
         physicsEngine.addEntity(monster.physicsEntity)
-        hitboxGameEntitySynchronizer.add(innerElement: monster.physicsEntity, outerElement: monster)
+        hitboxLevelEntitySynchronizer.add(innerElement: monster.physicsEntity, outerElement: monster)
         entities.append(monster)
     }
 
     private func spawnPlayerCastle() {
         let size = grid.getNodeSize(numTileY: 5)
         let position = grid.adjustEntityOrigin(size: size, position: grid.getPosition(tileX: 0, tileY: 2))
-        let playerCastle = GameCastle(isPlayer: true, posX: position.x, posY: position.y, size: size)
+        let playerCastle = Castle(isPlayer: true, posX: position.x, posY: position.y, size: size)
 
         physicsEngine.addEntity(playerCastle.physicsEntity)
-        hitboxGameEntitySynchronizer.add(innerElement: playerCastle.physicsEntity, outerElement: playerCastle)
+        hitboxLevelEntitySynchronizer.add(innerElement: playerCastle.physicsEntity, outerElement: playerCastle)
         entities.append(playerCastle)
     }
 
     private func spawnEnemyCastle() {
         let size = grid.getNodeSize(numTileY: 5)
         let position = grid.adjustEntityOrigin(size: size,
-                                               position: grid.getPosition(tileX: GameEngine.numCols - 1, tileY: 2))
-        let enemyCastle = GameCastle(isPlayer: false, posX: position.x, posY: position.y, size: size)
+                                               position: grid.getPosition(tileX: grid.numCols - 1, tileY: 2))
+        let enemyCastle = Castle(isPlayer: false, posX: position.x, posY: position.y, size: size)
 
         physicsEngine.addEntity(enemyCastle.physicsEntity)
-        hitboxGameEntitySynchronizer.add(innerElement: enemyCastle.physicsEntity, outerElement: enemyCastle)
+        hitboxLevelEntitySynchronizer.add(innerElement: enemyCastle.physicsEntity, outerElement: enemyCastle)
         entities.append(enemyCastle)
     }
 
     private func spawnTask() {
         let size = grid.getNodeSize()
         let position = grid.adjustEntityOrigin(size: size,
-                                               position: grid.getPosition(tileX: GameEngine.numCols - 1, tileY: 1))
+                                               position: grid.getPosition(tileX: grid.numCols - 1, tileY: 1))
         // Pending task reformatting
         let task = Task(posX: position.x, posY: position.y, size: size)
 
@@ -157,7 +157,7 @@ class GameEngine {
     }
 }
 
-extension GameEngine {
+extension LevelEngine {
     func isMonsterInRange(_ archerPosition: CGPoint, range: CGFloat) -> Bool {
         let monsters = entities.compactMap { $0 as? Monster }
 
