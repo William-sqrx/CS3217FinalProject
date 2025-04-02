@@ -38,7 +38,7 @@ struct Grid {
                 y: position.height + size.height / 2)
     }
 
-    init(width: Double = 700, height: Double = 1_000, numCols: Int = 10, numLanes: Int = 7, laneSpacing: Double = 10) {
+    init(width: Double = 1_000, height: Double = 700, numCols: Int = 10, numLanes: Int = 7, laneSpacing: Double = 10) {
         self.width = width
         self.height = height
         self.numCols = numCols

@@ -22,10 +22,13 @@ class LevelEngine: LevelEngineFacade {
         self.gameLogicDelegate = gameLogicDelegate
         self.grid = grid
         physicsEngine = PhysicsEngine(boundarySize: CGSize(width: grid.height, height: grid.width))
+
+        initialiseEntities()
     }
 
     // Todo: Rework in a format that allows for actually using currentTime, instead of assuming even time steps
     func update(_ currentTime: TimeInterval) {
+        print(entities.count, frameCounter)
         frameCounter += 1
 
         if frameCounter.isMultiple(of: 30) {
@@ -50,12 +53,16 @@ class LevelEngine: LevelEngineFacade {
         // tasks.forEach { $0.update(dt: currentTime) }
         // Fix collision handling on the game layer later
         let physicsEvents = physicsEngine.update(dt: currentTime)
+        print(physicsEngine.physicsBodies[2].velocityX)
         handleEvents(events: physicsEvents)
+        print(physicsEngine.physicsBodies[2].velocityX)
+        entities = hitboxLevelEntitySynchronizer.getOuterArray()
 
         if frameIndex % 6 == 1 {
             spawnTask()
         }
         removeDeadEntities()
+
     }
 
     private func updateProjectiles() {

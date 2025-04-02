@@ -24,6 +24,7 @@ class PhysicsEngine: NSObject, PhysicsEngineFacade {
     }
 
     func addEntity(_ entity: PhysicsEntity) {
+        print("bark")
         let node = SKNode()
         node.physicsBody = convertToInternalType(entity)
         if let physicsBody = node.physicsBody {

@@ -7,9 +7,8 @@
 
 import SpriteKit
 
-/*
 class Archer: Hero {
-    var lastShotTime: TimeInterval = 0
+    /*var lastShotTime: TimeInterval = 0
     let shotCooldown: TimeInterval = 0.1
     let attackRange: CGFloat = 500.0
 
@@ -49,6 +48,6 @@ class Archer: Hero {
 
         let direction: CGFloat = 1
         arrow.launch(from: self.position, direction: direction)
-    }
+    }*/
 }
-*/
+

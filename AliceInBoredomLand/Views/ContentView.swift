@@ -9,47 +9,12 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    @StateObject var gameLogic = LevelLogic()
-    private let gameScene: PendingLevelScene
-    private let tileY = 5
 
     init() {
-        let logic = LevelLogic()
-        let scene = PendingLevelScene(gameLogicDelegate: logic)
-        scene.scaleMode = .resizeFill
-        self._gameLogic = StateObject(wrappedValue: logic)
-        self.gameScene = scene
     }
 
     var body: some View {
-        ZStack {
-            SpriteView(scene: gameScene, debugOptions: [.showsPhysics])
-                .ignoresSafeArea()
-            VStack {
-                Spacer()
-                HStack {
-                    // Button to spawn an Archer
-                    Button("Spawn Archer") {
-                        // gameScene.spawnHero(atY: tileY, type: "archer")
-                    }
-
-                    // Button to spawn a Swordsman
-                    Button("Spawn Swordsman") {
-                        // gameScene.spawnHero(atY: tileY, type: "hero")
-                    }
-
-                    Button("Spawn Tank") {
-                        // gameScene.spawnHero(atY: tileY, type: "tank")
-                    }
-
-                    Text("Mana: \(gameLogic.mana)")
-                        .padding()
-
-                    // Add more buttons for different hero types...
-                }
-                .padding()
-            }
-        }
+        LevelView()
     }
 }
 

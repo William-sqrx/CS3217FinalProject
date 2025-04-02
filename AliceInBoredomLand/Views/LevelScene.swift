@@ -1,5 +1,5 @@
 //
-//  PendingLevelScene.swift
+//  LevelScene.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 17/3/25.
@@ -7,20 +7,17 @@
 
 import SpriteKit
 
-class PendingLevelScene: SKScene {
-    var gameLogicDelegate: LevelLogicFacade
-    var entities: [LevelEntity] = []
-    var tasks: [Task] = []
+class LevelScene: SKScene {
     var frameCounter = 0
-    static let width: CGFloat = 700
-    static let height: CGFloat = 1_000
+    var gameLogicDelegate: LevelLogicFacade
+    var levelViewModel: LevelViewModel
+    var grid = Grid()
 
-    init(gameLogicDelegate: LevelLogicFacade,
-         background: SKColor = .gray,
-         size: CGSize = CGSize(width: 700, height: 1_000)) {
+    init(gameLogicDelegate: LevelLogicFacade, levelViewModel: LevelViewModel, background: SKColor = .gray) {
         self.gameLogicDelegate = gameLogicDelegate
-        self.entities = []
-        super.init(size: size)
+        self.levelViewModel = levelViewModel
+        super.init(size: CGSize(width: grid.width, height: grid.height))
+
         self.backgroundColor = background
         self.scaleMode = .aspectFit
     }
@@ -28,6 +25,18 @@ class PendingLevelScene: SKScene {
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func update(_ currentTime: TimeInterval) {
+        levelViewModel.update(currentTime)
+        removeAllChildren()
+        print("meow? ", levelViewModel.levelEntities)
+        for entity in levelViewModel.levelEntities {
+            addChild(EntityViewFactory.createViewNode(entity: entity))
+        }
+        for task in levelViewModel.tasks {
+            addChild(EntityViewFactory.createViewNode(task: task))
+        }
     }
 
     private func checkWinLose() {
@@ -49,7 +58,7 @@ class PendingLevelScene: SKScene {
         label.fontSize = 50
         label.fontColor = .white
         label.fontName = "Avenir-Heavy"
-        label.position = CGPoint(x: PendingLevelScene.width / 2, y: PendingLevelScene.height / 2 + 50)
+        label.position = CGPoint(x: grid.width / 2, y: grid.height / 2 + 50)
         label.name = "end_game_label"
         addChild(label)
 
@@ -57,12 +66,11 @@ class PendingLevelScene: SKScene {
         restartLabel.fontSize = 30
         restartLabel.fontColor = .yellow
         restartLabel.fontName = "Avenir"
-        restartLabel.position = CGPoint(x: PendingLevelScene.width / 2, y: PendingLevelScene.height / 2 - 50)
+        restartLabel.position = CGPoint(x: grid.width / 2, y: grid.height / 2 - 50)
         restartLabel.name = "restart_button"
         addChild(restartLabel)
     }
 
-    /*
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard isPaused else {
             return
@@ -75,7 +83,6 @@ class PendingLevelScene: SKScene {
             }
         }
     }
-     */
 
     private func restartLevel() {
         guard let view = self.view else {
@@ -84,8 +91,8 @@ class PendingLevelScene: SKScene {
 
         gameLogicDelegate.reset()
 
-        let newScene = PendingLevelScene(gameLogicDelegate: gameLogicDelegate)
-        newScene.scaleMode = self.scaleMode
-        view.presentScene(newScene, transition: SKTransition.fade(withDuration: 0.5))
+        // let newScene = LevelScene(gameLogicDelegate: gameLogicDelegate)
+        // newScene.scaleMode = self.scaleMode
+        // view.presentScene(newScene, transition: SKTransition.fade(withDuration: 0.5))
     }
 }
