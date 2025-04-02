@@ -9,18 +9,18 @@ import Foundation
 
 class GameEngine {
     var gameLogicDelegate: GameLogicDelegate
+    var grid: Grid
     var entities: [GameEntity] = []
     var tasks: [Task] = []
-    var frameCounter = 0
-
-    var physicsEngine: PhysicsEngine
     var isPaused: Bool = false
 
-    // Please use getNodeSize instead of this directly
-    let tileSize = CGSize(width: width / Double(numCols),
-                          height: (height - rowSpacing * Double(numRows - 1)) / Double(numRows))
+    var frameCounter = 0
+    var physicsEngine: PhysicsEngine
+    var hitboxGameEntitySynchronizer: ArraySynchronizer<PhysicsEntity, GameEntity> = ArraySynchronizer()
 
-    init() {
+    init(gameLogicDelegate: GameLogicDelegate, grid: Grid) {
+        self.gameLogicDelegate = gameLogicDelegate
+        self.grid = grid
         physicsEngine = PhysicsEngineImpl(boundarySize: CGSize(width: GameEngine.height, height: GameEngine.width))
     }
 
@@ -36,21 +36,21 @@ class GameEngine {
     }
 
     private func performFrameLogic(_ currentTime: TimeInterval) {
-        let deltaTime: TimeInterval = 1.0
         let frameIndex = frameCounter / 30
 
         // pending rework: need to find a way to sync physics updates into objects properly
         // also need to figure out whether GameEntity should have a update function
         // since we'd need to capture the physicsengine as well?
         if frameIndex % 2 == 1 {
-            entities.compactMap { $0 as? Hero }.forEach { $0.update(deltaTime: deltaTime) }
+            entities.compactMap { $0 as? Hero }.forEach { $0.update(dt: currentTime) }
         } else {
-            entities.compactMap { $0 as? Monster }.forEach { $0.update(deltaTime: deltaTime) }
+            entities.compactMap { $0 as? Monster }.forEach { $0.update(dt: currentTime) }
         }
 
-        tasks.forEach { $0.update(deltaTime: deltaTime) }
+        // tasks.forEach { $0.update(dt: currentTime) }
         // Fix collision handling on the game layer later
-        physicsEngine.update(dt: currentTime)
+        let physicsEvents = physicsEngine.update(dt: currentTime)
+        handleEvents(events: physicsEvents)
 
         if frameIndex % 6 == 1 {
             spawnTask()
@@ -66,17 +66,13 @@ class GameEngine {
         assert(0 < tileX && tileX < GameEngine.numCols - 1)
         assert(1 < tileY && tileY < GameEngine.numRows)
 
-        guard let logic = gameLogicDelegate as? GameLogic else {
-            return
-        }
-
         let typeLowercased = type.lowercased()
-        let size = getNodeSize()
-        let position = adjustEntityOrigin(size: size, position: getPosition(tileX: tileX, tileY: tileY))
+        let size = grid.getNodeSize()
+        let position = grid.adjustEntityOrigin(size: size, position: grid.getPosition(tileX: tileX, tileY: tileY))
 
         let hero: Hero = {
             switch typeLowercased {
-            case "archer":
+            // case "archer":
                 // return Archer(texture: texture, size: size)
             case "tank":
                 return Tank(posX: position.x, posY: position.y, size: size)
@@ -87,14 +83,15 @@ class GameEngine {
             }
         }()
 
-        guard logic.mana >= 15 else { // replace with factory function later, this is incorrect behaviour
+        guard gameLogicDelegate.mana >= 15 else { // replace with factory function later, this is incorrect behaviour
             print("Not enough mana to spawn \(typeLowercased)")
             return
         }
 
-        logic.decreaseMana(by: 15)
+        gameLogicDelegate.decreaseMana(by: 15)
 
         physicsEngine.addEntity(hero.physicsEntity)
+        hitboxGameEntitySynchronizer.add(innerElement: hero.physicsEntity, outerElement: hero)
         entities.append(hero)
     }
 
@@ -102,39 +99,44 @@ class GameEngine {
         assert(0 < tileX && tileX < GameEngine.numCols - 1)
         assert(1 < tileY && tileY < GameEngine.numRows)
 
-        let size = getNodeSize()
-        let position = adjustEntityOrigin(size: size, position: getPosition(tileX: tileX, tileY: tileY))
+        let size = grid.getNodeSize()
+        let position = grid.adjustEntityOrigin(size: size, position: grid.getPosition(tileX: tileX, tileY: tileY))
         let monster = Monster(health: 80, attack: 40, speed: 20, posX: position.x, posY: position.y, size: size)
 
         physicsEngine.addEntity(monster.physicsEntity)
+        hitboxGameEntitySynchronizer.add(innerElement: monster.physicsEntity, outerElement: monster)
         entities.append(monster)
     }
 
     private func spawnPlayerCastle() {
-        let size = getNodeSize(numTileY: 5)
-        let position = adjustEntityOrigin(size: size, position: getPosition(tileX: 0, tileY: 2))
+        let size = grid.getNodeSize(numTileY: 5)
+        let position = grid.adjustEntityOrigin(size: size, position: grid.getPosition(tileX: 0, tileY: 2))
         let playerCastle = GameCastle(isPlayer: true, posX: position.x, posY: position.y, size: size)
 
         physicsEngine.addEntity(playerCastle.physicsEntity)
+        hitboxGameEntitySynchronizer.add(innerElement: playerCastle.physicsEntity, outerElement: playerCastle)
         entities.append(playerCastle)
     }
 
     private func spawnEnemyCastle() {
-        let size = getNodeSize(numTileY: 5)
-        let position = adjustEntityOrigin(size: size, position: getPosition(tileX: GameEngine.numCols - 1, tileY: 2))
+        let size = grid.getNodeSize(numTileY: 5)
+        let position = grid.adjustEntityOrigin(size: size,
+                                               position: grid.getPosition(tileX: GameEngine.numCols - 1, tileY: 2))
         let enemyCastle = GameCastle(isPlayer: false, posX: position.x, posY: position.y, size: size)
 
         physicsEngine.addEntity(enemyCastle.physicsEntity)
+        hitboxGameEntitySynchronizer.add(innerElement: enemyCastle.physicsEntity, outerElement: enemyCastle)
         entities.append(enemyCastle)
     }
 
     private func spawnTask() {
-        let size = getNodeSize()
-        let position = adjustEntityOrigin(size: size, position: getPosition(tileX: GameEngine.numCols - 1, tileY: 1))
+        let size = grid.getNodeSize()
+        let position = grid.adjustEntityOrigin(size: size,
+                                               position: grid.getPosition(tileX: GameEngine.numCols - 1, tileY: 1))
         // Pending task reformatting
-        let task = Task(texture: texture, size: size)
+        let task = Task(posX: position.x, posY: position.y, size: size)
 
-        addChild(task)
+        physicsEngine.addEntity(task.physicsEntity)
         tasks.append(task)
     }
 
@@ -160,7 +162,7 @@ extension GameEngine {
         let monsters = entities.compactMap { $0 as? Monster }
 
         for monster in monsters {
-            let distance = (monster.position - archerPosition).length()
+            let distance = (monster.posX - archerPosition.x)
             if distance <= range {
                 return true
             }

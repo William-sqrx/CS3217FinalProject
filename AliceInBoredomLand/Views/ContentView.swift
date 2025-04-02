@@ -9,12 +9,12 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    @StateObject var gameLogic = GameLogic()
+    @StateObject var gameLogic = GameLogicImpl()
     private let gameScene: GameScene
     private let tileY = 5
 
     init() {
-        let logic = GameLogic()
+        let logic = GameLogicImpl()
         let scene = GameScene(gameLogicDelegate: logic)
         scene.scaleMode = .resizeFill
         self._gameLogic = StateObject(wrappedValue: logic)
@@ -30,16 +30,16 @@ struct ContentView: View {
                 HStack {
                     // Button to spawn an Archer
                     Button("Spawn Archer") {
-                        gameScene.spawnHero(atY: tileY, type: "archer")
+                        // gameScene.spawnHero(atY: tileY, type: "archer")
                     }
 
                     // Button to spawn a Swordsman
                     Button("Spawn Swordsman") {
-                        gameScene.spawnHero(atY: tileY, type: "hero")
+                        // gameScene.spawnHero(atY: tileY, type: "hero")
                     }
 
                     Button("Spawn Tank") {
-                        gameScene.spawnHero(atY: tileY, type: "tank")
+                        // gameScene.spawnHero(atY: tileY, type: "tank")
                     }
 
                     Text("Mana: \(gameLogic.mana)")

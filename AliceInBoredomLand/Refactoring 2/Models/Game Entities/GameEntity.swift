@@ -18,6 +18,8 @@ protocol GameEntity {
     var size: CGSize { get }
     var physicsEntity: PhysicsEntity { get set }
 
+    mutating func update(dt: TimeInterval)
+
     mutating func takeDamage(_ amount: Int)
 }
 
@@ -25,6 +27,26 @@ extension GameEntity {
     var isAlive: Bool {
         health > 0
     }
+    var posX: CGFloat {
+        get {
+            physicsEntity.x
+        }
+        set {
+            physicsEntity.x = newValue
+        }
+    }
+    var posY: CGFloat {
+        get {
+            physicsEntity.y
+        }
+        set {
+            physicsEntity.y = newValue
+        }
+    }
+
+    mutating func update(dt: TimeInterval) {
+    }
+
     mutating func takeDamage(_ amount: Int) {
         health -= amount
     }

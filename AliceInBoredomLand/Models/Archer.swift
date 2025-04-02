@@ -8,7 +8,7 @@
 import SpriteKit
 
 /*
-class Archer: OldHero {
+class Archer: Hero {
     var lastShotTime: TimeInterval = 0
     let shotCooldown: TimeInterval = 0.1
     let attackRange: CGFloat = 500.0

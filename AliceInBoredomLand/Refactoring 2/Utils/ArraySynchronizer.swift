@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct ArraySynchronizer<T: Equatable, U: Equatable> {
+struct ArraySynchronizer<T: Equatable, U> {
     typealias Inner = T
     typealias Outer = U
 
-    private var outerArray: [Outer] = []
     private var innerArray: [Inner] = []
+    private var outerArray: [Outer] = []
 
     mutating func add(innerElement: Inner, outerElement: Outer) {
         assert(checkRepresentation())
@@ -21,31 +21,27 @@ struct ArraySynchronizer<T: Equatable, U: Equatable> {
         assert(checkRepresentation())
     }
 
-    func getInnerElement(outerElement: Outer) -> Inner? {
-        for idx in outerArray.indices {
-            if outerArray[idx] == outerElement {
-                return innerArray[idx]
-            }
+    func getInnerElement(outerElement: Outer) -> Inner? where U: Equatable {
+        for idx in outerArray.indices where outerArray[idx] == outerElement {
+            return innerArray[idx]
         }
         return nil
     }
-    func getOuterElement(innerElement: Inner) -> Outer? {
-        for idx in innerArray.indices {
-            if innerArray[idx] == innerElement {
-                return outerArray[idx]
-            }
+    func getOuterElement(innerElement: Inner) -> Outer? where T: Equatable {
+        for idx in innerArray.indices where innerArray[idx] == innerElement {
+            return outerArray[idx]
         }
         return nil
     }
 
     func getInnerArray() -> [Inner] {
-        return innerArray
+        innerArray
     }
     func getOuterArray() -> [Outer] {
-        return outerArray
+        outerArray
     }
 
-    mutating func removeInnerElement(_ innerElement: Inner) {
+    mutating func removeInnerElement(_ innerElement: Inner) where T: Equatable {
         assert(checkRepresentation())
         for idx in innerArray.indices where innerArray[idx] == innerElement {
             innerArray.remove(at: idx)
@@ -54,7 +50,7 @@ struct ArraySynchronizer<T: Equatable, U: Equatable> {
         }
         assert(checkRepresentation())
     }
-    mutating func removeOuterElement(_ outerElement: Outer) {
+    mutating func removeOuterElement(_ outerElement: Outer) where U: Equatable {
         assert(checkRepresentation())
         for idx in outerArray.indices where outerArray[idx] == outerElement {
             innerArray.remove(at: idx)
@@ -63,20 +59,39 @@ struct ArraySynchronizer<T: Equatable, U: Equatable> {
         }
         assert(checkRepresentation())
     }
+    mutating func removeElementPair(innerElement: Inner, outerElement: Outer)
+    where T: Equatable, U: Equatable {
+        assert(checkRepresentation())
+        for idx in outerArray.indices where outerArray[idx] == outerElement {
+            if innerArray[idx] == innerElement {
+                innerArray.remove(at: idx)
+                outerArray.remove(at: idx)
+                break
+            }
+        }
+        assert(checkRepresentation())
+    }
 
-    init(outerArray: [Outer], innerArray: [Inner]) {
-        self.outerArray = outerArray
+    mutating func clearAll() {
+        assert(checkRepresentation())
+        innerArray.removeAll()
+        outerArray.removeAll()
+        assert(checkRepresentation())
+    }
+
+    init(innerArray: [Inner], outerArray: [Outer]) {
         self.innerArray = innerArray
+        self.outerArray = outerArray
         assert(checkRepresentation())
     }
 
     init() {
-        outerArray = []
         innerArray = []
+        outerArray = []
         assert(checkRepresentation())
     }
 
     private func checkRepresentation() -> Bool {
-        return outerArray.count == innerArray.count
+        outerArray.count == innerArray.count
     }
 }

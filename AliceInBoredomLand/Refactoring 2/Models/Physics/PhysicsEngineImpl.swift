@@ -39,9 +39,17 @@ class PhysicsEngineImpl: NSObject, PhysicsEngine {
         }
     }
 
+    // Assumes entity already exists in the engine
+    func replaceEntity(_ oldEntity: PhysicsEntity, with newEntity: PhysicsEntity) {
+        removeEntity(oldEntity)
+        addEntity(newEntity)
+    }
+
     init(boundarySize: CGSize) {
         self.boundarySize = boundarySize
         physicsScene = SKScene(size: boundarySize)
+        super.init()
+
         physicsScene.isPaused = true
         physicsScene.physicsWorld.contactDelegate = self
     }
@@ -76,15 +84,15 @@ extension PhysicsEngineImpl: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         if let bodyA = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyA),
            let bodyB = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyB) {
-            physicsEvents.append(PhysicsEvent(bodyA: bodyA, bodyB: bodyB))
+            physicsEvents.append(PhysicsEvent(entityA: bodyA, entityB: bodyB))
         }
     }
 
     func didEnd(_ contact: SKPhysicsContact) {
         if let bodyA = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyA),
-           let bodyB = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyB)  {
-            physicsEvents.removeAll(where: { $0.bodyA == bodyA && $0.bodyB == bodyB })
-            physicsEvents.removeAll(where: { $0.bodyA == bodyB && $0.bodyB == bodyA })
+           let bodyB = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyB) {
+            physicsEvents.removeAll(where: { $0.entityA == bodyA && $0.entityB == bodyB })
+            physicsEvents.removeAll(where: { $0.entityA == bodyB && $0.entityB == bodyA })
         }
     }
 }

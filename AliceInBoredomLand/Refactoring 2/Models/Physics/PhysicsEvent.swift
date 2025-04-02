@@ -8,8 +8,8 @@
 import Foundation
 
 struct PhysicsEvent {
-    var bodyA: PhysicsEntity
-    var bodyB: PhysicsEntity
+    var entityA: PhysicsEntity
+    var entityB: PhysicsEntity
 }
 
 extension PhysicsEvent: Equatable {

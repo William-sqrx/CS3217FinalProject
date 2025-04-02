@@ -16,16 +16,17 @@ class Task {
     var size: CGSize
     var physicsEntity: PhysicsEntity
 
-
     init(posX: CGFloat, posY: CGFloat, size: CGSize) {
         self.posX = posX
         self.posY = posY
         self.size = size
         self.physicsEntity = PhysicsEntity(x: posX, y: posY, velocityX: 0, velocityY: speed,
                                            width: size.width, height: size.height,
-                                           entityCategories: PhysicsBitMask.none, collidesWith: PhysicsBitMask.none)
+                                           entityCategories: PhysicsBitMask(PhysicsBitMask.none),
+                                           collidesWith: PhysicsBitMask(PhysicsBitMask.none))
     }
 
+    /*
     func update(deltaTime: TimeInterval) {
         if availableFrames < 0 {
             removeFromParent()
@@ -38,6 +39,7 @@ class Task {
         }
         availableFrames -= 1
     }
+     */
 
     /*
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

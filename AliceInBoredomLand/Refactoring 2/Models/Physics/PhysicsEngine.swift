@@ -14,4 +14,5 @@ protocol PhysicsEngine {
 
     mutating func addEntity(_ entity: PhysicsEntity)
     mutating func removeEntity(_ entity: PhysicsEntity)
+    mutating func replaceEntity(_ oldEntity: PhysicsEntity, with newEntity: PhysicsEntity)
 }
