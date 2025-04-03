@@ -9,37 +9,42 @@ import Foundation
 
 class Task {
     var availableFrames = 14
-    var speed: CGFloat = -100
-    var posX: CGFloat
-    var posY: CGFloat
+    var speed: CGFloat = 0
+    var posX: CGFloat {
+        get {
+            physicsEntity.x
+        }
+        set {
+            physicsEntity.x = newValue
+        }
+    }
+    var posY: CGFloat {
+        get {
+            physicsEntity.x
+        }
+        set {
+            physicsEntity.x = newValue
+        }
+    }
 
     var size: CGSize
     var physicsEntity: PhysicsEntity
 
     init(posX: CGFloat, posY: CGFloat, size: CGSize) {
-        self.posX = posX
-        self.posY = posY
         self.size = size
-        self.physicsEntity = PhysicsEntity(x: posX, y: posY, velocityX: 0, velocityY: speed,
+
+        self.physicsEntity = PhysicsEntity(x: posX, y: posY, velocityX: -speed, velocityY: 0,
                                            width: size.width, height: size.height,
                                            entityCategories: PhysicsBitMask(PhysicsBitMask.none),
                                            collidesWith: PhysicsBitMask(PhysicsBitMask.none))
+        // print(physicsEntity.id)
     }
 
-    /*
-    func update(deltaTime: TimeInterval) {
-        if availableFrames < 0 {
-            removeFromParent()
-        }
-
-        if node.position.x < size.width {
-            self.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-        } else {
-            self.physicsBody?.velocity = CGVector(dx: -100, dy: 0)
-        }
+    func update(dt: TimeInterval) {
+        physicsEntity.velocityX = -speed
+        physicsEntity.velocityY = 0
         availableFrames -= 1
     }
-     */
 
     /*
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

@@ -44,7 +44,7 @@ extension LevelEngine {
     }
 
     private func processEntityHitType(attackerEntity: LevelEntity, defenderEntity: LevelEntity) {
-        let knockbackSpeed: CGFloat = 2
+        let knockbackSpeed: CGFloat = 0
 
         switch (attackerEntity, defenderEntity) {
 

@@ -8,6 +8,7 @@
 import Foundation
 
 class Castle: LevelEntity {
+    var id = UUID()
     let isPlayer: Bool
 
     var health: Int
@@ -26,7 +27,7 @@ class Castle: LevelEntity {
         let entityCategories = PhysicsBitMask(isPlayer ? PhysicsBitMask.playerEntity : PhysicsBitMask.enemyEntity)
         let collidesWith = PhysicsBitMask(isPlayer ? PhysicsBitMask.enemyEntity : PhysicsBitMask.playerEntity)
 
-        self.physicsEntity = PhysicsEntity(x: posX, y: posY, velocityX: 0, velocityY: speed,
+        self.physicsEntity = PhysicsEntity(x: posX, y: posY, velocityX: 0, velocityY: 0,
                                            width: size.width, height: size.height,
                                            entityCategories: entityCategories, collidesWith: collidesWith,
                                            affectsSelfOnCollision: false)

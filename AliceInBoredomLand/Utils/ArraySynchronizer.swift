@@ -40,6 +40,13 @@ struct ArraySynchronizer<T: Equatable, U> {
     func getOuterArray() -> [Outer] {
         outerArray
     }
+    func getPairedArray() -> [(Inner, Outer)] {
+        var result: [(Inner, Outer)] = []
+        for idx in innerArray.indices {
+            result.append((innerArray[idx], outerArray[idx]))
+        }
+        return result
+    }
 
     mutating func removeInnerElement(_ innerElement: Inner) where T: Equatable {
         assert(checkRepresentation())

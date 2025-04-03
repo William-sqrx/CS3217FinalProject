@@ -28,10 +28,9 @@ class LevelEngine: LevelEngineFacade {
 
     // Todo: Rework in a format that allows for actually using currentTime, instead of assuming even time steps
     func update(_ currentTime: TimeInterval) {
-        print(entities.count, frameCounter)
         frameCounter += 1
 
-        if frameCounter.isMultiple(of: 30) {
+        if true || frameCounter.isMultiple(of: 30) {
             performFrameLogic(currentTime)
         }
 
@@ -45,18 +44,52 @@ class LevelEngine: LevelEngineFacade {
         // also need to figure out whether LevelEntity should have a update function
         // since we'd need to capture the physicsengine as well?
         if frameIndex % 2 == 1 {
-            entities.compactMap { $0 as? Hero }.forEach { $0.update(dt: currentTime) }
+            entities.compactMap { $0 as? Hero }.forEach {
+                let oldEntity = $0.physicsEntity
+                $0.update(dt: currentTime)
+                physicsEngine.replaceEntity(oldEntity, with: $0.physicsEntity)
+            }
         } else {
-            entities.compactMap { $0 as? Monster }.forEach { $0.update(dt: currentTime) }
+            entities.compactMap { $0 as? Monster }.forEach {
+                let oldEntity = $0.physicsEntity
+                $0.update(dt: currentTime)
+                physicsEngine.replaceEntity(oldEntity, with: $0.physicsEntity)
+            }
         }
 
-        // tasks.forEach { $0.update(dt: currentTime) }
-        // Fix collision handling on the game layer later
+        tasks.forEach {
+            let oldEntity = $0.physicsEntity
+            $0.update(dt: currentTime)
+            physicsEngine.replaceEntity(oldEntity, with: $0.physicsEntity)
+            // print($0.physicsEntity, "task")
+        }
+
         let physicsEvents = physicsEngine.update(dt: currentTime)
-        print(physicsEngine.physicsBodies[2].velocityX)
+
+        for var entity in entities {
+            for physicsBody in physicsEngine.physicsBodies where physicsBody == entity.physicsEntity {
+                entity.physicsEntity = physicsBody
+            }
+        }
+
+        for task in tasks {
+            for physicsBody in physicsEngine.physicsBodies where physicsBody == task.physicsEntity {
+                task.physicsEntity = physicsBody
+            }
+        }
+
+        hitboxLevelEntitySynchronizer.clearAll()
+        for entity in entities {
+            hitboxLevelEntitySynchronizer.add(innerElement: entity.physicsEntity, outerElement: entity)
+        }
+
         handleEvents(events: physicsEvents)
-        print(physicsEngine.physicsBodies[2].velocityX)
+
         entities = hitboxLevelEntitySynchronizer.getOuterArray()
+        physicsEngine.clearAll()
+        for entity in hitboxLevelEntitySynchronizer.getInnerArray() {
+            physicsEngine.addEntity(entity)
+        }
 
         if frameIndex % 6 == 1 {
             spawnTask()
@@ -151,6 +184,15 @@ class LevelEngine: LevelEngineFacade {
         entities = entities.filter { entity in
             if !entity.isAlive {
                 physicsEngine.removeEntity(entity.physicsEntity)
+                hitboxLevelEntitySynchronizer.removeInnerElement(entity.physicsEntity)
+                return false
+            }
+            return true
+        }
+        tasks = tasks.filter { task in
+            if task.availableFrames <= 0 {
+                physicsEngine.removeEntity(task.physicsEntity)
+                hitboxLevelEntitySynchronizer.removeInnerElement(task.physicsEntity)
                 return false
             }
             return true
@@ -161,6 +203,7 @@ class LevelEngine: LevelEngineFacade {
         spawnPlayerCastle()
         spawnEnemyCastle()
         spawnMonster(atX: 3)
+        spawnHero()
     }
 }
 

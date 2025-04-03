@@ -15,28 +15,32 @@ class PhysicsEngine: NSObject, PhysicsEngineFacade {
     }
     var physicsEvents: [PhysicsEvent] = []
 
-    private var physicsArraySynchronizer: ArraySynchronizer<SKPhysicsBody, PhysicsEntity> = ArraySynchronizer()
+    private var physicsArraySynchronizer: ArraySynchronizer<SKSpriteNode, PhysicsEntity> = ArraySynchronizer()
     private var physicsScene: SKScene
+    private var renderer: SKView
 
     func update(dt: TimeInterval) -> [PhysicsEvent] {
-        physicsScene.update(dt)
+        print(physicsArraySynchronizer)
+        physicsArraySynchronizer.clearAll()
+        for node in physicsScene.children {
+            if let node = node as? SKSpriteNode, let physicsEntity = convertToExternalType(node) {
+                physicsArraySynchronizer.add(innerElement: node, outerElement: physicsEntity)
+            }
+        }
+
         return physicsEvents
     }
 
     func addEntity(_ entity: PhysicsEntity) {
-        print("bark")
-        let node = SKNode()
-        node.physicsBody = convertToInternalType(entity)
-        if let physicsBody = node.physicsBody {
-            physicsArraySynchronizer.add(innerElement: physicsBody, outerElement: entity)
-            physicsScene.addChild(node)
-        }
+        let node = convertToInternalType(entity)
+        physicsArraySynchronizer.add(innerElement: node, outerElement: entity)
+        physicsScene.addChild(node)
     }
 
     func removeEntity(_ entity: PhysicsEntity) {
-        if let internalEntity = physicsArraySynchronizer.getInnerElement(outerElement: entity) {
-            internalEntity.node?.removeFromParent()
-            physicsArraySynchronizer.removeInnerElement(internalEntity)
+        if let node = physicsArraySynchronizer.getInnerElement(outerElement: entity) {
+            node.removeFromParent()
+            physicsArraySynchronizer.removeInnerElement(node)
         }
     }
 
@@ -49,13 +53,21 @@ class PhysicsEngine: NSObject, PhysicsEngineFacade {
     init(boundarySize: CGSize) {
         self.boundarySize = boundarySize
         physicsScene = SKScene(size: boundarySize)
+        renderer = SKView(frame: CGRect(origin: .zero, size: boundarySize))
+        renderer.presentScene(physicsScene)
         super.init()
 
-        physicsScene.isPaused = true
         physicsScene.physicsWorld.contactDelegate = self
     }
 
-    private func convertToInternalType(_ entity: PhysicsEntity) -> SKPhysicsBody {
+    func clearAll() {
+        physicsScene.removeAllChildren()
+        physicsArraySynchronizer.clearAll()
+    }
+
+    private func convertToInternalType(_ entity: PhysicsEntity) -> SKSpriteNode {
+        let node = SKSpriteNode(texture: nil, size: CGSize(width: entity.width, height: entity.height))
+
         var physicsBody: SKPhysicsBody
 
         physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: entity.width, height: entity.height),
@@ -77,23 +89,55 @@ class PhysicsEngine: NSObject, PhysicsEngineFacade {
             physicsBody.mass = 0
         }
 
-        return physicsBody
+        node.name = entity.id.uuidString
+        node.physicsBody = physicsBody
+        node.position.x = entity.x
+        node.position.y = entity.y
+        return node
+    }
+
+    private func convertToExternalType(_ node: SKSpriteNode) -> PhysicsEntity? {
+        if let physicsBody = node.physicsBody {
+            var result = PhysicsEntity(x: node.position.x, y: node.position.y,
+                                       velocityX: physicsBody.velocity.dx, velocityY: physicsBody.velocity.dy,
+                                       width: node.size.width, height: node.size.height,
+                                       entityCategories: PhysicsBitMask(physicsBody.categoryBitMask),
+                                       collidesWith: PhysicsBitMask(physicsBody.collisionBitMask),
+                                       notifiesCollisionsWith: PhysicsBitMask(physicsBody.contactTestBitMask),
+                                       affectsSelfOnCollision: !physicsBody.isDynamic,
+                                       affectsOthersOnCollision: physicsBody.mass != 0)
+            if let name = node.name, let id = UUID(uuidString: name) {
+                result.id = id
+            }
+            return result
+        }
+        return nil
     }
 }
 
 extension PhysicsEngine: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
-        if let bodyA = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyA),
-           let bodyB = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyB) {
-            physicsEvents.append(PhysicsEvent(entityA: bodyA, entityB: bodyB))
+        guard let nodeA = contact.bodyA.node as? SKSpriteNode,
+              let nodeB = contact.bodyB.node as? SKSpriteNode else {
+            return
         }
+        guard let bodyA = physicsArraySynchronizer.getOuterElement(innerElement: nodeA),
+              let bodyB = physicsArraySynchronizer.getOuterElement(innerElement: nodeB) else {
+            return
+        }
+        physicsEvents.append(PhysicsEvent(entityA: bodyA, entityB: bodyB))
     }
 
     func didEnd(_ contact: SKPhysicsContact) {
-        if let bodyA = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyA),
-           let bodyB = physicsArraySynchronizer.getOuterElement(innerElement: contact.bodyB) {
-            physicsEvents.removeAll(where: { $0.entityA == bodyA && $0.entityB == bodyB })
-            physicsEvents.removeAll(where: { $0.entityA == bodyB && $0.entityB == bodyA })
+        guard let nodeA = contact.bodyA.node as? SKSpriteNode,
+              let nodeB = contact.bodyB.node as? SKSpriteNode else {
+            return
         }
+        guard let bodyA = physicsArraySynchronizer.getOuterElement(innerElement: nodeA),
+              let bodyB = physicsArraySynchronizer.getOuterElement(innerElement: nodeB) else {
+            return
+        }
+        physicsEvents.removeAll(where: { $0.entityA == bodyA && $0.entityB == bodyB })
+        physicsEvents.removeAll(where: { $0.entityA == bodyB && $0.entityB == bodyA })
     }
 }

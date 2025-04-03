@@ -5,8 +5,11 @@
 //  Created by daniel on 30/3/25.
 //
 
+import Foundation
+
 // Assumes that the corresponding collision area is a square rectangle for the time being
 struct PhysicsEntity {
+    var id = UUID()
     var x: Double
     var y: Double
     var velocityX: Double
@@ -46,4 +49,7 @@ struct PhysicsEntity {
 }
 
 extension PhysicsEntity: Equatable {
+    static func == (lhs: PhysicsEntity, rhs: PhysicsEntity) -> Bool {
+        lhs.id == rhs.id
+    }
 }

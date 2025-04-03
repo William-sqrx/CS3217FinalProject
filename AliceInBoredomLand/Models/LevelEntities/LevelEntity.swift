@@ -8,6 +8,7 @@
 import Foundation
 
 protocol LevelEntity {
+    var id: UUID { get }
     var health: Int { get set }
     var attack: Int { get }
     var speed: CGFloat { get }

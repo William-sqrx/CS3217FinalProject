@@ -30,7 +30,6 @@ class LevelScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         levelViewModel.update(currentTime)
         removeAllChildren()
-        print("meow? ", levelViewModel.levelEntities)
         for entity in levelViewModel.levelEntities {
             addChild(EntityViewFactory.createViewNode(entity: entity))
         }

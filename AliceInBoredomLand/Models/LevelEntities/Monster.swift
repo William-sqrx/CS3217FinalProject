@@ -8,6 +8,7 @@
 import Foundation
 
 class Monster: LevelEntity {
+    var id = UUID()
     var health: Int
     var attack: Int
     var speed: CGFloat

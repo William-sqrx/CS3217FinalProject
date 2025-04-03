@@ -11,11 +11,12 @@ import SpriteKit
 struct EntityViewFactory {
     static func createViewNode(entity: LevelEntity) -> SKSpriteNode {
         var result = SKSpriteNode()
-        if let _ = entity as? Swordsman {
+        if entity is Swordsman {
             result = SKSpriteNode(texture: SKTexture(imageNamed: "hero"))
-        } else if let _ = entity as? Tank {
+            print(entity.physicsEntity)
+        } else if entity is Tank {
             result = SKSpriteNode(texture: SKTexture(imageNamed: "tank"))
-        } else if let _ = entity as? Archer {
+        } else if entity is Archer {
             result = SKSpriteNode(texture: SKTexture(imageNamed: "archer"))
         }
 
@@ -27,7 +28,7 @@ struct EntityViewFactory {
             }
         }
 
-        if let _ = entity as? Monster {
+        if entity is Monster {
             result = SKSpriteNode(texture: SKTexture(imageNamed: "monster"))
         }
 

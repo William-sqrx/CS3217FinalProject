@@ -15,7 +15,9 @@ struct LevelView: View {
     var body: some View {
         ZStack {
             SpriteView(scene: LevelScene(gameLogicDelegate: LevelLogic(),
-                                         levelViewModel: LevelViewModel(levelEngine: LevelEngine(gameLogicDelegate: LevelLogic(), grid: Grid()))),
+                                         levelViewModel:
+                                            LevelViewModel(levelEngine: LevelEngine(gameLogicDelegate: LevelLogic(),
+                                                                                    grid: Grid()))),
                        debugOptions: [.showsPhysics])
                 .ignoresSafeArea()
             VStack {
