@@ -7,13 +7,15 @@
 
 import SpriteKit
 
-class LevelScene: SKScene {
+class LevelScene: SKScene, ObservableObject {
     var frameCounter = 0
     var levelViewModel: LevelViewModel
+    @Published var levelLogic: LevelLogicFacade
     var grid = Grid()
 
     init(levelViewModel: LevelViewModel, background: SKColor = .gray) {
         self.levelViewModel = levelViewModel
+        self.levelLogic = levelViewModel.levelLogic
         super.init(size: CGSize(width: grid.width, height: grid.height))
 
         self.backgroundColor = background
@@ -27,7 +29,7 @@ class LevelScene: SKScene {
 
     override func update(_ currentTime: TimeInterval) {
         levelViewModel.update(currentTime)
-        print(levelViewModel.levelLogic.mana)
+        levelLogic = levelViewModel.levelLogic
         removeAllChildren()
         for entity in levelViewModel.levelEntities {
             addChild(EntityViewFactory.createViewNode(entity: entity))
@@ -35,6 +37,8 @@ class LevelScene: SKScene {
         for task in levelViewModel.tasks {
             addChild(EntityViewFactory.createViewNode(task: task))
         }
+
+        checkWinLose()
     }
 
     private func checkWinLose() {
@@ -70,19 +74,30 @@ class LevelScene: SKScene {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard isPaused else {
-            return
-        }
-
         for touch in touches {
             let location = touch.location(in: self)
-            if let node = self.atPoint(location) as? SKLabelNode, node.name == "restart_button" {
+            if !isPaused, let node = self.atPoint(location) as? SKSpriteNode, node.name == "task" {
+                levelViewModel.levelLogic.increaseMana(by: 10)
+                for task in levelViewModel.tasks
+                where task.posX == node.position.x && task.posY == node.position.y {
+                    levelViewModel.removeTask(task)
+                }
+
+                node.removeFromParent()
+            }
+            if isPaused, let node = self.atPoint(location) as? SKLabelNode, node.name == "restart_button" {
                 restartLevel()
             }
         }
     }
 
-    private func restartLevel() {
+    func spawnHero(atY: Int, type: String) {
+        levelViewModel.spawnHero(atY: atY, type: type)
+    }
+
+    func restartLevel() {
+        isPaused = false
+        removeAllChildren()
         levelViewModel.restartLevel()
 
         // let newScene = LevelScene(levelLogicDelegate: levelLogicDelegate)

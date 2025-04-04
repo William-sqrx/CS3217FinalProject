@@ -22,7 +22,7 @@ struct Grid {
         assert(0 <= tileY && tileY < numLanes)
 
         return CGSize(width: Double(tileX) * tileSize.width,
-                      height: Double(tileY) * tileSize.height + Double(tileY - 1) * laneSpacing)
+                      height: Double(tileY) * tileSize.height + max(Double(tileY - 1), 0) * laneSpacing)
     }
 
     func getNodeSize(numTileX: Int = 1, numTileY: Int = 1) -> CGSize {

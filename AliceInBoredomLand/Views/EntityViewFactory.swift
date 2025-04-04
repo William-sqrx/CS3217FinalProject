@@ -40,7 +40,12 @@ struct EntityViewFactory {
         let result = SKSpriteNode(texture: SKTexture(imageNamed: "task"))
         result.size = task.size
         result.position = CGPoint(x: task.posX, y: task.posY)
-        result.isUserInteractionEnabled = true
+
+        result.name = "task"
+        // Due to SpriteKit bugs, setting this makes touch registration for touchesBegan() impossible
+        // See https://stackoverflow.com/questions/19511334/sprite-with-userinteractionenabled
+        // -set-to-yes-does-not-receive-touches-when-cove
+        // result.isUserInteractionEnabled = true
         return result
     }
 }

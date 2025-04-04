@@ -67,7 +67,6 @@ class LevelEngine: LevelEngineFacade {
             let oldEntity = $0.physicsEntity
             $0.update(dt: currentTime)
             physicsEngine.replaceEntity(oldEntity, with: $0.physicsEntity)
-            // print($0.physicsEntity, "task")
         }
 
         let physicsEvents = physicsEngine.update(dt: currentTime)
@@ -89,7 +88,9 @@ class LevelEngine: LevelEngineFacade {
             hitboxLevelEntitySynchronizer.add(innerElement: entity.physicsEntity, outerElement: entity)
         }
 
-        print(physicsEvents)
+        if !physicsEvents.isEmpty {
+            // print(physicsEvents)
+        }
         handleEvents(events: physicsEvents)
 
         entities = hitboxLevelEntitySynchronizer.getOuterArray()
@@ -97,8 +98,12 @@ class LevelEngine: LevelEngineFacade {
         for entity in hitboxLevelEntitySynchronizer.getInnerArray() {
             physicsEngine.addEntity(entity)
         }
+        for task in tasks {
+            physicsEngine.addEntity(task.physicsEntity)
+        }
 
-        if frameIndex % 6 == 1 {
+        print(tasks.count)
+        if tasks.count < 3 && frameCounter % 30 == 1 {
             spawnTask()
         }
         removeDeadEntities()
@@ -210,11 +215,14 @@ class LevelEngine: LevelEngineFacade {
         tasks = tasks.filter { task in
             if task.availableFrames <= 0 {
                 physicsEngine.removeEntity(task.physicsEntity)
-                hitboxLevelEntitySynchronizer.removeInnerElement(task.physicsEntity)
                 return false
             }
             return true
         }
+    }
+
+    func removeTask(_ task: Task) {
+        tasks.removeAll { $0.physicsEntity == task.physicsEntity }
     }
 
     func initialiseEntities() {

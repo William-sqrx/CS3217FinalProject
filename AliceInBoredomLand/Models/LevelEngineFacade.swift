@@ -18,6 +18,7 @@ protocol LevelEngineFacade {
     func update(_ currentTime: TimeInterval)
     func spawnHero(atY tileY: Int, type: String)
     func spawnMonster(atY tileY: Int)
+    func removeTask(_ task: Task)
 
     func restartLevel()
 }

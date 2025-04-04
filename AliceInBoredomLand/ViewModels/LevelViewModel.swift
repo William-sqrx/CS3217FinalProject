@@ -7,10 +7,10 @@
 
 import Foundation
 
-class LevelViewModel: ObservableObject {
+class LevelViewModel {
     var levelEngine: LevelEngineFacade
     var levelEntities: [LevelEntity] = []
-    @Published var levelLogic: LevelLogicFacade
+    var levelLogic: LevelLogicFacade
     var tasks: [Task] = []
     var isWin: Bool = false
     var isLose: Bool = false
@@ -43,5 +43,9 @@ class LevelViewModel: ObservableObject {
 
     func spawnHero(atY: Int, type: String) {
         levelEngine.spawnHero(atY: atY, type: type)
+    }
+
+    func removeTask(_ task: Task) {
+        levelEngine.removeTask(task)
     }
 }

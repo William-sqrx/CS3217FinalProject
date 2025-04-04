@@ -8,8 +8,8 @@
 import Foundation
 
 class Task {
-    var availableFrames = 14
-    var speed: CGFloat = 0
+    var availableFrames = 60
+    var speed: CGFloat = 40
     var posX: CGFloat {
         get {
             physicsEntity.x
@@ -20,10 +20,10 @@ class Task {
     }
     var posY: CGFloat {
         get {
-            physicsEntity.x
+            physicsEntity.y
         }
         set {
-            physicsEntity.x = newValue
+            physicsEntity.y = newValue
         }
     }
 
