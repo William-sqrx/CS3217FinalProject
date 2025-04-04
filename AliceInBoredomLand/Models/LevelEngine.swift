@@ -102,8 +102,7 @@ class LevelEngine: LevelEngineFacade {
             physicsEngine.addEntity(task.physicsEntity)
         }
 
-        print(tasks.count)
-        if tasks.count < 3 && frameCounter % 30 == 1 {
+        if frameIndex % 20 == 1 {
             spawnTask()
         }
         removeDeadEntities()
@@ -184,7 +183,7 @@ class LevelEngine: LevelEngineFacade {
     private func spawnTask() {
         let size = grid.getNodeSize()
         let position = grid.adjustEntityOrigin(size: size,
-                                               position: grid.getPosition(tileX: grid.numCols - 1, tileY: 1))
+                                               position: grid.getPosition(tileX: 4, tileY: 1))
         // Pending task reformatting
         let task = Task(posX: position.x, posY: position.y, size: size)
 
