@@ -8,18 +8,24 @@
 import Foundation
 
 class LevelEngine: LevelEngineFacade {
-    var gameLogicDelegate: LevelLogicFacade
+    var levelLogicDelegate: LevelLogicFacade
     var grid: Grid
     var entities: [LevelEntity] = []
     var tasks: [Task] = []
     var isPaused: Bool = false
+    var isWin: Bool {
+        levelLogicDelegate.isWin
+    }
+    var isLose: Bool {
+        levelLogicDelegate.isLose
+    }
 
     var frameCounter = 0
     var physicsEngine: PhysicsEngine
     var hitboxLevelEntitySynchronizer: ArraySynchronizer<PhysicsEntity, LevelEntity> = ArraySynchronizer()
 
-    init(gameLogicDelegate: LevelLogicFacade, grid: Grid) {
-        self.gameLogicDelegate = gameLogicDelegate
+    init(levelLogicDelegate: LevelLogicFacade, grid: Grid) {
+        self.levelLogicDelegate = levelLogicDelegate
         self.grid = grid
         physicsEngine = PhysicsEngine(boundarySize: CGSize(width: grid.height, height: grid.width))
 
@@ -83,6 +89,7 @@ class LevelEngine: LevelEngineFacade {
             hitboxLevelEntitySynchronizer.add(innerElement: entity.physicsEntity, outerElement: entity)
         }
 
+        print(physicsEvents)
         handleEvents(events: physicsEvents)
 
         entities = hitboxLevelEntitySynchronizer.getOuterArray()
@@ -102,11 +109,11 @@ class LevelEngine: LevelEngineFacade {
         entities.compactMap { $0 as? PendingArrow }.forEach { $0.updateArrow(deltaTime: 1.0) }
     }
 
-    func spawnHero(atX tileX: Int = 1, atY tileY: Int = 5, type: String = "hero") {
-        assert(0 < tileX && tileX < grid.numCols - 1)
+    func spawnHero(atY tileY: Int = 5, type: String = "hero") {
         assert(1 < tileY && tileY < grid.numLanes)
 
         let typeLowercased = type.lowercased()
+        let tileX = 1
         let size = grid.getNodeSize()
         let position = grid.adjustEntityOrigin(size: size, position: grid.getPosition(tileX: tileX, tileY: tileY))
 
@@ -123,22 +130,22 @@ class LevelEngine: LevelEngineFacade {
             }
         }()
 
-        guard gameLogicDelegate.mana >= 15 else { // replace with factory function later, this is incorrect behaviour
+        guard levelLogicDelegate.mana >= 15 else { // replace with factory function later, this is incorrect behaviour
             print("Not enough mana to spawn \(typeLowercased)")
             return
         }
 
-        gameLogicDelegate.decreaseMana(by: 15)
+        levelLogicDelegate.decreaseMana(by: 15)
 
         physicsEngine.addEntity(hero.physicsEntity)
         hitboxLevelEntitySynchronizer.add(innerElement: hero.physicsEntity, outerElement: hero)
         entities.append(hero)
     }
 
-    func spawnMonster(atX tileX: Int = 8, atY tileY: Int = 5) {
-        assert(0 < tileX && tileX < grid.numCols - 1)
+    func spawnMonster(atY tileY: Int = 5) {
         assert(1 < tileY && tileY < grid.numLanes)
 
+        let tileX = 2
         let size = grid.getNodeSize()
         let position = grid.adjustEntityOrigin(size: size, position: grid.getPosition(tileX: tileX, tileY: tileY))
         let monster = Monster(health: 80, attack: 40, speed: 20, posX: position.x, posY: position.y, size: size)
@@ -180,6 +187,17 @@ class LevelEngine: LevelEngineFacade {
         tasks.append(task)
     }
 
+    func restartLevel() {
+        levelLogicDelegate.reset()
+        entities.removeAll()
+        hitboxLevelEntitySynchronizer.clearAll()
+        physicsEngine.clearAll()
+        tasks.removeAll()
+
+        frameCounter = 0
+        initialiseEntities()
+    }
+
     private func removeDeadEntities() {
         entities = entities.filter { entity in
             if !entity.isAlive {
@@ -202,8 +220,9 @@ class LevelEngine: LevelEngineFacade {
     func initialiseEntities() {
         spawnPlayerCastle()
         spawnEnemyCastle()
-        spawnMonster(atX: 3)
-        spawnHero()
+        spawnMonster()
+
+        spawnHero(type: "tank")
     }
 }
 

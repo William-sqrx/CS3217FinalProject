@@ -9,6 +9,7 @@ protocol LevelLogicFacade {
     var monsterCastleHealth: Int { get }
     var playerCastleHealth: Int { get }
     var isWin: Bool { get }
+    var isLose: Bool { get }
     var timeLeft: Int { get }
     var mana: Int { get }
 

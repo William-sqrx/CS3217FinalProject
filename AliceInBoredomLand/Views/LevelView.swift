@@ -5,39 +5,39 @@
 //  Created by daniel on 2/4/25.
 //
 
-import Foundation
 import SwiftUI
 import SpriteKit
 
 struct LevelView: View {
-    var gameLogicDelegate = LevelLogic()
-
+    @StateObject var levelViewModel = LevelViewModel(levelEngine:
+                                                            LevelEngine(levelLogicDelegate: LevelLogic(), grid: Grid()))
     var body: some View {
         ZStack {
-            SpriteView(scene: LevelScene(gameLogicDelegate: LevelLogic(),
-                                         levelViewModel:
-                                            LevelViewModel(levelEngine: LevelEngine(gameLogicDelegate: LevelLogic(),
-                                                                                    grid: Grid()))),
+            SpriteView(scene: LevelScene(levelViewModel: levelViewModel),
                        debugOptions: [.showsPhysics])
                 .ignoresSafeArea()
             VStack {
                 Spacer()
                 HStack {
+                    Button("Restart Level") {
+                        levelViewModel.restartLevel()
+                    }
                     // Button to spawn an Archer
                     Button("Spawn Archer") {
-                        // gameScene.spawnHero(atY: tileY, type: "archer")
+                        levelViewModel.spawnHero(atY: 5, type: "archer")
                     }
 
                     // Button to spawn a Swordsman
                     Button("Spawn Swordsman") {
-                        // gameScene.spawnHero(atY: tileY, type: "hero")
+                        levelViewModel.spawnHero(atY: 5, type: "hero")
+                        print("woof", levelViewModel.levelLogic.mana)
                     }
 
                     Button("Spawn Tank") {
-                        // gameScene.spawnHero(atY: tileY, type: "tank")
+                        levelViewModel.spawnHero(atY: 5, type: "tank")
                     }
 
-                    Text("Mana: \(gameLogicDelegate.mana)")
+                    Text("Mana: \(levelViewModel.levelLogic.mana)")
                         .padding()
 
                     // Add more buttons for different hero types...

@@ -20,13 +20,21 @@ class PhysicsEngine: NSObject, PhysicsEngineFacade {
     private var renderer: SKView
 
     func update(dt: TimeInterval) -> [PhysicsEvent] {
-        print(physicsArraySynchronizer)
+        // print(physicsArraySynchronizer)
+        for event in physicsEvents {
+            if physicsArraySynchronizer.getInnerElement(outerElement: event.entityA) == nil ||
+                physicsArraySynchronizer.getInnerElement(outerElement: event.entityB) == nil {
+                physicsEvents.removeAll(where: { $0 == event })
+            }
+        }
+        renderer.isPaused = true
         physicsArraySynchronizer.clearAll()
         for node in physicsScene.children {
             if let node = node as? SKSpriteNode, let physicsEntity = convertToExternalType(node) {
                 physicsArraySynchronizer.add(innerElement: node, outerElement: physicsEntity)
             }
         }
+        renderer.isPaused = false
 
         return physicsEvents
     }
@@ -55,6 +63,7 @@ class PhysicsEngine: NSObject, PhysicsEngineFacade {
         physicsScene = SKScene(size: boundarySize)
         renderer = SKView(frame: CGRect(origin: .zero, size: boundarySize))
         renderer.presentScene(physicsScene)
+        renderer.isPaused = true
         super.init()
 
         physicsScene.physicsWorld.contactDelegate = self

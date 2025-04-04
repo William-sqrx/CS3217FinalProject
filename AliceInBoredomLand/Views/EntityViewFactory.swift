@@ -13,7 +13,6 @@ struct EntityViewFactory {
         var result = SKSpriteNode()
         if entity is Swordsman {
             result = SKSpriteNode(texture: SKTexture(imageNamed: "hero"))
-            print(entity.physicsEntity)
         } else if entity is Tank {
             result = SKSpriteNode(texture: SKTexture(imageNamed: "tank"))
         } else if entity is Archer {

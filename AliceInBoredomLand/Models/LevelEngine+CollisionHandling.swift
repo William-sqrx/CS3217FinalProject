@@ -64,7 +64,7 @@ extension LevelEngine {
             }
             print("Hero attacked Enemy Castle!")
             castle.takeDamage(hero.attack)
-            gameLogicDelegate.decreMonsterCastleHealth(amount: hero.attack)
+            levelLogicDelegate.decreMonsterCastleHealth(amount: hero.attack)
             applyKnockback(to: hero, speed: knockbackSpeed)
 
         case (let monster as Monster, var castle as Castle):
@@ -73,7 +73,7 @@ extension LevelEngine {
             }
             print("Monster attacked Player Castle!")
             castle.takeDamage(monster.attack)
-            gameLogicDelegate.decrePlayerCastleHealth(amount: monster.attack)
+            levelLogicDelegate.decrePlayerCastleHealth(amount: monster.attack)
             applyKnockback(to: monster, speed: -knockbackSpeed)
 
         default:
@@ -122,7 +122,7 @@ private func handleArrowHit(arrow: Arrow, monster: Monster) {
 
 private func handleArrowCastleHit(arrow: Arrow, castle: LevelCastle) {
     castle.takeDamage(arrow.damage)
-    gameLogicDelegate.decreMonsterCastleHealth(amount: arrow.damage)
+    levelLogicDelegate.decreMonsterCastleHealth(amount: arrow.damage)
     arrow.removeFromParent()
 }
 */

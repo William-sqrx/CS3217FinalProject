@@ -50,4 +50,3 @@ class Archer: Hero {
         arrow.launch(from: self.position, direction: direction)
     }*/
 }
-

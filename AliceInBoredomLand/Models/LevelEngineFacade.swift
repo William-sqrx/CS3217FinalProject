@@ -8,12 +8,16 @@
 import Foundation
 
 protocol LevelEngineFacade {
-    var gameLogicDelegate: LevelLogicFacade { get set }
+    var levelLogicDelegate: LevelLogicFacade { get set }
     var entities: [LevelEntity] { get set }
     var tasks: [Task] { get set }
     var isPaused: Bool { get set }
+    var isWin: Bool { get }
+    var isLose: Bool { get }
 
     func update(_ currentTime: TimeInterval)
-    func spawnHero(atX tileX: Int, atY tileY: Int, type: String)
-    func spawnMonster(atX tileX: Int, atY tileY: Int)
+    func spawnHero(atY tileY: Int, type: String)
+    func spawnMonster(atY tileY: Int)
+
+    func restartLevel()
 }

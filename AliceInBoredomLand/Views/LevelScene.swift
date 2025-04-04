@@ -9,12 +9,10 @@ import SpriteKit
 
 class LevelScene: SKScene {
     var frameCounter = 0
-    var gameLogicDelegate: LevelLogicFacade
     var levelViewModel: LevelViewModel
     var grid = Grid()
 
-    init(gameLogicDelegate: LevelLogicFacade, levelViewModel: LevelViewModel, background: SKColor = .gray) {
-        self.gameLogicDelegate = gameLogicDelegate
+    init(levelViewModel: LevelViewModel, background: SKColor = .gray) {
         self.levelViewModel = levelViewModel
         super.init(size: CGSize(width: grid.width, height: grid.height))
 
@@ -29,6 +27,7 @@ class LevelScene: SKScene {
 
     override func update(_ currentTime: TimeInterval) {
         levelViewModel.update(currentTime)
+        print(levelViewModel.levelLogic.mana)
         removeAllChildren()
         for entity in levelViewModel.levelEntities {
             addChild(EntityViewFactory.createViewNode(entity: entity))
@@ -39,13 +38,13 @@ class LevelScene: SKScene {
     }
 
     private func checkWinLose() {
-        if gameLogicDelegate.monsterCastleHealth <= 0 {
+        if levelViewModel.levelLogic.monsterCastleHealth <= 0 {
             showEndLevelLabel(text: "You Win 🎉")
             isPaused = true
             return
         }
 
-        if gameLogicDelegate.playerCastleHealth <= 0 {
+        if levelViewModel.levelLogic.playerCastleHealth <= 0 {
             showEndLevelLabel(text: "You Lose 💀")
             isPaused = true
             return
@@ -58,7 +57,7 @@ class LevelScene: SKScene {
         label.fontColor = .white
         label.fontName = "Avenir-Heavy"
         label.position = CGPoint(x: grid.width / 2, y: grid.height / 2 + 50)
-        label.name = "end_game_label"
+        label.name = "end_level_label"
         addChild(label)
 
         let restartLabel = SKLabelNode(text: "Tap to Restart")
@@ -84,13 +83,9 @@ class LevelScene: SKScene {
     }
 
     private func restartLevel() {
-        guard let view = self.view else {
-            return
-        }
+        levelViewModel.restartLevel()
 
-        gameLogicDelegate.reset()
-
-        // let newScene = LevelScene(gameLogicDelegate: gameLogicDelegate)
+        // let newScene = LevelScene(levelLogicDelegate: levelLogicDelegate)
         // newScene.scaleMode = self.scaleMode
         // view.presentScene(newScene, transition: SKTransition.fade(withDuration: 0.5))
     }
