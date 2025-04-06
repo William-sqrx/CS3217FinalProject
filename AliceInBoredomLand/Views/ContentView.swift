@@ -30,16 +30,16 @@ struct ContentView: View {
                 HStack {
                     // Button to spawn an Archer
                     Button("Spawn Archer") {
-                        gameScene.spawnHero(atY: tileY, type: "archer")
+                        gameScene.spawnHero(atY: tileY, type: .archer)
                     }
 
                     // Button to spawn a Swordsman
                     Button("Spawn Swordsman") {
-                        gameScene.spawnHero(atY: tileY, type: "hero")
+                        gameScene.spawnHero(atY: tileY, type: .swordsman)
                     }
 
                     Button("Spawn Tank") {
-                        gameScene.spawnHero(atY: tileY, type: "tank")
+                        gameScene.spawnHero(atY: tileY, type: .tank)
                     }
 
                     Text("Mana: \(gameLogic.mana)")

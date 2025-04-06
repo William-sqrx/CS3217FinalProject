@@ -7,11 +7,77 @@
 
 import SpriteKit
 
+final class HeroRenderer {
+    static func makeNode(from model: OldHeroModel) -> SKSpriteNode {
+        let textureName: String = {
+            switch model.type {
+            case .archer:
+                return "archer"
+            case .swordsman:
+                return "swordsman"
+            case .tank:
+                return "tank"
+            }
+        }()
+
+        let node = SKSpriteNode(texture: SKTexture(imageNamed: textureName))
+        node.size = model.physics.size
+        node.position = model.position
+
+        let body = SKPhysicsBody(rectangleOf: model.physics.size)
+
+        body.isDynamic = model.physics.isDynamic
+        body.categoryBitMask = model.physics.categoryBitMask
+        body.contactTestBitMask = model.physics.contactTestBitMask
+        body.collisionBitMask = model.physics.collisionBitMask
+        body.affectedByGravity = false
+        body.allowsRotation = false
+        node.physicsBody = body
+
+        node.userData = ["entityId": model.id]
+
+        return node
+    }
+}
+
+final class MonsterRenderer {
+    static func makeNode(from model: OldMonsterModel) -> SKSpriteNode {
+        let node = RendererAdapter.makeNode(from: model)
+        node.physicsBody = PhysicsAdapter.makeBody(from: model)
+        node.userData = ["entityId": model.id]
+        return node
+    }
+}
+
+final class PlayerCastleRenderer {
+    static func makeNode(from model: OldGameCastleModel) -> SKSpriteNode {
+        let node = RendererAdapter.makeNode(from: model)
+        node.physicsBody = PhysicsAdapter.makeBody(from: model)
+        node.userData = ["entityId": model.id]
+        return node
+    }
+}
+
+final class EnemyCastleRenderer {
+    static func makeNode(from model: OldGameCastleModel) -> SKSpriteNode {
+        let node = RendererAdapter.makeNode(from: model)
+        node.physicsBody = PhysicsAdapter.makeBody(from: model)
+        node.userData = ["entityId": model.id]
+        return node
+    }
+}
+
 class GameScene: SKScene {
     var gameLogicDelegate: GameLogicDelegate
     var entities: [OldGameEntity] = []
     var tasks: [Task] = []
     var frameCounter = 0
+    var monsterModels: [UUID: OldMonsterModel] = [:]
+    var monsterNodes: [UUID: SKSpriteNode] = [:]
+    var heroModels: [UUID: OldHeroModel] = [:]
+    var heroNodes: [UUID: SKSpriteNode] = [:]
+    var castleModels: [UUID: OldGameCastleModel] = [:]
+    var castleNodes: [UUID: SKSpriteNode] = [:]
 
     // Please use getNodeSize instead of this directly
     let tileSize = CGSize(width: width / Double(numCols),
@@ -48,9 +114,10 @@ class GameScene: SKScene {
         let frameIndex = frameCounter / 30
 
         if frameIndex % 2 == 1 {
-            entities.compactMap { $0 as? OldHero }.forEach { $0.update(deltaTime: deltaTime) }
+            updateHeroes(deltaTime: deltaTime)
         } else {
-            entities.compactMap { $0 as? OldMonster }.forEach { $0.update(deltaTime: deltaTime) }
+            // New: update decoupled monster models
+            updateMonsters(deltaTime: deltaTime)
         }
 
         tasks.forEach { $0.update(deltaTime: deltaTime) }
@@ -130,79 +197,77 @@ class GameScene: SKScene {
         view.presentScene(newScene, transition: SKTransition.fade(withDuration: 0.5))
     }
 
-    func spawnHero(atX tileX: Int = 1, atY tileY: Int = 5, type: String = "hero") {
+    func spawnHero(atX tileX: Int = 1, atY tileY: Int = 5, type: HeroType) {
         assert(0 < tileX && tileX < GameScene.numCols - 1)
         assert(1 < tileY && tileY < GameScene.numRows)
+        guard let logic = gameLogicDelegate as? GameLogic else { return }
 
-        guard let logic = gameLogicDelegate as? GameLogic else {
-            return
-        }
+        let position = adjustNodeOrigin(
+            node: SKSpriteNode(), // dummy
+            position: getPosition(tileX: tileX, tileY: tileY)
+        )
 
-        let typeLowercased = type.lowercased()
-        let texture = SKTexture(imageNamed: typeLowercased)
         let size = getNodeSize()
 
-        let hero: OldHero = {
-            switch typeLowercased {
-            case "archer":
-                return Archer(texture: texture, size: size)
-            case "tank":
-                return Tank(texture: texture, size: size)
-            case "swordsman":
-                return OldSwordsman(texture: texture, size: size)
-            default:
-                return OldSwordsman(texture: texture, size: size)
-            }
-        }()
+        let stats = EntityFactory.getHeroStats(type: type)
 
-        guard logic.mana >= hero.manaCost else {
-            print("Not enough mana to spawn \(typeLowercased)")
+        guard logic.mana >= stats.manaCost else {
+            print("❌ Not enough mana to spawn \(type)")
             return
         }
 
-        logic.decreaseMana(by: hero.manaCost)
+        logic.decreaseMana(by: stats.manaCost)
 
-        hero.position = adjustNodeOrigin(node: hero, position: getPosition(tileX: tileX, tileY: tileY))
+        let (model, node) = EntityFactory.makeHero(type: type, position: position, size: size)
+        node.name = "hero"
 
-        addChild(hero)
-        entities.append(hero)
+        heroModels[model.id] = model
+        heroNodes[model.id] = node
+        addChild(node)
     }
 
     private func spawnMonster(atX tileX: Int = 8, atY tileY: Int = 5) {
         assert(0 < tileX && tileX < GameScene.numCols - 1)
         assert(1 < tileY && tileY < GameScene.numRows)
 
-        let texture = SKTexture(imageNamed: "monster")
         let size = getNodeSize()
-        let monster = OldMonster(texture: texture, size: size, health: 50, attack: 30, speed: 40.0)
+        let position = adjustNodeOrigin(
+            node: SKSpriteNode(),
+            position: getPosition(tileX: tileX, tileY: tileY)
+        )
 
-        monster.position = adjustNodeOrigin(node: monster, position: getPosition(tileX: tileX, tileY: tileY))
+        let (model, node) = EntityFactory.makeMonster(position: position, size: size)
+        node.name = "monster"
 
-        addChild(monster)
-        entities.append(monster)
+        monsterModels[model.id] = model
+        monsterNodes[model.id] = node
+        addChild(node)
     }
 
     private func spawnPlayerCastle() {
-        let texture = SKTexture(imageNamed: "player-castle")
         let size = getNodeSize(numTileY: 5)
-        let playerCastle = OldGameCastle(texture: texture, size: size, isPlayer: true)
+        let position = adjustNodeOrigin(
+            node: SKSpriteNode(),
+            position: getPosition(tileX: 0, tileY: 4)
+        )
 
-        playerCastle.position = adjustNodeOrigin(node: playerCastle, position: getPosition(tileX: 0, tileY: 2))
-
-        addChild(playerCastle)
-        entities.append(playerCastle)
+        let (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: true)
+        castleModels[model.id] = model
+        castleNodes[model.id] = node
+        addChild(node)
     }
 
     private func spawnEnemyCastle() {
-        let texture = SKTexture(imageNamed: "enemy-castle")
         let size = getNodeSize(numTileY: 5)
-        let enemyCastle = OldGameCastle(texture: texture, size: size, isPlayer: false)
+        let position = adjustNodeOrigin(
+            node: SKSpriteNode(),
+            position: getPosition(tileX: GameScene.numCols - 1, tileY: 4)
+        )
 
-        enemyCastle.position = adjustNodeOrigin(node: enemyCastle,
-                                                position: getPosition(tileX: GameScene.numCols - 1, tileY: 2))
-
-        addChild(enemyCastle)
-        entities.append(enemyCastle)
+        let (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: false)
+        castleModels[model.id] = model
+        castleNodes[model.id] = node
+        addChild(node)
     }
 
     private func spawnTask() {
@@ -229,7 +294,8 @@ class GameScene: SKScene {
     func initialiseEntities() {
         spawnPlayerCastle()
         spawnEnemyCastle()
-        spawnMonster(atX: 3)
+        spawnMonster(atX: 5)
+        spawnHero(atX: 3, type: .swordsman)
     }
 
     private func handleCollisions() {
@@ -238,19 +304,80 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         initialiseEntities()
         physicsWorld.contactDelegate = self
+        GameModelRegistry.shared.monsterModels = monsterModels
+        GameModelRegistry.shared.monsterNodes = monsterNodes
+        GameModelRegistry.shared.heroModels = heroModels
+        GameModelRegistry.shared.heroNodes = heroNodes
+        GameModelRegistry.shared.gameLogicDelegate = gameLogicDelegate
     }
 }
 
 extension GameScene {
     func isMonsterInRange(_ archerPosition: CGPoint, range: CGFloat) -> Bool {
-        let monsters = entities.compactMap { $0 as? OldMonster }
-
-        for monster in monsters {
-            let distance = (monster.position - archerPosition).length()
+        for (_, model) in monsterModels {
+            let distance = (model.position - archerPosition).length()
             if distance <= range {
                 return true
             }
         }
         return false
+    }
+
+    func spawnArrow(from position: CGPoint, damage: Int) {
+        let arrow = Arrow(damage: damage)
+        arrow.position = position
+
+        // Adjust if needed: shoot toward the right
+        let direction: CGFloat = 1
+        arrow.physicsBody?.velocity = CGVector(dx: 500 * direction, dy: 0)
+
+        addChild(arrow)
+    }
+
+    func updateHeroes(deltaTime: TimeInterval) {
+        for (id, var model) in heroModels {
+            guard let node = heroNodes[id] else { continue }
+
+            // Decrease knockback timer
+            model.knockbackTimer = max(0, model.knockbackTimer - deltaTime)
+
+            if model.knockbackTimer == 0 {
+                // Resume forward movement (to the right)
+                node.physicsBody?.velocity = CGVector(dx: model.speed, dy: 0)
+            }
+
+            // Attack logic (optional)
+            if model.type == .archer {
+                let currentTime = CACurrentMediaTime()
+                if currentTime - model.lastAttackTime > model.attackCooldown {
+                    if isMonsterInRange(model.position, range: model.attackRange) {
+                        spawnArrow(from: model.position, damage: model.attack)
+                        model.lastAttackTime = currentTime
+                    }
+                }
+            }
+
+            // Sync position
+            model.position = node.position
+            heroModels[id] = model
+        }
+    }
+
+    func updateMonsters(deltaTime: TimeInterval) {
+        for (id, var model) in monsterModels {
+            guard let node = monsterNodes[id] else { continue }
+
+            // Decrease knockback timer
+            model.knockbackTimer = max(0, model.knockbackTimer - deltaTime)
+
+            if model.knockbackTimer == 0 {
+                // Resume forward movement
+                node.physicsBody?.velocity = CGVector(dx: -model.speed, dy: 0)
+            }
+
+            // Sync model position back
+            model.position = node.position
+            monsterModels[id] = model
+        }
     }
 }
