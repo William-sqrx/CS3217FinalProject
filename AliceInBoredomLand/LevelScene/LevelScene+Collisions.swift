@@ -44,7 +44,9 @@ extension LevelScene: SKPhysicsContactDelegate {
                 let heroId = heroNode.userData?["entityId"] as? UUID,
                 let monster = LevelModelRegistry.shared.getMonsterModel(id: monsterId),
                 let hero = LevelModelRegistry.shared.getHeroModel(id: heroId)
-            else { return }
+            else {
+                return
+            }
 
             let knockbackMonster = KnockbackAction(direction: CGVector(dx: 1, dy: 0), duration: 0.2, speed: 30)
             let knockbackHero = KnockbackAction(direction: CGVector(dx: -1, dy: 0), duration: 0.2, speed: 30)
@@ -60,41 +62,7 @@ extension LevelScene: SKPhysicsContactDelegate {
         }
     }
 
-    private func getAttackerAndDefender(from bodyA: SKPhysicsBody, and bodyB: SKPhysicsBody)
-    -> (attacker: LevelEntity, defender: LevelEntity)? {
-        let attackerBody: SKPhysicsBody
-        let defenderBody: SKPhysicsBody
+    private func handleMonsterPlayerCastleCollision(_ contact: SKPhysicsContact) {
 
-        if abs(bodyA.velocity.dx) > abs(bodyB.velocity.dx) {
-            attackerBody = bodyA
-            defenderBody = bodyB
-        } else {
-            attackerBody = bodyB
-            defenderBody = bodyA
-        }
-
-        guard let attackerEntity = attackerBody.node?.userData?["entity"] as? LevelEntity,
-              let defenderEntity = defenderBody.node?.userData?["entity"] as? LevelEntity else {
-            return nil
-        }
-
-        return (attackerEntity, defenderEntity)
-    }
-
-    private func handleTaskCollision(bodyA: SKPhysicsBody, bodyB: SKPhysicsBody) -> Bool {
-        guard let taskA = bodyA.node as? Task,
-              let taskB = bodyB.node as? Task else { return false }
-
-        let (left, right) = taskA.position.x < taskB.position.x ? (taskA, taskB) : (taskB, taskA)
-        handleTaskHit(left: left, right: right)
-        return true
-    }
-
-    private func handleTaskHit(left: Task, right: Task) {
-        right.physicsBody?.velocity = .zero
-        left.physicsBody?.velocity = .zero
-
-        left.physicsBody?.isDynamic = false
-        right.physicsBody?.isDynamic = false
     }
 }

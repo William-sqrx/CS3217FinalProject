@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SpriteKit
 
 final class LevelModelRegistry {
     static var shared = LevelModelRegistry()
@@ -19,7 +18,7 @@ final class LevelModelRegistry {
     var heroNodes: [UUID: RenderNode] = [:]
 
     var castleModels: [UUID: LevelCastleModel] = [:]
-    var castleNodes: [UUID: SKSpriteNode] = [:]
+    var castleNodes: [UUID: RenderNode] = [:]
 
     func getMonsterModel(id: UUID) -> MonsterModel? {
         monsterModels[id]
@@ -54,11 +53,31 @@ final class LevelModelRegistry {
         heroNodes[id] = node
     }
 
+    func getCastleModel(id: UUID) -> LevelCastleModel? {
+        castleModels[id]
+    }
+
+    func setCastleModel(id: UUID, model: LevelCastleModel) {
+        castleModels[id] = model
+    }
+
+    func getCastleNode(id: UUID) -> (RenderNode)? {
+        castleNodes[id]
+    }
+
+    func setCastleNode(id: UUID, node: RenderNode) {
+        castleNodes[id] = node
+    }
+
     func removeHeroModel(id: UUID) {
         heroModels.removeValue(forKey: id)
     }
 
     func removeMonsterModel(id: UUID) {
         monsterModels.removeValue(forKey: id)
+    }
+
+    func removeCastleModel(id: UUID) {
+        castleModels.removeValue(forKey: id)
     }
 }

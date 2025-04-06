@@ -13,7 +13,7 @@ protocol RenderNode {
     var name: String? { get set }
     var zPosition: CGFloat { get set }
     var size: CGSize { get set }
-    
+
     var userData: NSMutableDictionary? { get set }
     var physicsBody: SKPhysicsBody? { get set }
 

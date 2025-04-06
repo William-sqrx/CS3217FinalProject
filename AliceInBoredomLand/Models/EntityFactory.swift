@@ -9,7 +9,7 @@ import SpriteKit
 
 final class EntityFactory {
 
-    static func makeHero(type: HeroType, position: CGPoint, size: CGSize) -> (model: HeroModel, node: SKSpriteNode) {
+    static func makeHero(type: HeroType, position: CGPoint, size: CGSize) -> (model: HeroModel, node: RenderNode) {
         let stats: HeroStats = {
             switch type {
             case .archer:
@@ -39,7 +39,7 @@ final class EntityFactory {
             type: type
         )
 
-        let node = HeroRenderer.makeNode(from: model)
+        var node = HeroRenderer.makeNode(from: model)
         node.name = "hero"
         return (model, node)
     }
@@ -72,12 +72,8 @@ final class EntityFactory {
             size: size,
             isDynamic: false,
             categoryBitMask: isPlayer ? BitMask.playerEntity : BitMask.enemyEntity,
-            contactTestBitMask: isPlayer
-            ? BitMask.enemyEntity
-            : BitMask.playerEntity,
-            collisionBitMask: isPlayer
-            ? BitMask.enemyEntity
-            : BitMask.playerEntity
+            contactTestBitMask: isPlayer ? BitMask.enemyEntity : BitMask.playerEntity,
+            collisionBitMask: isPlayer ? BitMask.enemyEntity : BitMask.playerEntity
         )
 
         let model = LevelCastleModel(
@@ -88,7 +84,7 @@ final class EntityFactory {
             textureName: isPlayer ? "player-castle" : "enemy-castle"
         )
 
-        var node = isPlayer
+        let node = isPlayer
             ? PlayerCastleRenderer.makeNode(from: model)
             : EnemyCastleRenderer.makeNode(from: model)
         return (model, node)

@@ -28,17 +28,22 @@ struct ContentView: View {
                 Spacer()
                 HStack {
                     // Button to spawn an Archer
+                    // Removed until debugging can be done
+                    /*
                     Button("Spawn Archer") {
-                        gameScene.spawnHero(atY: tileY, type: .archer)
+                        gameScene.spawnHero(type: .archer, atY: tileY)
+
                     }
+                    */
 
                     // Button to spawn a Swordsman
                     Button("Spawn Swordsman") {
-                        gameScene.spawnHero(atY: tileY, type: .swordsman)
+                        gameScene.spawnHero(type: .swordsman, atY: tileY)
                     }
 
                     Button("Spawn Tank") {
-                        gameScene.spawnHero(atY: tileY, type: .tank)
+                        gameScene.spawnHero(type: .tank, atY: tileY)
+                        print(gameLogic.monsterCastleHealth)
                     }
 
                     Text("Mana: \(gameLogic.mana)")

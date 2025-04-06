@@ -9,6 +9,6 @@ import SpriteKit
 
 extension RenderNode {
     var asSKNode: SKNode? {
-        return self as? SKNode
+        self as? SKNode
     }
 }

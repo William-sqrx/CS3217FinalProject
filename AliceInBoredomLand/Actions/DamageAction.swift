@@ -5,7 +5,7 @@
 //  Created by Wijaya William on 6/4/25.
 //
 
-import SpriteKit
+import Foundation
 
 struct DamageAction: Action {
     let amount: Int

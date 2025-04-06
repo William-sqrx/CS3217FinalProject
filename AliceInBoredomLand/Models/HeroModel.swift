@@ -35,3 +35,33 @@ struct HeroStats {
 enum HeroType {
     case swordsman, archer, tank
 }
+
+extension HeroModel: Renderable {
+    var renderSpec: RenderSpec {
+        RenderSpec(
+            textureName: getName(),
+            size: physics.size,
+            position: position,
+            zPosition: 1,
+            name: getName()
+        )
+    }
+
+    private func getName() -> String {
+        switch type {
+        case .archer:
+            return "archer"
+        case .swordsman:
+            return "swordsman"
+        case .tank:
+            return "tank"
+        }
+    }
+
+}
+
+extension HeroModel: PhysicsBodySpecProvider {
+    var physicsBodySpec: PhysicsComponent {
+        physics
+    }
+}

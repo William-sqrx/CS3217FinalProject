@@ -8,34 +8,10 @@
 import SpriteKit
 
 final class HeroRenderer {
-    static func makeNode(from model: HeroModel) -> SKSpriteNode {
-        let textureName: String = {
-            switch model.type {
-            case .archer:
-                return "archer"
-            case .swordsman:
-                return "swordsman"
-            case .tank:
-                return "tank"
-            }
-        }()
-
-        let node = SKSpriteNode(texture: SKTexture(imageNamed: textureName))
-        node.size = model.physics.size
-        node.position = model.position
-
-        let body = SKPhysicsBody(rectangleOf: model.physics.size)
-
-        body.isDynamic = model.physics.isDynamic
-        body.categoryBitMask = model.physics.categoryBitMask
-        body.contactTestBitMask = model.physics.contactTestBitMask
-        body.collisionBitMask = model.physics.collisionBitMask
-        body.affectedByGravity = false
-        body.allowsRotation = false
-        node.physicsBody = body
-
+    static func makeNode(from model: HeroModel) -> RenderNode {
+        var node = RendererAdapter.makeNode(from: model)
+        node.physicsBody = PhysicsAdapter.makeBody(from: model)
         node.userData = ["entityId": model.id]
-
         return node
     }
 }
@@ -89,6 +65,10 @@ class LevelScene: SKScene {
         super.init(size: CGSize(width: grid.width, height: grid.height))
         self.backgroundColor = background
         self.scaleMode = .aspectFit
+
+        initialiseEntities()
+        physicsWorld.contactDelegate = self
+
     }
 
     @available(*, unavailable)
@@ -195,7 +175,7 @@ class LevelScene: SKScene {
         view.presentScene(newScene, transition: SKTransition.fade(withDuration: 0.5))
     }
 
-    func spawnHero(atX tileX: Int = 1, atY tileY: Int = 5, type: HeroType) {
+    func spawnHero(type: HeroType, atX tileX: Int = 1, atY tileY: Int = 5) {
         assert(0 < tileX && tileX < grid.numCols - 1)
         assert(1 < tileY && tileY < grid.numLanes)
         guard let logic = gameLogicDelegate as? LevelLogic else {
@@ -216,12 +196,19 @@ class LevelScene: SKScene {
 
         logic.decreaseMana(by: stats.manaCost)
 
-        let (model, node) = EntityFactory.makeHero(type: type, position: position, size: size)
+        var (model, node) = EntityFactory.makeHero(type: type, position: position, size: size)
         node.name = "hero"
+
+        guard let skNode = node.asSKNode else {
+            print("❌ Failed to cast RenderNode to SKNode for monster \(model.id)")
+            return
+        }
 
         heroModels[model.id] = model
         heroNodes[model.id] = node
-        addChild(node)
+        LevelModelRegistry.shared.setHeroModel(id: model.id, model: model)
+        LevelModelRegistry.shared.setHeroNode(id: model.id, node: node)
+        addChild(skNode)
     }
 
     private func spawnMonster(atX tileX: Int = 8, atY tileY: Int = 5) {
@@ -243,6 +230,8 @@ class LevelScene: SKScene {
 
         monsterModels[model.id] = model
         monsterNodes[model.id] = node
+        LevelModelRegistry.shared.setMonsterModel(id: model.id, model: model)
+        LevelModelRegistry.shared.setMonsterNode(id: model.id, node: node)
         addChild(skNode)
     }
 
@@ -253,13 +242,14 @@ class LevelScene: SKScene {
         )
 
         let (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: true)
-
         guard let skNode = node.asSKNode else {
             print("❌ Failed to cast RenderNode to SKNode for monster \(model.id)")
             return
         }
         castleModels[model.id] = model
         castleNodes[model.id] = node
+        LevelModelRegistry.shared.setCastleModel(id: model.id, model: model)
+        LevelModelRegistry.shared.setCastleNode(id: model.id, node: node)
         addChild(skNode)
     }
 
@@ -269,13 +259,15 @@ class LevelScene: SKScene {
             size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 2)
         )
 
-        var (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: false)
+        let (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: false)
         guard let skNode = node.asSKNode else {
             print("❌ Failed to cast RenderNode to SKNode for monster \(model.id)")
             return
         }
         castleModels[model.id] = model
         castleNodes[model.id] = node
+        LevelModelRegistry.shared.setCastleModel(id: model.id, model: model)
+        LevelModelRegistry.shared.setCastleNode(id: model.id, node: node)
         addChild(skNode)
     }
 
@@ -284,7 +276,7 @@ class LevelScene: SKScene {
 
         let size = grid.getNodeSize()
         let position = grid.adjustNodeOrigin(
-            size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 4)
+            size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 1)
         )
 
         let task = Task(texture: texture, size: size)
@@ -308,20 +300,7 @@ class LevelScene: SKScene {
         spawnPlayerCastle()
         spawnEnemyCastle()
         spawnMonster(atX: 5)
-        spawnHero(atX: 3, type: .swordsman)
-    }
-
-    private func handleCollisions() {
-    }
-
-    override func didMove(to view: SKView) {
-        initialiseEntities()
-        physicsWorld.contactDelegate = self
-        LevelModelRegistry.shared.monsterModels = monsterModels
-        LevelModelRegistry.shared.monsterNodes = monsterNodes
-        LevelModelRegistry.shared.heroModels = heroModels
-        LevelModelRegistry.shared.heroNodes = heroNodes
-        LevelModelRegistry.shared.gameLogicDelegate = gameLogicDelegate
+        spawnHero(type: .swordsman, atX: 3)
     }
 }
 
