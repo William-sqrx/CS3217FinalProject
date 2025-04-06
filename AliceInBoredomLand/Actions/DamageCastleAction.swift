@@ -12,7 +12,7 @@ struct DamageCastleAction: Action {
     let isPlayerCastle: Bool
 
     func perform(on node: RenderNode, modelId: UUID) {
-        if let logic = GameModelRegistry.shared.gameLogicDelegate as? GameLogic {
+        if let logic = LevelModelRegistry.shared.gameLogicDelegate as? LevelLogic {
             if isPlayerCastle {
                 logic.decrePlayerCastleHealth(amount: amount)
             } else {

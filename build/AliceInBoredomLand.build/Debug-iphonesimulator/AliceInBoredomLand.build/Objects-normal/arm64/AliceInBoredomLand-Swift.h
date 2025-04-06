@@ -316,8 +316,8 @@ SWIFT_CLASS("_TtC18AliceInBoredomLand5Arrow")
 @class UIEvent;
 @class SKView;
 
-SWIFT_CLASS("_TtC18AliceInBoredomLand9GameScene")
-@interface GameScene : SKScene
+SWIFT_CLASS("_TtC18AliceInBoredomLand10LevelScene")
+@interface LevelScene : SKScene
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER SWIFT_UNAVAILABLE;
 - (void)update:(NSTimeInterval)currentTime;
 - (void)touchesBegan:(NSSet<UITouch *> * _Nonnull)touches withEvent:(UIEvent * _Nullable)event;
@@ -328,13 +328,11 @@ SWIFT_CLASS("_TtC18AliceInBoredomLand9GameScene")
 @end
 
 
-
 @class SKPhysicsContact;
 
-@interface GameScene (SWIFT_EXTENSION(AliceInBoredomLand)) <SKPhysicsContactDelegate>
+@interface LevelScene (SWIFT_EXTENSION(AliceInBoredomLand)) <SKPhysicsContactDelegate>
 - (void)didBeginContact:(SKPhysicsContact * _Nonnull)contact;
 @end
-
 
 
 

@@ -1,0 +1,28 @@
+{
+  "" : {
+    "diagnostics" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITests-master.dia",
+    "emit-module-dependencies" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITests-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITests-master-emit-module.dia",
+    "swift-dependencies" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITests-master.swiftdeps"
+  },
+  "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLandUITests/AliceInBoredomLandUITests.swift" : {
+    "const-values" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITests.swiftconstvalues",
+    "dependencies" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITests.d",
+    "diagnostics" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITests.dia",
+    "index-unit-output-path" : "/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITests.o",
+    "llvm-bc" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITests.bc",
+    "object" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITests.o",
+    "swift-dependencies" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITests.swiftdeps",
+    "swiftmodule" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITests~partial.swiftmodule"
+  },
+  "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLandUITests/AliceInBoredomLandUITestsLaunchTests.swift" : {
+    "const-values" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITestsLaunchTests.swiftconstvalues",
+    "dependencies" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITestsLaunchTests.d",
+    "diagnostics" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITestsLaunchTests.dia",
+    "index-unit-output-path" : "/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITestsLaunchTests.o",
+    "llvm-bc" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITestsLaunchTests.bc",
+    "object" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITestsLaunchTests.o",
+    "swift-dependencies" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITestsLaunchTests.swiftdeps",
+    "swiftmodule" : "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLandUITests.build/Objects-normal/arm64/AliceInBoredomLandUITestsLaunchTests~partial.swiftmodule"
+  }
+}

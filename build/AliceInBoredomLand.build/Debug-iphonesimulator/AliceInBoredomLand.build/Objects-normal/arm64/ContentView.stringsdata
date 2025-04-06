@@ -7,7 +7,7 @@
         "key": "Mana: %lld",
         "location": {
           "startingColumn": 26,
-          "startingLine": 45
+          "startingLine": 44
         }
       },
       {
@@ -15,7 +15,7 @@
         "key": "Spawn Archer",
         "location": {
           "startingColumn": 28,
-          "startingLine": 32
+          "startingLine": 31
         }
       },
       {
@@ -23,7 +23,7 @@
         "key": "Spawn Swordsman",
         "location": {
           "startingColumn": 28,
-          "startingLine": 37
+          "startingLine": 36
         }
       },
       {
@@ -31,7 +31,7 @@
         "key": "Spawn Tank",
         "location": {
           "startingColumn": 28,
-          "startingLine": 41
+          "startingLine": 40
         }
       }
     ]

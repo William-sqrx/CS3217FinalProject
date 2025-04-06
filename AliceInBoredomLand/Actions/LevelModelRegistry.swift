@@ -13,9 +13,9 @@ final class LevelModelRegistry {
 
     var gameLogicDelegate: LevelLogicDelegate?
 
-    var monsterModels: [UUID: OldMonsterModel] = [:]
+    var monsterModels: [UUID: MonsterModel] = [:]
     var monsterNodes: [UUID: RenderNode] = [:]
-    var heroModels: [UUID: OldHeroModel] = [:]
+    var heroModels: [UUID: HeroModel] = [:]
     var heroNodes: [UUID: RenderNode] = [:]
 
     var castleModels: [UUID: LevelCastleModel] = [:]

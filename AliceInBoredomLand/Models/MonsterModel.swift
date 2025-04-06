@@ -26,18 +26,6 @@ struct MonsterStats {
     let bitmask: UInt32
 }
 
-struct MonsterModel {
-    let id = UUID()
-    var position: CGPoint
-    var velocity: CGVector = .zero
-    var health: Int
-    var attack: Int
-    var speed: CGFloat
-    var tilePosition: Int = 0
-    var physics: OldPhysicsComponent
-    var knockbackTimer: TimeInterval = 0
-}
-
 extension MonsterModel: Renderable {
     var renderSpec: RenderSpec {
         RenderSpec(

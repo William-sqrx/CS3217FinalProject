@@ -41,7 +41,7 @@ final class HeroRenderer {
 }
 
 final class MonsterRenderer {
-    static func makeNode(from model: OldMonsterModel) -> RenderNode {
+    static func makeNode(from model: MonsterModel) -> RenderNode {
         var node = RendererAdapter.makeNode(from: model)
         node.physicsBody = PhysicsAdapter.makeBody(from: model)
         node.userData = ["entityId": model.id]
@@ -50,7 +50,7 @@ final class MonsterRenderer {
 }
 
 final class PlayerCastleRenderer {
-    static func makeNode(from model: OldGameCastleModel) -> RenderNode {
+    static func makeNode(from model: LevelCastleModel) -> RenderNode {
         var node = RendererAdapter.makeNode(from: model)
         node.physicsBody = PhysicsAdapter.makeBody(from: model)
         node.userData = ["entityId": model.id]
@@ -59,7 +59,7 @@ final class PlayerCastleRenderer {
 }
 
 final class EnemyCastleRenderer {
-    static func makeNode(from model: OldGameCastleModel) -> RenderNode {
+    static func makeNode(from model: LevelCastleModel) -> RenderNode {
         var node = RendererAdapter.makeNode(from: model)
         node.physicsBody = PhysicsAdapter.makeBody(from: model)
         node.userData = ["entityId": model.id]
@@ -72,11 +72,12 @@ class LevelScene: SKScene {
     var entities: [LevelEntity] = []
     var tasks: [Task] = []
     var frameCounter = 0
-    var monsterModels: [UUID: OldMonsterModel] = [:]
+    var grid: Grid
+    var monsterModels: [UUID: MonsterModel] = [:]
     var monsterNodes: [UUID: RenderNode] = [:]
-    var heroModels: [UUID: OldHeroModel] = [:]
+    var heroModels: [UUID: HeroModel] = [:]
     var heroNodes: [UUID: RenderNode] = [:]
-    var castleModels: [UUID: OldGameCastleModel] = [:]
+    var castleModels: [UUID: LevelCastleModel] = [:]
     var castleNodes: [UUID: RenderNode] = [:]
 
     init(gameLogicDelegate: LevelLogicDelegate,

@@ -44,7 +44,7 @@ final class EntityFactory {
         return (model, node)
     }
 
-    static func makeMonster(position: CGPoint, size: CGSize) -> (model: MonsterModel, node: SKSpriteNode) {
+    static func makeMonster(position: CGPoint, size: CGSize) -> (model: MonsterModel, node: RenderNode) {
         let physics = PhysicsComponent(
             size: size,
             isDynamic: true,
@@ -67,7 +67,7 @@ final class EntityFactory {
     }
 
     static func makeCastle(position: CGPoint, size: CGSize, isPlayer: Bool)
-    -> (model: LevelCastleModel, node: SKSpriteNode) {
+    -> (model: LevelCastleModel, node: RenderNode) {
         let physics = PhysicsComponent(
             size: size,
             isDynamic: false,

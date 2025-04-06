@@ -1,0 +1,6 @@
+Target dependency graph (3 targets)
+Target 'AliceInBoredomLandUITests' in project 'AliceInBoredomLand'
+➜ Explicit dependency on target 'AliceInBoredomLand' in project 'AliceInBoredomLand'
+Target 'AliceInBoredomLandTests' in project 'AliceInBoredomLand'
+➜ Explicit dependency on target 'AliceInBoredomLand' in project 'AliceInBoredomLand'
+Target 'AliceInBoredomLand' in project 'AliceInBoredomLand' (no dependencies)
