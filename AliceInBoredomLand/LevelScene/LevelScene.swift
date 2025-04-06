@@ -66,8 +66,9 @@ class LevelScene: SKScene {
         self.backgroundColor = background
         self.scaleMode = .aspectFit
 
-        initialiseEntities()
         physicsWorld.contactDelegate = self
+        initialiseEntities()
+        LevelModelRegistry.shared.gameLogicDelegate = gameLogicDelegate
 
     }
 
@@ -248,8 +249,6 @@ class LevelScene: SKScene {
         }
         castleModels[model.id] = model
         castleNodes[model.id] = node
-        LevelModelRegistry.shared.setCastleModel(id: model.id, model: model)
-        LevelModelRegistry.shared.setCastleNode(id: model.id, node: node)
         addChild(skNode)
     }
 
@@ -266,8 +265,6 @@ class LevelScene: SKScene {
         }
         castleModels[model.id] = model
         castleNodes[model.id] = node
-        LevelModelRegistry.shared.setCastleModel(id: model.id, model: model)
-        LevelModelRegistry.shared.setCastleNode(id: model.id, node: node)
         addChild(skNode)
     }
 
@@ -338,7 +335,7 @@ extension LevelScene {
                 node.physicsBody?.velocity = CGVector(dx: model.speed, dy: 0)
             }
 
-            // Attack logic (optional)
+            // Range Attack logic (optional)
             if model.type == .archer {
                 let currentTime = CACurrentMediaTime()
                 if currentTime - model.lastAttackTime > model.attackCooldown {

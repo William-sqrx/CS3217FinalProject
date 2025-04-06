@@ -53,31 +53,11 @@ final class LevelModelRegistry {
         heroNodes[id] = node
     }
 
-    func getCastleModel(id: UUID) -> LevelCastleModel? {
-        castleModels[id]
-    }
-
-    func setCastleModel(id: UUID, model: LevelCastleModel) {
-        castleModels[id] = model
-    }
-
-    func getCastleNode(id: UUID) -> (RenderNode)? {
-        castleNodes[id]
-    }
-
-    func setCastleNode(id: UUID, node: RenderNode) {
-        castleNodes[id] = node
-    }
-
     func removeHeroModel(id: UUID) {
         heroModels.removeValue(forKey: id)
     }
 
     func removeMonsterModel(id: UUID) {
         monsterModels.removeValue(forKey: id)
-    }
-
-    func removeCastleModel(id: UUID) {
-        castleModels.removeValue(forKey: id)
     }
 }
