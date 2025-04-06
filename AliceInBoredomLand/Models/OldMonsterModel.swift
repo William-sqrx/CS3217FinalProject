@@ -14,7 +14,6 @@ struct MonsterStats {
     let bitmask: UInt32
 }
 
-
 struct OldMonsterModel {
     let id = UUID()
     var position: CGPoint
