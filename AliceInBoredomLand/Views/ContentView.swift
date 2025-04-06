@@ -15,7 +15,7 @@ struct ContentView: View {
 
     init() {
         let logic = GameLogic()
-        let scene = GameScene(gameLogicDelegate: logic)
+        let scene = GameScene(gameLogicDelegate: logic, grid: Grid())
         scene.scaleMode = .resizeFill
         self._gameLogic = StateObject(wrappedValue: logic)
         self.gameScene = scene

@@ -72,6 +72,7 @@ class GameScene: SKScene {
     var entities: [GameEntity] = []
     var tasks: [Task] = []
     var frameCounter = 0
+    var grid: Grid
     var monsterModels: [UUID: MonsterModel] = [:]
     var monsterNodes: [UUID: SKSpriteNode] = [:]
     var heroModels: [UUID: HeroModel] = [:]
@@ -79,16 +80,13 @@ class GameScene: SKScene {
     var castleModels: [UUID: GameCastleModel] = [:]
     var castleNodes: [UUID: SKSpriteNode] = [:]
 
-    // Please use getNodeSize instead of this directly
-    let tileSize = CGSize(width: width / Double(numCols),
-                          height: (height - rowSpacing * Double(numRows - 1)) / Double(numRows))
-
     init(gameLogicDelegate: GameLogicDelegate,
          background: SKColor = .gray,
-         size: CGSize = CGSize(width: GameScene.width, height: GameScene.height)) {
+         grid: Grid) {
         self.gameLogicDelegate = gameLogicDelegate
         self.entities = []
-        super.init(size: size)
+        self.grid = grid
+        super.init(size: CGSize(width: grid.width, height: grid.height))
         self.backgroundColor = background
         self.scaleMode = .aspectFit
     }
@@ -157,7 +155,7 @@ class GameScene: SKScene {
         label.fontSize = 50
         label.fontColor = .white
         label.fontName = "Avenir-Heavy"
-        label.position = CGPoint(x: GameScene.width / 2, y: GameScene.height / 2 + 50)
+        label.position = CGPoint(x: grid.width / 2, y: grid.height / 2 + 50)
         label.name = "end_game_label"
         addChild(label)
 
@@ -165,7 +163,7 @@ class GameScene: SKScene {
         restartLabel.fontSize = 30
         restartLabel.fontColor = .yellow
         restartLabel.fontName = "Avenir"
-        restartLabel.position = CGPoint(x: GameScene.width / 2, y: GameScene.height / 2 - 50)
+        restartLabel.position = CGPoint(x: grid.width / 2, y: grid.height / 2 - 50)
         restartLabel.name = "restart_button"
         addChild(restartLabel)
     }
@@ -192,24 +190,22 @@ class GameScene: SKScene {
             logic.reset()
         }
 
-        let newScene = GameScene(gameLogicDelegate: gameLogicDelegate)
+        let newScene = GameScene(gameLogicDelegate: gameLogicDelegate, grid: Grid())
         newScene.scaleMode = self.scaleMode
         view.presentScene(newScene, transition: SKTransition.fade(withDuration: 0.5))
     }
 
     func spawnHero(atX tileX: Int = 1, atY tileY: Int = 5, type: HeroType) {
-        assert(0 < tileX && tileX < GameScene.numCols - 1)
-        assert(1 < tileY && tileY < GameScene.numRows)
+        assert(0 < tileX && tileX < grid.numCols - 1)
+        assert(1 < tileY && tileY < grid.numLanes)
         guard let logic = gameLogicDelegate as? GameLogic else {
             return
         }
 
-        let position = adjustNodeOrigin(
-            node: SKSpriteNode(), // dummy
-            position: getPosition(tileX: tileX, tileY: tileY)
+        let size = grid.getNodeSize()
+        let position = grid.adjustNodeOrigin(
+            size: size, position: grid.getPosition(tileX: tileX, tileY: tileY)
         )
-
-        let size = getNodeSize()
 
         let stats = EntityFactory.getHeroStats(type: type)
 
@@ -229,13 +225,12 @@ class GameScene: SKScene {
     }
 
     private func spawnMonster(atX tileX: Int = 8, atY tileY: Int = 5) {
-        assert(0 < tileX && tileX < GameScene.numCols - 1)
-        assert(1 < tileY && tileY < GameScene.numRows)
+        assert(0 < tileX && tileX < grid.numCols - 1)
+        assert(1 < tileY && tileY < grid.numLanes)
 
-        let size = getNodeSize()
-        let position = adjustNodeOrigin(
-            node: SKSpriteNode(),
-            position: getPosition(tileX: tileX, tileY: tileY)
+        let size = grid.getNodeSize()
+        let position = grid.adjustNodeOrigin(
+            size: size, position: grid.getPosition(tileX: tileX, tileY: tileY)
         )
 
         let (model, node) = EntityFactory.makeMonster(position: position, size: size)
@@ -247,10 +242,9 @@ class GameScene: SKScene {
     }
 
     private func spawnPlayerCastle() {
-        let size = getNodeSize(numTileY: 5)
-        let position = adjustNodeOrigin(
-            node: SKSpriteNode(),
-            position: getPosition(tileX: 0, tileY: 4)
+        let size = grid.getNodeSize(numTileY: 5)
+        let position = grid.adjustNodeOrigin(
+            size: size, position: grid.getPosition(tileX: 0, tileY: 4)
         )
 
         let (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: true)
@@ -260,10 +254,9 @@ class GameScene: SKScene {
     }
 
     private func spawnEnemyCastle() {
-        let size = getNodeSize(numTileY: 5)
-        let position = adjustNodeOrigin(
-            node: SKSpriteNode(),
-            position: getPosition(tileX: GameScene.numCols - 1, tileY: 4)
+        let size = grid.getNodeSize(numTileY: 5)
+        let position = grid.adjustNodeOrigin(
+            size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 4)
         )
 
         let (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: false)
@@ -274,11 +267,15 @@ class GameScene: SKScene {
 
     private func spawnTask() {
         let texture = SKTexture(imageNamed: "task")
-        let size = getNodeSize()
-        let task = Task(texture: texture, size: size)
 
-        task.position = adjustNodeOrigin(node: task,
-                                         position: getPosition(tileX: GameScene.numCols - 1, tileY: 1))
+        let size = grid.getNodeSize()
+        let position = grid.adjustNodeOrigin(
+            size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 4)
+        )
+
+        let task = Task(texture: texture, size: size)
+        task.position = position
+
         addChild(task)
         tasks.append(task)
     }
