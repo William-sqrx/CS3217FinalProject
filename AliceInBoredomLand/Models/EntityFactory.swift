@@ -9,27 +9,27 @@ import SpriteKit
 
 final class EntityFactory {
 
-    static func makeHero(type: HeroType, position: CGPoint, size: CGSize) -> (model: OldHeroModel, node: SKSpriteNode) {
+    static func makeHero(type: HeroType, position: CGPoint, size: CGSize) -> (model: HeroModel, node: SKSpriteNode) {
         let stats: HeroStats = {
             switch type {
             case .archer:
-                return HeroStats(manaCost: 10, attack: 2, health: 90, speed: 25, bitmask: OldBitMask.Hero.archer)
+                return HeroStats(manaCost: 10, attack: 2, health: 90, speed: 25, bitmask: BitMask.playerEntity)
             case .swordsman:
-                return HeroStats(manaCost: 15, attack: 50, health: 100, speed: 20, bitmask: OldBitMask.Hero.swordsman)
+                return HeroStats(manaCost: 15, attack: 50, health: 100, speed: 20, bitmask: BitMask.playerEntity)
             case .tank:
-                return HeroStats(manaCost: 20, attack: 2, health: 200, speed: 20, bitmask: OldBitMask.Hero.tank)
+                return HeroStats(manaCost: 20, attack: 2, health: 200, speed: 20, bitmask: BitMask.playerEntity)
             }
         }()
 
-        let physics = OldPhysicsComponent(
+        let physics = PhysicsComponent(
             size: size,
             isDynamic: true,
             categoryBitMask: stats.bitmask,
-            contactTestBitMask: OldBitMask.Monster.titan | OldBitMask.Monster.minion | OldBitMask.Monster.mage | OldBitMask.Castle.enemyCastle,
-            collisionBitMask: OldBitMask.Monster.titan | OldBitMask.Monster.minion | OldBitMask.Monster.mage | OldBitMask.Castle.enemyCastle
+            contactTestBitMask: BitMask.enemyEntity,
+            collisionBitMask: BitMask.enemyEntity
         )
 
-        let model = OldHeroModel(
+        let model = HeroModel(
             position: position,
             health: stats.health,
             attack: stats.attack,
@@ -44,25 +44,19 @@ final class EntityFactory {
         return (model, node)
     }
 
-    static func makeMonster(position: CGPoint, size: CGSize) -> (model: OldMonsterModel, node: RenderNode) {
-        let physics = OldPhysicsComponent(
+    static func makeMonster(position: CGPoint, size: CGSize) -> (model: MonsterModel, node: SKSpriteNode) {
+        let physics = PhysicsComponent(
             size: size,
             isDynamic: true,
-            categoryBitMask: OldBitMask.Monster.titan,
-            contactTestBitMask: OldBitMask.Castle.playerCastle
-                | OldBitMask.Hero.swordsman
-                | OldBitMask.Hero.archer
-                | OldBitMask.Hero.tank,
-            collisionBitMask: OldBitMask.Castle.playerCastle
-                | OldBitMask.Hero.swordsman
-                | OldBitMask.Hero.archer
-                | OldBitMask.Hero.tank
+            categoryBitMask: BitMask.enemyEntity,
+            contactTestBitMask: BitMask.playerEntity,
+            collisionBitMask: BitMask.playerEntity
         )
 
-        let model = OldMonsterModel(
+        let model = MonsterModel(
             position: position,
             health: 100,
-            attack: 1000,
+            attack: 1_000,
             speed: 20,
             physics: physics
         )
@@ -72,20 +66,21 @@ final class EntityFactory {
         return (model, node)
     }
 
-    static func makeCastle(position: CGPoint, size: CGSize, isPlayer: Bool) -> (model: OldGameCastleModel, node: RenderNode) {
-        let physics = OldPhysicsComponent(
+    static func makeCastle(position: CGPoint, size: CGSize, isPlayer: Bool)
+    -> (model: LevelCastleModel, node: SKSpriteNode) {
+        let physics = PhysicsComponent(
             size: size,
             isDynamic: false,
-            categoryBitMask: isPlayer ? OldBitMask.Castle.playerCastle : OldBitMask.Castle.enemyCastle,
+            categoryBitMask: isPlayer ? BitMask.playerEntity : BitMask.enemyEntity,
             contactTestBitMask: isPlayer
-                ? OldBitMask.Monster.titan | OldBitMask.Monster.minion | OldBitMask.Monster.mage
-                : OldBitMask.Hero.archer | OldBitMask.Hero.swordsman | OldBitMask.Hero.tank,
+            ? BitMask.enemyEntity
+            : BitMask.playerEntity,
             collisionBitMask: isPlayer
-                ? OldBitMask.Monster.titan | OldBitMask.Monster.minion | OldBitMask.Monster.mage
-                : OldBitMask.Hero.archer | OldBitMask.Hero.swordsman | OldBitMask.Hero.tank
+            ? BitMask.enemyEntity
+            : BitMask.playerEntity
         )
 
-        let model = OldGameCastleModel(
+        let model = LevelCastleModel(
             position: position,
             health: 500,
             isPlayer: isPlayer,
@@ -98,7 +93,7 @@ final class EntityFactory {
             : EnemyCastleRenderer.makeNode(from: model)
         return (model, node)
     }
-    
+
     static func getHeroStats(type: HeroType) -> HeroStats {
         switch type {
         case .archer:
@@ -107,7 +102,7 @@ final class EntityFactory {
                 attack: 2,
                 health: 90,
                 speed: 25,
-                bitmask: OldBitMask.Hero.archer
+                bitmask: BitMask.playerEntity
             )
         case .swordsman:
             return HeroStats(
@@ -115,7 +110,7 @@ final class EntityFactory {
                 attack: 50,
                 health: 100,
                 speed: 20,
-                bitmask: OldBitMask.Hero.swordsman
+                bitmask: BitMask.playerEntity
             )
         case .tank:
             return HeroStats(
@@ -123,7 +118,7 @@ final class EntityFactory {
                 attack: 2,
                 health: 200,
                 speed: 20,
-                bitmask: OldBitMask.Hero.tank
+                bitmask: BitMask.playerEntity
             )
         }
     }
@@ -133,7 +128,7 @@ final class EntityFactory {
             health: 100,
             attack: 900,
             speed: 20,
-            bitmask: OldBitMask.Monster.titan
+            bitmask: BitMask.enemyEntity
         )
     }
 }

@@ -1,5 +1,5 @@
 //
-//  KnockBackAction.swift
+//  KnockbackAction.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 6/4/25.
@@ -16,12 +16,12 @@ struct KnockbackAction: Action {
     func perform(on node: RenderNode, modelId: UUID) {
         node.physicsBody?.velocity = direction * speed
 
-        if var model = GameModelRegistry.shared.getMonsterModel(id: modelId) {
+        if var model = LevelModelRegistry.shared.getMonsterModel(id: modelId) {
             model.knockbackTimer = duration
-            GameModelRegistry.shared.setMonsterModel(id: model.id, model: model)
-        } else if var model = GameModelRegistry.shared.getHeroModel(id: modelId) {
+            LevelModelRegistry.shared.setMonsterModel(id: model.id, model: model)
+        } else if var model = LevelModelRegistry.shared.getHeroModel(id: modelId) {
             model.knockbackTimer = duration
-            GameModelRegistry.shared.setHeroModel(id: model.id, model: model)
+            LevelModelRegistry.shared.setHeroModel(id: model.id, model: model)
         }
     }
 }

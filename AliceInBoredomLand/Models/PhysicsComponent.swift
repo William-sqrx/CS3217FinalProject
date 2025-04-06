@@ -1,5 +1,5 @@
 //
-//  OldPhysicsComponent.swift
+//  PhysicsComponent.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 1/4/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OldPhysicsComponent {
+struct PhysicsComponent {
     var size: CGSize
     var isDynamic: Bool
     var categoryBitMask: UInt32

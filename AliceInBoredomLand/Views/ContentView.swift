@@ -9,14 +9,13 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    @StateObject var gameLogic = GameLogic()
-    private let gameScene: GameScene
+    @StateObject var gameLogic = LevelLogic()
+    private let gameScene: LevelScene
     private let tileY = 5
 
     init() {
-        let logic = GameLogic()
-        let scene = GameScene(gameLogicDelegate: logic)
-        scene.scaleMode = .resizeFill
+        let logic = LevelLogic()
+        let scene = LevelScene(gameLogicDelegate: logic, grid: Grid())
         self._gameLogic = StateObject(wrappedValue: logic)
         self.gameScene = scene
     }

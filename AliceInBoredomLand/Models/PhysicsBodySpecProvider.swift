@@ -6,5 +6,5 @@
 //
 
 protocol PhysicsBodySpecProvider {
-    var physicsBodySpec: OldPhysicsComponent { get }
+    var physicsBodySpec: PhysicsComponent { get }
 }

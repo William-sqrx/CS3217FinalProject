@@ -23,8 +23,8 @@ class Task: SKSpriteNode {
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.isDynamic = true
-        self.physicsBody?.contactTestBitMask = OldBitMask.Task.task
-        self.physicsBody?.collisionBitMask = OldBitMask.Task.task
+        self.physicsBody?.contactTestBitMask = BitMask.task
+        self.physicsBody?.collisionBitMask = BitMask.task
         self.physicsBody?.velocity = CGVector(dx: -100, dy: 0)
         self.userData = NSMutableDictionary()
         self.userData?["entity"] = self
@@ -49,8 +49,8 @@ class Task: SKSpriteNode {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let scene = self.scene as? GameScene,
-        let logic = scene.gameLogicDelegate as? GameLogic {
+        if let scene = self.scene as? LevelScene,
+        let logic = scene.gameLogicDelegate as? LevelLogic {
             logic.increaseMana(by: 10)
         }
         removeFromParent()

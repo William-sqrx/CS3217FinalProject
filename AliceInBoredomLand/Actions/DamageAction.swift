@@ -14,17 +14,17 @@ struct DamageAction: Action {
         if var hero = GameModelRegistry.shared.getHeroModel(id: modelId) {
             hero.health -= amount
             print("⚠️ Hero took \(amount) damage. Remaining: \(hero.health)")
-            GameModelRegistry.shared.setHeroModel(id: hero.id, model: hero)
+            LevelModelRegistry.shared.setHeroModel(id: hero.id, model: hero)
 
             if hero.health <= 0 {
                 node.remove()
                 GameModelRegistry.shared.removeHeroModel(id: modelId)
             }
 
-        } else if var monster = GameModelRegistry.shared.getMonsterModel(id: modelId) {
+        } else if var monster = LevelModelRegistry.shared.getMonsterModel(id: modelId) {
             monster.health -= amount
             print("💥 Monster took \(amount) damage. Remaining: \(monster.health)")
-            GameModelRegistry.shared.setMonsterModel(id: monster.id, model: monster)
+            LevelModelRegistry.shared.setMonsterModel(id: monster.id, model: monster)
 
             if monster.health <= 0 {
                 node.remove()

@@ -1,5 +1,5 @@
 //
-//  GameEntity.swift
+//  LevelEntity.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 18/3/25.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SpriteKit
 
-protocol OldGameEntity {
+protocol LevelEntity {
     var id: UUID { get }
     var health: Int { get set }
     var attack: Int { get }

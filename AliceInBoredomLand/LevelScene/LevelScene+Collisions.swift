@@ -1,5 +1,5 @@
 //
-//  GameScene+Collisions.swift
+//  LevelScene+Collisions.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 18/3/25.
@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-extension GameScene: SKPhysicsContactDelegate {
+extension LevelScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         let nodeA = contact.bodyA.node
         let nodeB = contact.bodyB.node
@@ -18,7 +18,7 @@ extension GameScene: SKPhysicsContactDelegate {
             print("✅ Monster collided with player castle!!!")
 
             if let castleNode = [nodeA, nodeB].first(where: { $0?.name == "player-castle" }) as? SKSpriteNode {
-                let damage = DamageCastleAction(amount: 1000, isPlayerCastle: true)
+                let damage = DamageCastleAction(amount: 1_000, isPlayerCastle: true)
                 ActionPerformer.perform(damage, on: castleNode)
             }
         }
@@ -42,8 +42,8 @@ extension GameScene: SKPhysicsContactDelegate {
                 let heroNode = [nodeA, nodeB].first(where: { $0?.name == "hero" }) as? SKSpriteNode,
                 let monsterId = monsterNode.userData?["entityId"] as? UUID,
                 let heroId = heroNode.userData?["entityId"] as? UUID,
-                let monster = GameModelRegistry.shared.getMonsterModel(id: monsterId),
-                let hero = GameModelRegistry.shared.getHeroModel(id: heroId)
+                let monster = LevelModelRegistry.shared.getMonsterModel(id: monsterId),
+                let hero = LevelModelRegistry.shared.getHeroModel(id: heroId)
             else { return }
 
             let knockbackMonster = KnockbackAction(direction: CGVector(dx: 1, dy: 0), duration: 0.2, speed: 30)
@@ -61,7 +61,7 @@ extension GameScene: SKPhysicsContactDelegate {
     }
 
     private func getAttackerAndDefender(from bodyA: SKPhysicsBody, and bodyB: SKPhysicsBody)
-    -> (attacker: OldGameEntity, defender: OldGameEntity)? {
+    -> (attacker: LevelEntity, defender: LevelEntity)? {
         let attackerBody: SKPhysicsBody
         let defenderBody: SKPhysicsBody
 
@@ -73,8 +73,8 @@ extension GameScene: SKPhysicsContactDelegate {
             defenderBody = bodyA
         }
 
-        guard let attackerEntity = attackerBody.node?.userData?["entity"] as? OldGameEntity,
-              let defenderEntity = defenderBody.node?.userData?["entity"] as? OldGameEntity else {
+        guard let attackerEntity = attackerBody.node?.userData?["entity"] as? LevelEntity,
+              let defenderEntity = defenderBody.node?.userData?["entity"] as? LevelEntity else {
             return nil
         }
 
