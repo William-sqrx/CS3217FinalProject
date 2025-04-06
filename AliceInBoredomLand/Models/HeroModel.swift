@@ -1,5 +1,5 @@
 //
-//  OldHeroModel.swift
+//  HeroModel.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 5/4/25.
@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-struct OldHeroModel {
+struct HeroModel {
     let id = UUID()
     var position: CGPoint
     var velocity: CGVector = .zero
@@ -16,7 +16,7 @@ struct OldHeroModel {
     var speed: CGFloat
     var manaCost: Int
     var tilePosition: Int = 0
-    var physics: OldPhysicsComponent
+    var physics: PhysicsComponent
     var knockbackTimer: TimeInterval = 0
     var lastAttackTime: TimeInterval = 0
     var attackCooldown: TimeInterval = 0.1

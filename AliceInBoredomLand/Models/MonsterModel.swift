@@ -1,5 +1,5 @@
 //
-//  OldMonsterModel.swift
+//  MonsterModel.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 1/4/25.
@@ -14,8 +14,7 @@ struct MonsterStats {
     let bitmask: UInt32
 }
 
-
-struct OldMonsterModel {
+struct MonsterModel {
     let id = UUID()
     var position: CGPoint
     var velocity: CGVector = .zero
@@ -23,11 +22,11 @@ struct OldMonsterModel {
     var attack: Int
     var speed: CGFloat
     var tilePosition: Int = 0
-    var physics: OldPhysicsComponent
+    var physics: PhysicsComponent
     var knockbackTimer: TimeInterval = 0
 }
 
-extension OldMonsterModel: Renderable {
+extension MonsterModel: Renderable {
     var renderSpec: RenderSpec {
         RenderSpec(
             textureName: "monster",
@@ -39,8 +38,8 @@ extension OldMonsterModel: Renderable {
     }
 }
 
-extension OldMonsterModel: PhysicsBodySpecProvider {
-    var physicsBodySpec: OldPhysicsComponent {
+extension MonsterModel: PhysicsBodySpecProvider {
+    var physicsBodySpec: PhysicsComponent {
         physics
     }
 }

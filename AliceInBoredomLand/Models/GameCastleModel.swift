@@ -1,5 +1,5 @@
 //
-//  OldGameCastleModel.swift
+//  GameCastleModel.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 5/4/25.
@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct OldGameCastleModel {
+struct GameCastleModel {
     let id = UUID()
     var position: CGPoint
     var health: Int
     var isPlayer: Bool
-    var physics: OldPhysicsComponent
+    var physics: PhysicsComponent
     var textureName: String
 }
 
-extension OldGameCastleModel: Renderable {
+extension GameCastleModel: Renderable {
     var renderSpec: RenderSpec {
         RenderSpec(
             textureName: textureName,
@@ -29,8 +29,8 @@ extension OldGameCastleModel: Renderable {
 }
 
 // 2. Conform to PhysicsBodySpecProvider
-extension OldGameCastleModel: PhysicsBodySpecProvider {
-    var physicsBodySpec: OldPhysicsComponent {
+extension GameCastleModel: PhysicsBodySpecProvider {
+    var physicsBodySpec: PhysicsComponent {
         physics
     }
 }

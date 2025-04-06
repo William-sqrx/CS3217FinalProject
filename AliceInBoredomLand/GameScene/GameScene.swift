@@ -8,7 +8,7 @@
 import SpriteKit
 
 final class HeroRenderer {
-    static func makeNode(from model: OldHeroModel) -> SKSpriteNode {
+    static func makeNode(from model: HeroModel) -> SKSpriteNode {
         let textureName: String = {
             switch model.type {
             case .archer:
@@ -41,7 +41,7 @@ final class HeroRenderer {
 }
 
 final class MonsterRenderer {
-    static func makeNode(from model: OldMonsterModel) -> SKSpriteNode {
+    static func makeNode(from model: MonsterModel) -> SKSpriteNode {
         let node = RendererAdapter.makeNode(from: model)
         node.physicsBody = PhysicsAdapter.makeBody(from: model)
         node.userData = ["entityId": model.id]
@@ -50,7 +50,7 @@ final class MonsterRenderer {
 }
 
 final class PlayerCastleRenderer {
-    static func makeNode(from model: OldGameCastleModel) -> SKSpriteNode {
+    static func makeNode(from model: GameCastleModel) -> SKSpriteNode {
         let node = RendererAdapter.makeNode(from: model)
         node.physicsBody = PhysicsAdapter.makeBody(from: model)
         node.userData = ["entityId": model.id]
@@ -59,7 +59,7 @@ final class PlayerCastleRenderer {
 }
 
 final class EnemyCastleRenderer {
-    static func makeNode(from model: OldGameCastleModel) -> SKSpriteNode {
+    static func makeNode(from model: GameCastleModel) -> SKSpriteNode {
         let node = RendererAdapter.makeNode(from: model)
         node.physicsBody = PhysicsAdapter.makeBody(from: model)
         node.userData = ["entityId": model.id]
@@ -69,14 +69,14 @@ final class EnemyCastleRenderer {
 
 class GameScene: SKScene {
     var gameLogicDelegate: GameLogicDelegate
-    var entities: [OldGameEntity] = []
+    var entities: [GameEntity] = []
     var tasks: [Task] = []
     var frameCounter = 0
-    var monsterModels: [UUID: OldMonsterModel] = [:]
+    var monsterModels: [UUID: MonsterModel] = [:]
     var monsterNodes: [UUID: SKSpriteNode] = [:]
-    var heroModels: [UUID: OldHeroModel] = [:]
+    var heroModels: [UUID: HeroModel] = [:]
     var heroNodes: [UUID: SKSpriteNode] = [:]
-    var castleModels: [UUID: OldGameCastleModel] = [:]
+    var castleModels: [UUID: GameCastleModel] = [:]
     var castleNodes: [UUID: SKSpriteNode] = [:]
 
     // Please use getNodeSize instead of this directly
@@ -200,7 +200,9 @@ class GameScene: SKScene {
     func spawnHero(atX tileX: Int = 1, atY tileY: Int = 5, type: HeroType) {
         assert(0 < tileX && tileX < GameScene.numCols - 1)
         assert(1 < tileY && tileY < GameScene.numRows)
-        guard let logic = gameLogicDelegate as? GameLogic else { return }
+        guard let logic = gameLogicDelegate as? GameLogic else {
+            return
+        }
 
         let position = adjustNodeOrigin(
             node: SKSpriteNode(), // dummy

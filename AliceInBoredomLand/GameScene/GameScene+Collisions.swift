@@ -18,7 +18,7 @@ extension GameScene: SKPhysicsContactDelegate {
             print("✅ Monster collided with player castle!!!")
 
             if let castleNode = [nodeA, nodeB].first(where: { $0?.name == "player-castle" }) as? SKSpriteNode {
-                let damage = DamageCastleAction(amount: 1000, isPlayerCastle: true)
+                let damage = DamageCastleAction(amount: 1_000, isPlayerCastle: true)
                 ActionPerformer.perform(damage, on: castleNode)
             }
         }
@@ -61,7 +61,7 @@ extension GameScene: SKPhysicsContactDelegate {
     }
 
     private func getAttackerAndDefender(from bodyA: SKPhysicsBody, and bodyB: SKPhysicsBody)
-    -> (attacker: OldGameEntity, defender: OldGameEntity)? {
+    -> (attacker: GameEntity, defender: GameEntity)? {
         let attackerBody: SKPhysicsBody
         let defenderBody: SKPhysicsBody
 
@@ -73,8 +73,8 @@ extension GameScene: SKPhysicsContactDelegate {
             defenderBody = bodyA
         }
 
-        guard let attackerEntity = attackerBody.node?.userData?["entity"] as? OldGameEntity,
-              let defenderEntity = defenderBody.node?.userData?["entity"] as? OldGameEntity else {
+        guard let attackerEntity = attackerBody.node?.userData?["entity"] as? GameEntity,
+              let defenderEntity = defenderBody.node?.userData?["entity"] as? GameEntity else {
             return nil
         }
 

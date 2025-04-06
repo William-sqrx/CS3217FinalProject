@@ -11,8 +11,8 @@ import ObjectiveC
 private var entityKey: UInt8 = 0
 
 extension SKPhysicsBody {
-    var entity: OldGameEntity? {
-        get { objc_getAssociatedObject(self, &entityKey) as? OldGameEntity }
+    var entity: GameEntity? {
+        get { objc_getAssociatedObject(self, &entityKey) as? GameEntity }
         set { objc_setAssociatedObject(self, &entityKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
 }

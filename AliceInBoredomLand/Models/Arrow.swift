@@ -25,8 +25,7 @@ class Arrow: SKSpriteNode {
         // Likely needs changing later
         self.physicsBody?.categoryBitMask = 0
         self.physicsBody?.collisionBitMask = 0
-        self.physicsBody?.contactTestBitMask = OldBitMask.Monster.titan | OldBitMask.Monster.minion | OldBitMask.Monster.mage
-        | OldBitMask.Castle.playerCastle | OldBitMask.Castle.enemyCastle
+        self.physicsBody?.contactTestBitMask = BitMask.enemyEntity
 
     }
 
