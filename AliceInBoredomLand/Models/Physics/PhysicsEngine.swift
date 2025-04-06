@@ -27,14 +27,13 @@ class PhysicsEngine: NSObject, PhysicsEngineFacade {
                 physicsEvents.removeAll(where: { $0 == event })
             }
         }
-        renderer.isPaused = true
+
         physicsArraySynchronizer.clearAll()
         for node in physicsScene.children {
             if let node = node as? SKSpriteNode, let physicsEntity = convertToExternalType(node) {
                 physicsArraySynchronizer.add(innerElement: node, outerElement: physicsEntity)
             }
         }
-        renderer.isPaused = false
 
         return physicsEvents
     }
@@ -63,7 +62,6 @@ class PhysicsEngine: NSObject, PhysicsEngineFacade {
         physicsScene = SKScene(size: boundarySize)
         renderer = SKView(frame: CGRect(origin: .zero, size: boundarySize))
         renderer.presentScene(physicsScene)
-        renderer.isPaused = true
         super.init()
 
         physicsScene.physicsWorld.contactDelegate = self
@@ -84,6 +82,8 @@ class PhysicsEngine: NSObject, PhysicsEngineFacade {
         physicsBody.velocity = CGVector(dx: CGFloat(entity.velocityX), dy: CGFloat(entity.velocityY))
         physicsBody.affectedByGravity = false
         physicsBody.allowsRotation = false
+        physicsBody.friction = 0
+        physicsBody.linearDamping = 0
         physicsBody.categoryBitMask = entity.entityCategories.bitMask
         physicsBody.collisionBitMask = entity.collidesWith.getBitMask()
         physicsBody.contactTestBitMask = entity.notifiesCollisionsWith.getBitMask()

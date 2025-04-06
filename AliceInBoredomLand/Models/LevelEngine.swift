@@ -36,9 +36,7 @@ class LevelEngine: LevelEngineFacade {
     func update(_ currentTime: TimeInterval) {
         frameCounter += 1
 
-        if true || frameCounter.isMultiple(of: 30) {
-            performFrameLogic(currentTime)
-        }
+        performFrameLogic(currentTime)
 
         updateProjectiles()
     }
@@ -49,6 +47,9 @@ class LevelEngine: LevelEngineFacade {
         // pending rework: need to find a way to sync physics updates into objects properly
         // also need to figure out whether LevelEntity should have a update function
         // since we'd need to capture the physicsengine as well?
+
+        let physicsEvents = physicsEngine.update(dt: currentTime)
+
         if frameIndex % 2 == 1 {
             entities.compactMap { $0 as? Hero }.forEach {
                 let oldEntity = $0.physicsEntity
@@ -68,8 +69,6 @@ class LevelEngine: LevelEngineFacade {
             $0.update(dt: currentTime)
             physicsEngine.replaceEntity(oldEntity, with: $0.physicsEntity)
         }
-
-        let physicsEvents = physicsEngine.update(dt: currentTime)
 
         for var entity in entities {
             for physicsBody in physicsEngine.physicsBodies where physicsBody == entity.physicsEntity {
@@ -149,10 +148,10 @@ class LevelEngine: LevelEngineFacade {
     func spawnMonster(atY tileY: Int = 5) {
         assert(1 < tileY && tileY < grid.numLanes)
 
-        let tileX = 2
+        let tileX = 3
         let size = grid.getNodeSize()
         let position = grid.adjustEntityOrigin(size: size, position: grid.getPosition(tileX: tileX, tileY: tileY))
-        let monster = Monster(health: 80, attack: 40, speed: 20, posX: position.x, posY: position.y, size: size)
+        let monster = Monster(health: 80, attack: 5, speed: 20, posX: position.x, posY: position.y, size: size)
 
         physicsEngine.addEntity(monster.physicsEntity)
         hitboxLevelEntitySynchronizer.add(innerElement: monster.physicsEntity, outerElement: monster)

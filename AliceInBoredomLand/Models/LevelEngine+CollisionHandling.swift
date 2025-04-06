@@ -35,28 +35,22 @@ extension LevelEngine {
         temp.velocityY = 0
 
         physicsEngine.replaceEntity(entity.physicsEntity, with: temp)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            var final = temp
-            final.velocityX = 0
-            final.velocityY = 0
-            self.physicsEngine.replaceEntity(temp, with: final)
-        }
     }
 
     private func processEntityHitType(attackerEntity: LevelEntity, defenderEntity: LevelEntity) {
-        let knockbackSpeed: CGFloat = 0
+        let knockbackSpeed: CGFloat = 200
 
         switch (attackerEntity, defenderEntity) {
 
         case (let hero as Hero, var monster as Monster):
             print("Hero attacked Monster!")
             monster.takeDamage(hero.attack)
-            applyKnockback(to: monster, speed: knockbackSpeed)
+            applyKnockback(to: hero, speed: knockbackSpeed)
 
         case (let monster as Monster, var hero as Hero):
             print("Monster attacked Hero!")
             hero.takeDamage(monster.attack)
-            applyKnockback(to: hero, speed: -knockbackSpeed)
+            applyKnockback(to: monster, speed: -knockbackSpeed)
 
         case (let hero as Hero, var castle as Castle):
             guard !castle.isPlayer else {
