@@ -79,8 +79,7 @@ class PhysicsEngine: NSObject, PhysicsEngineFacade {
 
         var physicsBody: SKPhysicsBody
 
-        physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: entity.width, height: entity.height),
-                                    center: CGPoint(x: entity.x, y: entity.y))
+        physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: entity.width, height: entity.height))
 
         physicsBody.velocity = CGVector(dx: CGFloat(entity.velocityX), dy: CGFloat(entity.velocityY))
         physicsBody.affectedByGravity = false
