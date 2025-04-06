@@ -1,0 +1,18 @@
+"/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Protocols/Renderable.swift":
+  object: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Renderable.o"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Renderable.swiftconstvalues"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Renderable.swiftdeps"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Renderable.d"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Renderable.dia"
+"/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Extensions/RenderNode+Extension.swift":
+  object: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode+Extension.o"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode+Extension.swiftdeps"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode+Extension.d"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode+Extension.swiftconstvalues"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode+Extension.dia"
+"/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Protocols/RenderNode.swift":
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode.swiftdeps"
+  object: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode.o"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode.swiftconstvalues"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode.dia"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode.d"

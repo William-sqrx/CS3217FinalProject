@@ -44,7 +44,7 @@ final class EntityFactory {
         return (model, node)
     }
 
-    static func makeMonster(position: CGPoint, size: CGSize) -> (model: OldMonsterModel, node: SKSpriteNode) {
+    static func makeMonster(position: CGPoint, size: CGSize) -> (model: OldMonsterModel, node: RenderNode) {
         let physics = OldPhysicsComponent(
             size: size,
             isDynamic: true,
@@ -67,12 +67,12 @@ final class EntityFactory {
             physics: physics
         )
 
-        let node = MonsterRenderer.makeNode(from: model)
+        var node = MonsterRenderer.makeNode(from: model)
         node.name = "monster"
         return (model, node)
     }
 
-    static func makeCastle(position: CGPoint, size: CGSize, isPlayer: Bool) -> (model: OldGameCastleModel, node: SKSpriteNode) {
+    static func makeCastle(position: CGPoint, size: CGSize, isPlayer: Bool) -> (model: OldGameCastleModel, node: RenderNode) {
         let physics = OldPhysicsComponent(
             size: size,
             isDynamic: false,
@@ -93,7 +93,7 @@ final class EntityFactory {
             textureName: isPlayer ? "player-castle" : "enemy-castle"
         )
 
-        let node = isPlayer
+        var node = isPlayer
             ? PlayerCastleRenderer.makeNode(from: model)
             : EnemyCastleRenderer.makeNode(from: model)
         return (model, node)

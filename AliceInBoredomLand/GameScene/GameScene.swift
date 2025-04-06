@@ -41,8 +41,8 @@ final class HeroRenderer {
 }
 
 final class MonsterRenderer {
-    static func makeNode(from model: OldMonsterModel) -> SKSpriteNode {
-        let node = RendererAdapter.makeNode(from: model)
+    static func makeNode(from model: OldMonsterModel) -> RenderNode {
+        var node = RendererAdapter.makeNode(from: model)
         node.physicsBody = PhysicsAdapter.makeBody(from: model)
         node.userData = ["entityId": model.id]
         return node
@@ -50,8 +50,8 @@ final class MonsterRenderer {
 }
 
 final class PlayerCastleRenderer {
-    static func makeNode(from model: OldGameCastleModel) -> SKSpriteNode {
-        let node = RendererAdapter.makeNode(from: model)
+    static func makeNode(from model: OldGameCastleModel) -> RenderNode {
+        var node = RendererAdapter.makeNode(from: model)
         node.physicsBody = PhysicsAdapter.makeBody(from: model)
         node.userData = ["entityId": model.id]
         return node
@@ -59,8 +59,8 @@ final class PlayerCastleRenderer {
 }
 
 final class EnemyCastleRenderer {
-    static func makeNode(from model: OldGameCastleModel) -> SKSpriteNode {
-        let node = RendererAdapter.makeNode(from: model)
+    static func makeNode(from model: OldGameCastleModel) -> RenderNode {
+        var node = RendererAdapter.makeNode(from: model)
         node.physicsBody = PhysicsAdapter.makeBody(from: model)
         node.userData = ["entityId": model.id]
         return node
@@ -73,11 +73,11 @@ class GameScene: SKScene {
     var tasks: [Task] = []
     var frameCounter = 0
     var monsterModels: [UUID: OldMonsterModel] = [:]
-    var monsterNodes: [UUID: SKSpriteNode] = [:]
+    var monsterNodes: [UUID: RenderNode] = [:]
     var heroModels: [UUID: OldHeroModel] = [:]
-    var heroNodes: [UUID: SKSpriteNode] = [:]
+    var heroNodes: [UUID: RenderNode] = [:]
     var castleModels: [UUID: OldGameCastleModel] = [:]
-    var castleNodes: [UUID: SKSpriteNode] = [:]
+    var castleNodes: [UUID: RenderNode] = [:]
 
     // Please use getNodeSize instead of this directly
     let tileSize = CGSize(width: width / Double(numCols),
@@ -236,12 +236,17 @@ class GameScene: SKScene {
             position: getPosition(tileX: tileX, tileY: tileY)
         )
 
-        let (model, node) = EntityFactory.makeMonster(position: position, size: size)
+        var (model, node) = EntityFactory.makeMonster(position: position, size: size)
         node.name = "monster"
+
+        guard let skNode = node.asSKNode else {
+            print("❌ Failed to cast RenderNode to SKNode for monster \(model.id)")
+            return
+        }
 
         monsterModels[model.id] = model
         monsterNodes[model.id] = node
-        addChild(node)
+        addChild(skNode)
     }
 
     private func spawnPlayerCastle() {
@@ -252,9 +257,14 @@ class GameScene: SKScene {
         )
 
         let (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: true)
+
+        guard let skNode = node.asSKNode else {
+            print("❌ Failed to cast RenderNode to SKNode for monster \(model.id)")
+            return
+        }
         castleModels[model.id] = model
         castleNodes[model.id] = node
-        addChild(node)
+        addChild(skNode)
     }
 
     private func spawnEnemyCastle() {
@@ -264,10 +274,14 @@ class GameScene: SKScene {
             position: getPosition(tileX: GameScene.numCols - 1, tileY: 4)
         )
 
-        let (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: false)
+        var (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: false)
+        guard let skNode = node.asSKNode else {
+            print("❌ Failed to cast RenderNode to SKNode for monster \(model.id)")
+            return
+        }
         castleModels[model.id] = model
         castleNodes[model.id] = node
-        addChild(node)
+        addChild(skNode)
     }
 
     private func spawnTask() {

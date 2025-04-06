@@ -14,10 +14,9 @@ final class GameModelRegistry {
     var gameLogicDelegate: GameLogicDelegate?
 
     var monsterModels: [UUID: OldMonsterModel] = [:]
-    var monsterNodes: [UUID: SKSpriteNode] = [:]
-
+    var monsterNodes: [UUID: RenderNode] = [:]
     var heroModels: [UUID: OldHeroModel] = [:]
-    var heroNodes: [UUID: SKSpriteNode] = [:]
+    var heroNodes: [UUID: RenderNode] = [:]
 
     var castleModels: [UUID: OldGameCastleModel] = [:]
     var castleNodes: [UUID: SKSpriteNode] = [:]
@@ -30,11 +29,11 @@ final class GameModelRegistry {
         monsterModels[id] = model
     }
 
-    func getMonsterNode(id: UUID) -> SKSpriteNode? {
+    func getMonsterNode(id: UUID) -> (RenderNode)? {
         monsterNodes[id]
     }
 
-    func setMonsterNode(id: UUID, node: SKSpriteNode) {
+    func setMonsterNode(id: UUID, node: RenderNode) {
         monsterNodes[id] = node
     }
 
@@ -47,11 +46,11 @@ final class GameModelRegistry {
         heroModels[id] = model
     }
 
-    func getHeroNode(id: UUID) -> SKSpriteNode? {
+    func getHeroNode(id: UUID) -> (RenderNode)? {
         heroNodes[id]
     }
 
-    func setHeroNode(id: UUID, node: SKSpriteNode) {
+    func setHeroNode(id: UUID, node: RenderNode) {
         heroNodes[id] = node
     }
     

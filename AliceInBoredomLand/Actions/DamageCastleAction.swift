@@ -10,7 +10,8 @@ import SpriteKit
 struct DamageCastleAction: Action {
     let amount: Int
     let isPlayerCastle: Bool
-    func perform(on node: SKSpriteNode, modelId: UUID) {
+
+    func perform(on node: RenderNode, modelId: UUID) {
         if let logic = GameModelRegistry.shared.gameLogicDelegate as? GameLogic {
             if isPlayerCastle {
                 logic.decrePlayerCastleHealth(amount: amount)

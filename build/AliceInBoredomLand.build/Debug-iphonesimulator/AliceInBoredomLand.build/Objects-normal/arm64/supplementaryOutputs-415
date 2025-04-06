@@ -1,0 +1,18 @@
+"/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Models/PhysicsBodySpecProvider.swift":
+  const-values: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/PhysicsBodySpecProvider.swiftconstvalues"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/PhysicsBodySpecProvider.d"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/PhysicsBodySpecProvider.dia"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/PhysicsBodySpecProvider.swiftdeps"
+  object: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/PhysicsBodySpecProvider.o"
+"/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Models/OldPhysicsComponent.swift":
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldPhysicsComponent.d"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldPhysicsComponent.swiftdeps"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldPhysicsComponent.swiftconstvalues"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldPhysicsComponent.dia"
+  object: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldPhysicsComponent.o"
+"/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Models/OldMonsterModel.swift":
+  object: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldMonsterModel.o"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldMonsterModel.d"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldMonsterModel.swiftdeps"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldMonsterModel.dia"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldMonsterModel.swiftconstvalues"

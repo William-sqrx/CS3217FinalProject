@@ -8,8 +8,7 @@
 import SpriteKit
 
 struct ActionPerformer {
-    static func perform(_ action: Action, on node: SKSpriteNode) {
-        print("action is", action)
+    static func perform(_ action: Action, on node: RenderNode) {
         guard let entityId = node.userData?["entityId"] as? UUID else {
             print("entity not found")
             return

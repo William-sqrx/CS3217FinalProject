@@ -8,7 +8,7 @@
 import SpriteKit
 
 final class RendererAdapter {
-    static func makeNode(from renderable: Renderable) -> SKSpriteNode {
+    static func makeNode(from renderable: Renderable) -> RenderNode {
         let spec = renderable.renderSpec
         let node = SKSpriteNode(texture: SKTexture(imageNamed: spec.textureName))
         node.size = spec.size
@@ -18,3 +18,4 @@ final class RendererAdapter {
         return node
     }
 }
+

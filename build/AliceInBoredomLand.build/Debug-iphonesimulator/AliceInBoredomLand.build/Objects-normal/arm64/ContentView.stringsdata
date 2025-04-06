@@ -1,0 +1,40 @@
+{
+  "source": "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Views/ContentView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Mana: %lld",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 45
+        }
+      },
+      {
+        "comment": "",
+        "key": "Spawn Archer",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 32
+        }
+      },
+      {
+        "comment": "",
+        "key": "Spawn Swordsman",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 37
+        }
+      },
+      {
+        "comment": "",
+        "key": "Spawn Tank",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 41
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,18 @@
+"/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Models/GameLogic.swift":
+  object: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/GameLogic.o"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/GameLogic.swiftdeps"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/GameLogic.d"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/GameLogic.swiftconstvalues"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/GameLogic.dia"
+"/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Models/OldGameCastleModel.swift":
+  object: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldGameCastleModel.o"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldGameCastleModel.d"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldGameCastleModel.swiftconstvalues"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldGameCastleModel.dia"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldGameCastleModel.swiftdeps"
+"/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Models/OldHeroModel.swift":
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldHeroModel.d"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldHeroModel.dia"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldHeroModel.swiftconstvalues"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldHeroModel.swiftdeps"
+  object: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/OldHeroModel.o"

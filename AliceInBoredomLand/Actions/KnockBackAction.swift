@@ -13,7 +13,7 @@ struct KnockbackAction: Action {
     let duration: TimeInterval
     let speed: CGFloat
 
-    func perform(on node: SKSpriteNode, modelId: UUID) {
+    func perform(on node: RenderNode, modelId: UUID) {
         node.physicsBody?.velocity = direction * speed
 
         if var model = GameModelRegistry.shared.getMonsterModel(id: modelId) {

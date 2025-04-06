@@ -1,0 +1,18 @@
+"/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Extensions/SKPhysicsBody+Entity.swift":
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/SKPhysicsBody+Entity.swiftdeps"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/SKPhysicsBody+Entity.swiftconstvalues"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/SKPhysicsBody+Entity.dia"
+  object: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/SKPhysicsBody+Entity.o"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/SKPhysicsBody+Entity.d"
+"/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Extensions/CGVector.swift":
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/CGVector.d"
+  object: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/CGVector.o"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/CGVector.dia"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/CGVector.swiftconstvalues"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/CGVector.swiftdeps"
+"/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Extensions/CGPoint.swift":
+  object: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/CGPoint.o"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/CGPoint.swiftdeps"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/CGPoint.d"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/CGPoint.dia"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/CGPoint.swiftconstvalues"
