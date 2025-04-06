@@ -1,5 +1,5 @@
 //
-//  GameModelRegistry.swift
+//  LevelModelRegistry.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 6/4/25.
@@ -8,10 +8,10 @@
 import Foundation
 import SpriteKit
 
-final class GameModelRegistry {
-    static var shared = GameModelRegistry()
+final class LevelModelRegistry {
+    static var shared = LevelModelRegistry()
 
-    var gameLogicDelegate: GameLogicDelegate?
+    var gameLogicDelegate: LevelLogicDelegate?
 
     var monsterModels: [UUID: MonsterModel] = [:]
     var monsterNodes: [UUID: SKSpriteNode] = [:]
@@ -19,7 +19,7 @@ final class GameModelRegistry {
     var heroModels: [UUID: HeroModel] = [:]
     var heroNodes: [UUID: SKSpriteNode] = [:]
 
-    var castleModels: [UUID: GameCastleModel] = [:]
+    var castleModels: [UUID: LevelCastleModel] = [:]
     var castleNodes: [UUID: SKSpriteNode] = [:]
 
     func getMonsterModel(id: UUID) -> MonsterModel? {

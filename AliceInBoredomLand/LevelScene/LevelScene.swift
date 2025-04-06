@@ -1,5 +1,5 @@
 //
-//  GameScene.swift
+//  LevelScene.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 17/3/25.
@@ -50,7 +50,7 @@ final class MonsterRenderer {
 }
 
 final class PlayerCastleRenderer {
-    static func makeNode(from model: GameCastleModel) -> SKSpriteNode {
+    static func makeNode(from model: LevelCastleModel) -> SKSpriteNode {
         let node = RendererAdapter.makeNode(from: model)
         node.physicsBody = PhysicsAdapter.makeBody(from: model)
         node.userData = ["entityId": model.id]
@@ -59,7 +59,7 @@ final class PlayerCastleRenderer {
 }
 
 final class EnemyCastleRenderer {
-    static func makeNode(from model: GameCastleModel) -> SKSpriteNode {
+    static func makeNode(from model: LevelCastleModel) -> SKSpriteNode {
         let node = RendererAdapter.makeNode(from: model)
         node.physicsBody = PhysicsAdapter.makeBody(from: model)
         node.userData = ["entityId": model.id]
@@ -67,9 +67,9 @@ final class EnemyCastleRenderer {
     }
 }
 
-class GameScene: SKScene {
-    var gameLogicDelegate: GameLogicDelegate
-    var entities: [GameEntity] = []
+class LevelScene: SKScene {
+    var gameLogicDelegate: LevelLogicDelegate
+    var entities: [LevelEntity] = []
     var tasks: [Task] = []
     var frameCounter = 0
     var grid: Grid
@@ -77,12 +77,12 @@ class GameScene: SKScene {
     var monsterNodes: [UUID: SKSpriteNode] = [:]
     var heroModels: [UUID: HeroModel] = [:]
     var heroNodes: [UUID: SKSpriteNode] = [:]
-    var castleModels: [UUID: GameCastleModel] = [:]
+    var castleModels: [UUID: LevelCastleModel] = [:]
     var castleNodes: [UUID: SKSpriteNode] = [:]
 
-    init(gameLogicDelegate: GameLogicDelegate,
-         background: SKColor = .gray,
-         grid: Grid) {
+    init(gameLogicDelegate: LevelLogicDelegate,
+         grid: Grid,
+         background: SKColor = .gray) {
         self.gameLogicDelegate = gameLogicDelegate
         self.entities = []
         self.grid = grid
@@ -133,24 +133,24 @@ class GameScene: SKScene {
     }
 
     private func checkWinLose() {
-        guard let logic = gameLogicDelegate as? GameLogic else {
+        guard let logic = gameLogicDelegate as? LevelLogic else {
             return
         }
 
         if logic.monsterCastleHealth <= 0 {
-            showEndGameLabel(text: "You Win 🎉")
+            showEndLevelLabel(text: "You Win 🎉")
             isPaused = true
             return
         }
 
         if logic.playerCastleHealth <= 0 {
-            showEndGameLabel(text: "You Lose 💀")
+            showEndLevelLabel(text: "You Lose 💀")
             isPaused = true
             return
         }
     }
 
-    private func showEndGameLabel(text: String) {
+    private func showEndLevelLabel(text: String) {
         let label = SKLabelNode(text: text)
         label.fontSize = 50
         label.fontColor = .white
@@ -176,21 +176,21 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.location(in: self)
             if let node = self.atPoint(location) as? SKLabelNode, node.name == "restart_button" {
-                restartGame()
+                restartLevel()
             }
         }
     }
 
-    private func restartGame() {
+    private func restartLevel() {
         guard let view = self.view else {
             return
         }
 
-        if let logic = gameLogicDelegate as? GameLogic {
+        if let logic = gameLogicDelegate as? LevelLogic {
             logic.reset()
         }
 
-        let newScene = GameScene(gameLogicDelegate: gameLogicDelegate, grid: Grid())
+        let newScene = LevelScene(gameLogicDelegate: gameLogicDelegate, grid: Grid())
         newScene.scaleMode = self.scaleMode
         view.presentScene(newScene, transition: SKTransition.fade(withDuration: 0.5))
     }
@@ -198,7 +198,7 @@ class GameScene: SKScene {
     func spawnHero(atX tileX: Int = 1, atY tileY: Int = 5, type: HeroType) {
         assert(0 < tileX && tileX < grid.numCols - 1)
         assert(1 < tileY && tileY < grid.numLanes)
-        guard let logic = gameLogicDelegate as? GameLogic else {
+        guard let logic = gameLogicDelegate as? LevelLogic else {
             return
         }
 
@@ -244,7 +244,7 @@ class GameScene: SKScene {
     private func spawnPlayerCastle() {
         let size = grid.getNodeSize(numTileY: 5)
         let position = grid.adjustNodeOrigin(
-            size: size, position: grid.getPosition(tileX: 0, tileY: 4)
+            size: size, position: grid.getPosition(tileX: 0, tileY: 2)
         )
 
         let (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: true)
@@ -256,7 +256,7 @@ class GameScene: SKScene {
     private func spawnEnemyCastle() {
         let size = grid.getNodeSize(numTileY: 5)
         let position = grid.adjustNodeOrigin(
-            size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 4)
+            size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 2)
         )
 
         let (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: false)
@@ -303,15 +303,15 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         initialiseEntities()
         physicsWorld.contactDelegate = self
-        GameModelRegistry.shared.monsterModels = monsterModels
-        GameModelRegistry.shared.monsterNodes = monsterNodes
-        GameModelRegistry.shared.heroModels = heroModels
-        GameModelRegistry.shared.heroNodes = heroNodes
-        GameModelRegistry.shared.gameLogicDelegate = gameLogicDelegate
+        LevelModelRegistry.shared.monsterModels = monsterModels
+        LevelModelRegistry.shared.monsterNodes = monsterNodes
+        LevelModelRegistry.shared.heroModels = heroModels
+        LevelModelRegistry.shared.heroNodes = heroNodes
+        LevelModelRegistry.shared.gameLogicDelegate = gameLogicDelegate
     }
 }
 
-extension GameScene {
+extension LevelScene {
     func isMonsterInRange(_ archerPosition: CGPoint, range: CGFloat) -> Bool {
         for (_, model) in monsterModels {
             let distance = (model.position - archerPosition).length()

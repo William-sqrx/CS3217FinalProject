@@ -67,7 +67,7 @@ final class EntityFactory {
     }
 
     static func makeCastle(position: CGPoint, size: CGSize, isPlayer: Bool)
-    -> (model: GameCastleModel, node: SKSpriteNode) {
+    -> (model: LevelCastleModel, node: SKSpriteNode) {
         let physics = PhysicsComponent(
             size: size,
             isDynamic: false,
@@ -80,7 +80,7 @@ final class EntityFactory {
             : BitMask.playerEntity
         )
 
-        let model = GameCastleModel(
+        let model = LevelCastleModel(
             position: position,
             health: 500,
             isPlayer: isPlayer,

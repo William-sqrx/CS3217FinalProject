@@ -7,13 +7,6 @@
 
 import Foundation
 
-struct MonsterStats {
-    let health: Int
-    let attack: Int
-    let speed: CGFloat
-    let bitmask: UInt32
-}
-
 struct MonsterModel {
     let id = UUID()
     var position: CGPoint
@@ -24,6 +17,13 @@ struct MonsterModel {
     var tilePosition: Int = 0
     var physics: PhysicsComponent
     var knockbackTimer: TimeInterval = 0
+}
+
+struct MonsterStats {
+    let health: Int
+    let attack: Int
+    let speed: CGFloat
+    let bitmask: UInt32
 }
 
 extension MonsterModel: Renderable {
