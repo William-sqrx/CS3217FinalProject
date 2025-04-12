@@ -15,6 +15,8 @@ final class RendererAdapter {
         node.position = spec.position
         node.zPosition = spec.zPosition
         node.name = spec.name
+        node.physicsBody = PhysicsAdapter.makeBody(from: renderable)
+        node.userData = ["entityId": renderable.renderSpec.id]
         return node
     }
 }

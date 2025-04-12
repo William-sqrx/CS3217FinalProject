@@ -39,7 +39,7 @@ final class EntityFactory {
             type: type
         )
 
-        var node = HeroRenderer.makeNode(from: model)
+        var node = RendererAdapter.makeNode(from: model)
         node.name = "hero"
         return (model, node)
     }
@@ -61,7 +61,7 @@ final class EntityFactory {
             physics: physics
         )
 
-        var node = MonsterRenderer.makeNode(from: model)
+        var node = RendererAdapter.makeNode(from: model)
         node.name = "monster"
         return (model, node)
     }
@@ -84,9 +84,7 @@ final class EntityFactory {
             textureName: isPlayer ? "player-castle" : "enemy-castle"
         )
 
-        let node = isPlayer
-            ? PlayerCastleRenderer.makeNode(from: model)
-            : EnemyCastleRenderer.makeNode(from: model)
+        let node = RendererAdapter.makeNode(from: model)
         return (model, node)
     }
 

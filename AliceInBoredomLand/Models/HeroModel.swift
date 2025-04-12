@@ -39,6 +39,7 @@ enum HeroType {
 extension HeroModel: Renderable {
     var renderSpec: RenderSpec {
         RenderSpec(
+            id: id,
             textureName: getName(),
             size: physics.size,
             position: position,

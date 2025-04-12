@@ -19,6 +19,7 @@ struct LevelCastleModel {
 extension LevelCastleModel: Renderable {
     var renderSpec: RenderSpec {
         RenderSpec(
+            id: id,
             textureName: textureName,
             size: physics.size,
             position: position,

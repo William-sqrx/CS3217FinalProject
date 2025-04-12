@@ -29,6 +29,7 @@ struct MonsterStats {
 extension MonsterModel: Renderable {
     var renderSpec: RenderSpec {
         RenderSpec(
+            id: id,
             textureName: "monster",
             size: physics.size,
             position: position,

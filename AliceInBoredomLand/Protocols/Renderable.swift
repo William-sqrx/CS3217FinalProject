@@ -7,11 +7,12 @@
 
 import Foundation
 
-protocol Renderable {
+protocol Renderable: PhysicsBodySpecProvider {
     var renderSpec: RenderSpec { get }
 }
 
 struct RenderSpec {
+    let id: UUID
     let textureName: String
     let size: CGSize
     let position: CGPoint

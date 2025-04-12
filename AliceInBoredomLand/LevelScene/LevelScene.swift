@@ -7,42 +7,6 @@
 
 import SpriteKit
 
-final class HeroRenderer {
-    static func makeNode(from model: HeroModel) -> RenderNode {
-        var node = RendererAdapter.makeNode(from: model)
-        node.physicsBody = PhysicsAdapter.makeBody(from: model)
-        node.userData = ["entityId": model.id]
-        return node
-    }
-}
-
-final class MonsterRenderer {
-    static func makeNode(from model: MonsterModel) -> RenderNode {
-        var node = RendererAdapter.makeNode(from: model)
-        node.physicsBody = PhysicsAdapter.makeBody(from: model)
-        node.userData = ["entityId": model.id]
-        return node
-    }
-}
-
-final class PlayerCastleRenderer {
-    static func makeNode(from model: LevelCastleModel) -> RenderNode {
-        var node = RendererAdapter.makeNode(from: model)
-        node.physicsBody = PhysicsAdapter.makeBody(from: model)
-        node.userData = ["entityId": model.id]
-        return node
-    }
-}
-
-final class EnemyCastleRenderer {
-    static func makeNode(from model: LevelCastleModel) -> RenderNode {
-        var node = RendererAdapter.makeNode(from: model)
-        node.physicsBody = PhysicsAdapter.makeBody(from: model)
-        node.userData = ["entityId": model.id]
-        return node
-    }
-}
-
 class LevelScene: SKScene {
     var gameLogicDelegate: LevelLogicDelegate
     var entities: [LevelEntity] = []
