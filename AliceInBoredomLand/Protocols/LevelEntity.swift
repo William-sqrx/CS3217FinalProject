@@ -8,14 +8,21 @@
 import SwiftUI
 import SpriteKit
 
-protocol LevelEntity {
-    var id: UUID { get }
-    var health: Int { get set }
-    var attack: Int { get }
-    var speed: CGFloat { get }
-    var node: SKSpriteNode { get }
+class LevelEntity: PhysicsBodySpecProvider, Renderable {
+    var physicsBodySpec: PhysicsComponent
+    var renderSpec: RenderSpec
 
-    func update(deltaTime: TimeInterval)
-    func takeDamage(_ amount: Int)
-    var isAlive: Bool { get }
+    var position: CGPoint
+    var velocity: CGVector = .zero
+    var knockbackTimer: TimeInterval = 0.0
+    var health: Int
+
+    init(physicsBodySpec: PhysicsComponent, renderSpec: RenderSpec,
+         position: CGPoint, velocity: CGVector, health: Int) {
+        self.physicsBodySpec = physicsBodySpec
+        self.renderSpec = renderSpec
+        self.position = position
+        self.velocity = velocity
+        self.health = health
+    }
 }

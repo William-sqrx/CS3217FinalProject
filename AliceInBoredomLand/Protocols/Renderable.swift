@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Renderable {
+protocol Renderable: PhysicsBodySpecProvider {
     var renderSpec: RenderSpec { get }
 }
 

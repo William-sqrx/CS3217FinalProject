@@ -7,21 +7,45 @@
 
 import SpriteKit
 
-struct HeroModel {
-    let id = UUID()
-    var position: CGPoint
-    var velocity: CGVector = .zero
-    var health: Int
+class HeroModel: LevelEntity {
     var attack: Int
     var speed: CGFloat
     var manaCost: Int
-    var tilePosition: Int = 0
     var physics: PhysicsComponent
-    var knockbackTimer: TimeInterval = 0
     var lastAttackTime: TimeInterval = 0
     var attackCooldown: TimeInterval = 0.1
     var attackRange: CGFloat = 500
     var type: HeroType
+
+    init(position: CGPoint, health: Int, attack: Int, speed: CGFloat, manaCost: Int,
+         physics: PhysicsComponent, type: HeroType) {
+        self.attack = attack
+        self.speed = speed
+        self.manaCost = manaCost
+        self.physics = physics
+        self.type = type
+
+        let name: String
+
+        switch type {
+        case .archer:
+            name = "archer"
+        case .swordsman:
+            name = "archer"
+        case .tank:
+            name = "archer"
+        }
+        let renderSpec = RenderSpec(
+            textureName: name,
+            size: physics.size,
+            position: position,
+            zPosition: 1,
+            name: name
+        )
+
+        super.init(physicsBodySpec: physics, renderSpec: renderSpec,
+                   position: position, velocity: .zero, health: health)
+    }
 }
 
 struct HeroStats {
@@ -33,35 +57,7 @@ struct HeroStats {
 }
 
 enum HeroType {
-    case swordsman, archer, tank
-}
-
-extension HeroModel: Renderable {
-    var renderSpec: RenderSpec {
-        RenderSpec(
-            textureName: getName(),
-            size: physics.size,
-            position: position,
-            zPosition: 1,
-            name: getName()
-        )
-    }
-
-    private func getName() -> String {
-        switch type {
-        case .archer:
-            return "archer"
-        case .swordsman:
-            return "swordsman"
-        case .tank:
-            return "tank"
-        }
-    }
-
-}
-
-extension HeroModel: PhysicsBodySpecProvider {
-    var physicsBodySpec: PhysicsComponent {
-        physics
-    }
+    case archer
+    case swordsman
+    case tank
 }

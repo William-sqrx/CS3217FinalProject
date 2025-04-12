@@ -18,7 +18,7 @@ extension LevelScene: SKPhysicsContactDelegate {
             print("✅ Monster collided with player castle!!!")
 
             if let castleNode = [nodeA, nodeB].first(where: { $0?.name == "player-castle" }) as? SKSpriteNode {
-                let damage = DamageCastleAction(amount: 1_000, isPlayerCastle: true)
+                let damage = DamageCastleAction(amount: 1_000, isPlayerCastle: true, logic: levelLogic)
                 ActionPerformer.perform(damage, on: castleNode)
             }
         }
@@ -28,7 +28,7 @@ extension LevelScene: SKPhysicsContactDelegate {
             print("✅ Hero collided with monster castle!")
 
             if let castleNode = [nodeA, nodeB].first(where: { $0?.name == "monster-castle" }) as? SKSpriteNode {
-                let damage = DamageCastleAction(amount: 10, isPlayerCastle: false)
+                let damage = DamageCastleAction(amount: 10, isPlayerCastle: false, logic: levelLogic)
                 ActionPerformer.perform(damage, on: castleNode)
             }
         }

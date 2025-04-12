@@ -7,30 +7,25 @@
 
 import Foundation
 
-struct LevelCastleModel {
-    let id = UUID()
-    var position: CGPoint
-    var health: Int
-    var isPlayer: Bool
+class LevelCastleModel: LevelEntity {
     var physics: PhysicsComponent
-    var textureName: String
-}
+    var isPlayer: Bool
 
-extension LevelCastleModel: Renderable {
-    var renderSpec: RenderSpec {
-        RenderSpec(
+    var textureName: String
+
+    init(position: CGPoint, health: Int, isPlayer: Bool, physics: PhysicsComponent, textureName: String) {
+        self.isPlayer = isPlayer
+        self.physics = physics
+        self.textureName = textureName
+
+        let renderSpec = RenderSpec(
             textureName: textureName,
             size: physics.size,
             position: position,
             zPosition: 1,
             name: isPlayer ? "player-castle" : "monster-castle"
         )
-    }
-}
 
-// 2. Conform to PhysicsBodySpecProvider
-extension LevelCastleModel: PhysicsBodySpecProvider {
-    var physicsBodySpec: PhysicsComponent {
-        physics
+        super.init(physicsBodySpec: physics, renderSpec: renderSpec, position: position, velocity: .zero, health: health)
     }
 }

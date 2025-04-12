@@ -7,16 +7,28 @@
 
 import Foundation
 
-struct MonsterModel {
-    let id = UUID()
-    var position: CGPoint
-    var velocity: CGVector = .zero
-    var health: Int
+class MonsterModel: LevelEntity {
     var attack: Int
     var speed: CGFloat
-    var tilePosition: Int = 0
     var physics: PhysicsComponent
-    var knockbackTimer: TimeInterval = 0
+
+    init(position: CGPoint, health: Int, attack: Int, speed: CGFloat,
+         physics: PhysicsComponent) {
+        self.attack = attack
+        self.speed = speed
+        self.physics = physics
+
+        let renderSpec = RenderSpec(
+            textureName: "monster",
+            size: physics.size,
+            position: position,
+            zPosition: 1,
+            name: "monster"
+        )
+
+        super.init(physicsBodySpec: physics, renderSpec: renderSpec,
+                   position: position, velocity: .zero, health: health)
+    }
 }
 
 struct MonsterStats {
@@ -24,22 +36,4 @@ struct MonsterStats {
     let attack: Int
     let speed: CGFloat
     let bitmask: UInt32
-}
-
-extension MonsterModel: Renderable {
-    var renderSpec: RenderSpec {
-        RenderSpec(
-            textureName: "monster",
-            size: physics.size,
-            position: position,
-            zPosition: 1,
-            name: "monster"
-        )
-    }
-}
-
-extension MonsterModel: PhysicsBodySpecProvider {
-    var physicsBodySpec: PhysicsComponent {
-        physics
-    }
 }

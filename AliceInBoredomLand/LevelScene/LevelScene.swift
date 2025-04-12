@@ -7,44 +7,8 @@
 
 import SpriteKit
 
-final class HeroRenderer {
-    static func makeNode(from model: HeroModel) -> RenderNode {
-        var node = RendererAdapter.makeNode(from: model)
-        node.physicsBody = PhysicsAdapter.makeBody(from: model)
-        node.userData = ["entityId": model.id]
-        return node
-    }
-}
-
-final class MonsterRenderer {
-    static func makeNode(from model: MonsterModel) -> RenderNode {
-        var node = RendererAdapter.makeNode(from: model)
-        node.physicsBody = PhysicsAdapter.makeBody(from: model)
-        node.userData = ["entityId": model.id]
-        return node
-    }
-}
-
-final class PlayerCastleRenderer {
-    static func makeNode(from model: LevelCastleModel) -> RenderNode {
-        var node = RendererAdapter.makeNode(from: model)
-        node.physicsBody = PhysicsAdapter.makeBody(from: model)
-        node.userData = ["entityId": model.id]
-        return node
-    }
-}
-
-final class EnemyCastleRenderer {
-    static func makeNode(from model: LevelCastleModel) -> RenderNode {
-        var node = RendererAdapter.makeNode(from: model)
-        node.physicsBody = PhysicsAdapter.makeBody(from: model)
-        node.userData = ["entityId": model.id]
-        return node
-    }
-}
-
 class LevelScene: SKScene {
-    var gameLogicDelegate: LevelLogicDelegate
+    var levelLogic: LevelLogicDelegate
     var entities: [LevelEntity] = []
     var tasks: [Task] = []
     var frameCounter = 0
@@ -59,7 +23,7 @@ class LevelScene: SKScene {
     init(gameLogicDelegate: LevelLogicDelegate,
          grid: Grid,
          background: SKColor = .gray) {
-        self.gameLogicDelegate = gameLogicDelegate
+        self.levelLogic = gameLogicDelegate
         self.entities = []
         self.grid = grid
         super.init(size: CGSize(width: grid.width, height: grid.height))
@@ -114,7 +78,7 @@ class LevelScene: SKScene {
     }
 
     private func checkWinLose() {
-        guard let logic = gameLogicDelegate as? LevelLogic else {
+        guard let logic = levelLogic as? LevelLogic else {
             return
         }
 
@@ -167,11 +131,11 @@ class LevelScene: SKScene {
             return
         }
 
-        if let logic = gameLogicDelegate as? LevelLogic {
+        if let logic = levelLogic as? LevelLogic {
             logic.reset()
         }
 
-        let newScene = LevelScene(gameLogicDelegate: gameLogicDelegate, grid: Grid())
+        let newScene = LevelScene(gameLogicDelegate: levelLogic, grid: Grid())
         newScene.scaleMode = self.scaleMode
         view.presentScene(newScene, transition: SKTransition.fade(withDuration: 0.5))
     }
@@ -179,7 +143,7 @@ class LevelScene: SKScene {
     func spawnHero(type: HeroType, atX tileX: Int = 1, atY tileY: Int = 5) {
         assert(0 < tileX && tileX < grid.numCols - 1)
         assert(1 < tileY && tileY < grid.numLanes)
-        guard let logic = gameLogicDelegate as? LevelLogic else {
+        guard let logic = levelLogic as? LevelLogic else {
             return
         }
 

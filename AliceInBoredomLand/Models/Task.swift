@@ -50,7 +50,7 @@ class Task: SKSpriteNode {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let scene = self.scene as? LevelScene,
-        let logic = scene.gameLogicDelegate as? LevelLogic {
+        let logic = scene.levelLogic as? LevelLogic {
             logic.increaseMana(by: 10)
         }
         removeFromParent()
