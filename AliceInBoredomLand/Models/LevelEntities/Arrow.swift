@@ -7,21 +7,22 @@
 
 import SpriteKit
 
-class Arrow: LevelEntity {
+class Arrow: Projectile {
+    static let arrowSize = CGSize(width: 20, height: 5)
     let maxRange: CGFloat = 800
     private var startPosition: CGPoint = .zero
 
-    init(position: CGPoint, damage: Int) {
-        let size = CGSize(width: 20, height: 5)
+    init(position: CGPoint, damage: Int, isPlayer: Bool) {
         let physics = PhysicsComponent(
-            size: size,
+            size: Arrow.arrowSize,
             isDynamic: true,
             categoryBitMask: 0,
-            contactTestBitMask: BitMask.enemyEntity,
-            collisionBitMask: 0
+            contactTestBitMask: isPlayer ? BitMask.enemyEntity : BitMask.playerEntity,
+            collisionBitMask: isPlayer ? BitMask.enemyEntity : BitMask.playerEntity
         )
-        super.init(textureName: "arrow", size: size, position: position,
-                   health: 1, attack: damage, moveSpeed: 500,
+
+        super.init(textureName: "arrow", size: Arrow.arrowSize, position: position, isPlayer: isPlayer,
+                   attack: damage, moveSpeed: 500,
                    physics: physics)
         self.startPosition = position
         self.physicsBody?.mass = 0 // Need to refactor into PhysicsComponent?

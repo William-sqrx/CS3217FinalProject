@@ -29,4 +29,9 @@ class EntityFactory {
     func makeCastle(position: CGPoint, size: CGSize, isPlayer: Bool) -> Castle {
         Castle(position: position, size: size, isPlayer: isPlayer)
     }
+
+    func makeProjectile(type: String, isPlayer: Bool, size: CGSize, position: CGPoint, damage: Int) -> Projectile {
+        // Subdivide further if needed, not using size for now
+        Arrow(position: position, damage: damage, isPlayer: isPlayer)
+    }
 }

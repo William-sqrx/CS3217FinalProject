@@ -74,6 +74,13 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         entities.append(castle)
     }
 
+    func spawnProjectile(type: String, isPlayer: Bool, size: CGSize, position: CGPoint, damage: Int) {
+        let projectile = factory.makeProjectile(type: "arrow",
+                                               isPlayer: isPlayer, size: size, position: position, damage: damage)
+        addChild(projectile)
+        entities.append(projectile)
+    }
+
     func spawnTask() {
         let size = grid.getNodeSize()
         let pos = grid.adjustNodeOrigin(size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 1))
@@ -100,6 +107,13 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
             if let hero = entity as? Hero, hero.shouldAttack(currentTime: currentTime) {
                 // Add arrow logic later
                 hero.lastAttackTime = currentTime
+            }
+            if let archer = entity as? Archer {
+                for otherEntity in entities where
+                abs(archer.position.x - otherEntity.position.x) < archer.attackRange && otherEntity is Monster {
+                    spawnProjectile(type: "",
+                                    isPlayer: true, size: Arrow.arrowSize, position: archer.position, damage: 20)
+                }
             }
         }
 
