@@ -28,9 +28,9 @@ struct ContentView: View {
                 Spacer()
                 HStack {
                     // Button to spawn an Archer
-//                    Button("Spawn Archer") {
-//                        gameScene.spawnHero(atY: tileY, type: .archer)
-//                    }
+                    Button("Spawn Archer") {
+                        gameScene.spawnHero(type: "archer", tileY: tileY)
+                    }
 
                     // Button to spawn a Swordsman
                     Button("Spawn Swordsman") {

@@ -20,12 +20,11 @@ class Arrow: GameEntity {
             contactTestBitMask: BitMask.enemyEntity,
             collisionBitMask: 0
         )
-        super.init(textureName: "arrow", size: size, position: position, health: 1, attack: damage,
-                   moveSpeed: 0, physics: physics)
-        self.name = "arrow"
+        super.init(textureName: "arrow", size: size, position: position,
+                   health: 1, attack: damage, moveSpeed: 500,
+                   physics: physics)
         self.startPosition = position
         self.physicsBody?.mass = 0
-        self.velocity = CGVector(dx: 500, dy: 0)
     }
 
     override func update(deltaTime: TimeInterval) {

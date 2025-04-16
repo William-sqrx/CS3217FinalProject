@@ -18,7 +18,8 @@ class Hero: GameEntity {
          manaCost: Int, physics: PhysicsComponent) {
         self.manaCost = manaCost
         super.init(textureName: textureName, size: size, position: position,
-                   health: health, attack: attack, moveSpeed: moveSpeed, physics: physics)
+                   health: health, attack: attack, moveSpeed: moveSpeed,
+                   physics: physics)
         self.name = "hero"
     }
 

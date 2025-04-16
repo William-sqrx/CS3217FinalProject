@@ -17,7 +17,8 @@ class Swordsman: Hero {
             contactTestBitMask: BitMask.enemyEntity,
             collisionBitMask: BitMask.enemyEntity
         )
-        super.init(textureName: "swordsman", size: size, position: position, health: 100, attack: 50, moveSpeed: 20,
-                   manaCost: 15, physics: physics)
+        super.init(textureName: "swordsman", size: size, position: position,
+                   health: 100, attack: 50, moveSpeed: 20, manaCost: 15,
+                   physics: physics)
     }
 }

@@ -17,8 +17,9 @@ class Archer: Hero {
             contactTestBitMask: BitMask.enemyEntity,
             collisionBitMask: BitMask.enemyEntity
         )
-        super.init(textureName: "archer", size: size, position: position, health: 90, attack: 2, moveSpeed: 25,
-                   manaCost: 10, physics: physics)
+        super.init(textureName: "archer", size: size, position: position,
+                   health: 90, attack: 2, moveSpeed: 25, manaCost: 10,
+                   physics: physics)
     }
 
     override func update(deltaTime: TimeInterval) {
