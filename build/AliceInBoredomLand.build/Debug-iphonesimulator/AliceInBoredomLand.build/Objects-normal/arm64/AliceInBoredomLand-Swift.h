@@ -306,42 +306,80 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @class SKTexture;
 @class UIColor;
 
-SWIFT_CLASS("_TtC18AliceInBoredomLand5Arrow")
-@interface Arrow : SKSpriteNode
-- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER SWIFT_UNAVAILABLE;
+/// The root class for all in-game entities.
+/// Combines game logic, physics, and rendering into one object.
+SWIFT_CLASS("_TtC18AliceInBoredomLand10GameEntity")
+@interface GameEntity : SKSpriteNode
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)initWithTexture:(SKTexture * _Nullable)texture color:(UIColor * _Nonnull)color size:(CGSize)size SWIFT_UNAVAILABLE;
 @end
 
-@class UITouch;
-@class UIEvent;
+
+SWIFT_CLASS("_TtC18AliceInBoredomLand4Hero")
+@interface Hero : GameEntity
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC18AliceInBoredomLand6Archer")
+@interface Archer : Hero
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC18AliceInBoredomLand5Arrow")
+@interface Arrow : GameEntity
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC18AliceInBoredomLand6Castle")
+@interface Castle : GameEntity
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
 @class SKView;
+@class SKPhysicsContact;
 
 SWIFT_CLASS("_TtC18AliceInBoredomLand10LevelScene")
-@interface LevelScene : SKScene
-- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER SWIFT_UNAVAILABLE;
-- (void)update:(NSTimeInterval)currentTime;
-- (void)touchesBegan:(NSSet<UITouch *> * _Nonnull)touches withEvent:(UIEvent * _Nullable)event;
+@interface LevelScene : SKScene <SKPhysicsContactDelegate>
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 - (void)didMoveToView:(SKView * _Nonnull)view;
+- (void)update:(NSTimeInterval)currentTime;
+- (void)didBeginContact:(SKPhysicsContact * _Nonnull)contact;
 - (nonnull instancetype)initWithSize:(CGSize)size SWIFT_UNAVAILABLE;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
 
-@class SKPhysicsContact;
-
-@interface LevelScene (SWIFT_EXTENSION(AliceInBoredomLand)) <SKPhysicsContactDelegate>
-- (void)didBeginContact:(SKPhysicsContact * _Nonnull)contact;
+SWIFT_CLASS("_TtC18AliceInBoredomLand7Monster")
+@interface Monster : GameEntity
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
 @end
 
 
 
+SWIFT_CLASS("_TtC18AliceInBoredomLand9Swordsman")
+@interface Swordsman : Hero
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC18AliceInBoredomLand4Tank")
+@interface Tank : Hero
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class UITouch;
+@class UIEvent;
 
 SWIFT_CLASS("_TtC18AliceInBoredomLand4Task")
-@interface Task : SKSpriteNode
-- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER SWIFT_UNAVAILABLE;
+@interface Task : GameEntity
 - (void)touchesBegan:(NSSet<UITouch *> * _Nonnull)touches withEvent:(UIEvent * _Nullable)event;
-- (nonnull instancetype)initWithTexture:(SKTexture * _Nullable)texture color:(UIColor * _Nonnull)color size:(CGSize)size SWIFT_UNAVAILABLE;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
 @end
 
 

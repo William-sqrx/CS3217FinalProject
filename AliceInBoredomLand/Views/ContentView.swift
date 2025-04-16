@@ -28,17 +28,17 @@ struct ContentView: View {
                 Spacer()
                 HStack {
                     // Button to spawn an Archer
-                    Button("Spawn Archer") {
-                        gameScene.spawnHero(atY: tileY, type: .archer)
-                    }
+//                    Button("Spawn Archer") {
+//                        gameScene.spawnHero(atY: tileY, type: .archer)
+//                    }
 
                     // Button to spawn a Swordsman
                     Button("Spawn Swordsman") {
-                        gameScene.spawnHero(atY: tileY, type: .swordsman)
+                        gameScene.spawnHero(tileY: tileY, type: "swordsman")
                     }
 
                     Button("Spawn Tank") {
-                        gameScene.spawnHero(atY: tileY, type: .tank)
+                        gameScene.spawnHero(tileY: tileY, type: "tank")
                     }
 
                     Text("Mana: \(gameLogic.mana)")

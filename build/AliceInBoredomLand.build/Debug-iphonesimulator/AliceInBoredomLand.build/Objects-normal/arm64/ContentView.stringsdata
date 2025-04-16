@@ -1,5 +1,5 @@
 {
-  "source": "/Users/william_sqrx/Desktop/CS3217/AliceInBoredomLand/AliceInBoredomLand/Views/ContentView.swift",
+  "source": "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/AliceInBoredomLand/Views/ContentView.swift",
   "tables": {
     "Localizable": [
       {
@@ -8,14 +8,6 @@
         "location": {
           "startingColumn": 26,
           "startingLine": 44
-        }
-      },
-      {
-        "comment": "",
-        "key": "Spawn Archer",
-        "location": {
-          "startingColumn": 28,
-          "startingLine": 31
         }
       },
       {

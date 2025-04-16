@@ -1,0 +1,18 @@
+"/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/AliceInBoredomLand/AliceInBoredomLandApp.swift":
+  const-values: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/AliceInBoredomLandApp.swiftconstvalues"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/AliceInBoredomLandApp.dia"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/AliceInBoredomLandApp.swiftdeps"
+  object: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/AliceInBoredomLandApp.o"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/AliceInBoredomLandApp.d"
+"/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/AliceInBoredomLand/Models/Archer.swift":
+  const-values: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Archer.swiftconstvalues"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Archer.d"
+  object: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Archer.o"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Archer.swiftdeps"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Archer.dia"
+"/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/DerivedSources/GeneratedAssetSymbols.swift":
+  const-values: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/GeneratedAssetSymbols.d"
+  object: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/GeneratedAssetSymbols.o"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/GeneratedAssetSymbols.dia"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps"

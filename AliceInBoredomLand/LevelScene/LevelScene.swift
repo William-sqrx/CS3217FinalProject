@@ -7,390 +7,216 @@
 
 import SpriteKit
 
-final class HeroRenderer {
-    static func makeNode(from model: HeroModel) -> SKSpriteNode {
-        let textureName: String = {
-            switch model.type {
-            case .archer:
-                return "archer"
-            case .swordsman:
-                return "swordsman"
-            case .tank:
-                return "tank"
-            }
-        }()
-
-        let node = SKSpriteNode(texture: SKTexture(imageNamed: textureName))
-        node.size = model.physics.size
-        node.position = model.position
-
-        let body = SKPhysicsBody(rectangleOf: model.physics.size)
-
-        body.isDynamic = model.physics.isDynamic
-        body.categoryBitMask = model.physics.categoryBitMask
-        body.contactTestBitMask = model.physics.contactTestBitMask
-        body.collisionBitMask = model.physics.collisionBitMask
-        body.affectedByGravity = false
-        body.allowsRotation = false
-        node.physicsBody = body
-
-        node.userData = ["entityId": model.id]
-
-        return node
-    }
-}
-
-final class MonsterRenderer {
-    static func makeNode(from model: MonsterModel) -> RenderNode {
-        var node = RendererAdapter.makeNode(from: model)
-        node.physicsBody = PhysicsAdapter.makeBody(from: model)
-        node.userData = ["entityId": model.id]
-        return node
-    }
-}
-
-final class PlayerCastleRenderer {
-    static func makeNode(from model: LevelCastleModel) -> RenderNode {
-        var node = RendererAdapter.makeNode(from: model)
-        node.physicsBody = PhysicsAdapter.makeBody(from: model)
-        node.userData = ["entityId": model.id]
-        return node
-    }
-}
-
-final class EnemyCastleRenderer {
-    static func makeNode(from model: LevelCastleModel) -> RenderNode {
-        var node = RendererAdapter.makeNode(from: model)
-        node.physicsBody = PhysicsAdapter.makeBody(from: model)
-        node.userData = ["entityId": model.id]
-        return node
-    }
-}
-
-class LevelScene: SKScene {
+class LevelScene: SKScene, SKPhysicsContactDelegate {
+    var entities: [GameEntity] = []
     var gameLogicDelegate: LevelLogicDelegate
-    var entities: [LevelEntity] = []
-    var tasks: [Task] = []
     var frameCounter = 0
     var grid: Grid
-    var monsterModels: [UUID: MonsterModel] = [:]
-    var monsterNodes: [UUID: RenderNode] = [:]
-    var heroModels: [UUID: HeroModel] = [:]
-    var heroNodes: [UUID: RenderNode] = [:]
-    var castleModels: [UUID: LevelCastleModel] = [:]
-    var castleNodes: [UUID: RenderNode] = [:]
+    let factory = EntityFactory()
 
-    init(gameLogicDelegate: LevelLogicDelegate,
-         grid: Grid,
-         background: SKColor = .gray) {
+    init(gameLogicDelegate: LevelLogicDelegate, grid: Grid) {
         self.gameLogicDelegate = gameLogicDelegate
-        self.entities = []
         self.grid = grid
         super.init(size: CGSize(width: grid.width, height: grid.height))
-        self.backgroundColor = background
+        self.backgroundColor = .gray
         self.scaleMode = .aspectFit
     }
 
-    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // Todo: Rework in a format that allows for actually using currentTime, instead of assuming even time steps
-    override func update(_ currentTime: TimeInterval) {
-        frameCounter += 1
-
-        if frameCounter.isMultiple(of: 30) {
-            performFrameLogic()
-        }
-
-        updateProjectiles()
+    override func didMove(to view: SKView) {
+        physicsWorld.contactDelegate = self
+        spawnInitialEntities()
     }
 
-    private func performFrameLogic() {
-        let deltaTime: TimeInterval = 1.0
-        let frameIndex = frameCounter / 30
+    func spawnInitialEntities() {
+        spawnCastle(isPlayer: true)
+        spawnCastle(isPlayer: false)
+        spawnMonster()
+        spawnHero(type: "swordsman")
+    }
 
-        if frameIndex % 2 == 1 {
-            updateHeroes(deltaTime: deltaTime)
-        } else {
-            // New: update decoupled monster models
-            updateMonsters(deltaTime: deltaTime)
+    func spawnHero(tileY: Int = 5, type: String) {
+        let size = grid.getNodeSize()
+        let pos = grid.adjustNodeOrigin(size: size, position: grid.getPosition(tileX: 1, tileY: tileY))
+
+        guard let hero = factory.makeHero(type: type, position: pos, size: size),
+              let logic = gameLogicDelegate as? LevelLogic,
+              logic.mana >= hero.manaCost else {
+            print("❌ Not enough mana or invalid hero type")
+            return
         }
 
-        tasks.forEach { $0.update(deltaTime: deltaTime) }
+        logic.decreaseMana(by: hero.manaCost)
+        addChild(hero)
+        entities.append(hero)
+    }
 
-        if frameIndex % 6 == 1 {
+    func spawnMonster() {
+        let size = grid.getNodeSize()
+        let pos = grid.adjustNodeOrigin(size: size, position: grid.getPosition(tileX: 8, tileY: 5))
+        let monster = factory.makeMonster(position: pos, size: size)
+        addChild(monster)
+        entities.append(monster)
+    }
+
+    func spawnCastle(isPlayer: Bool) {
+        let size = grid.getNodeSize(numTileY: 5)
+        let tileX = isPlayer ? 0 : (grid.numCols - 1)
+        let pos = grid.adjustNodeOrigin(size: size, position: grid.getPosition(tileX: tileX, tileY: 2))
+        let castle = factory.makeCastle(position: pos, size: size, isPlayer: isPlayer)
+        addChild(castle)
+        entities.append(castle)
+    }
+
+    override func update(_ currentTime: TimeInterval) {
+        frameCounter += 1
+        if frameCounter.isMultiple(of: 30) {
+            performFrameLogic(currentTime: currentTime)
+        }
+    }
+
+    private func performFrameLogic(currentTime: TimeInterval) {
+        let deltaTime: TimeInterval = 1.0
+        if frameCounter.isMultiple(of: 180) {
             spawnTask()
         }
 
-        checkWinLose()
+        for entity in entities {
+            entity.update(deltaTime: deltaTime)
+            if let hero = entity as? Hero, hero.shouldAttack(currentTime: currentTime) {
+                // Add arrow logic later
+                hero.lastAttackTime = currentTime
+            }
+        }
+
         removeDeadEntities()
+        checkWinLose()
+    }
+    
+    func spawnTask() {
+        let size = grid.getNodeSize()
+        let pos = grid.adjustNodeOrigin(size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 1))
+        let task = Task(position: pos, size: size)
+        addChild(task)
+        entities.append(task)
     }
 
-    private func updateProjectiles() {
-        entities.compactMap { $0 as? Arrow }.forEach { $0.updateArrow(deltaTime: 1.0) }
+    private func removeDeadEntities() {
+        entities.removeAll { entity in
+            if entity.health <= 0 {
+                entity.removeFromParent()
+                return true
+            }
+            return false
+        }
     }
 
     private func checkWinLose() {
-        guard let logic = gameLogicDelegate as? LevelLogic else {
-            return
-        }
+        guard let logic = gameLogicDelegate as? LevelLogic else { return }
 
         if logic.monsterCastleHealth <= 0 {
-            showEndLevelLabel(text: "You Win 🎉")
-            isPaused = true
-            return
-        }
-
-        if logic.playerCastleHealth <= 0 {
-            showEndLevelLabel(text: "You Lose 💀")
-            isPaused = true
-            return
+            endLevel(text: "You Win 🎉")
+        } else if logic.playerCastleHealth <= 0 {
+            endLevel(text: "You Lose 💀")
         }
     }
 
-    private func showEndLevelLabel(text: String) {
+    private func endLevel(text: String) {
+        isPaused = true
         let label = SKLabelNode(text: text)
         label.fontSize = 50
         label.fontColor = .white
         label.fontName = "Avenir-Heavy"
         label.position = CGPoint(x: grid.width / 2, y: grid.height / 2 + 50)
-        label.name = "end_game_label"
         addChild(label)
-
-        let restartLabel = SKLabelNode(text: "Tap to Restart")
-        restartLabel.fontSize = 30
-        restartLabel.fontColor = .yellow
-        restartLabel.fontName = "Avenir"
-        restartLabel.position = CGPoint(x: grid.width / 2, y: grid.height / 2 - 50)
-        restartLabel.name = "restart_button"
-        addChild(restartLabel)
     }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        guard
+            let nodeA = contact.bodyA.node as? GameEntity,
+            let nodeB = contact.bodyB.node as? GameEntity
+        else { return }
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard isPaused else {
-            return
-        }
+        let names = [nodeA.name, nodeB.name]
 
-        for touch in touches {
-            let location = touch.location(in: self)
-            if let node = self.atPoint(location) as? SKLabelNode, node.name == "restart_button" {
-                restartLevel()
-            }
-        }
-    }
-
-    private func restartLevel() {
-        guard let view = self.view else {
-            return
-        }
-
-        if let logic = gameLogicDelegate as? LevelLogic {
-            logic.reset()
-        }
-
-        let newScene = LevelScene(gameLogicDelegate: gameLogicDelegate, grid: Grid())
-        newScene.scaleMode = self.scaleMode
-        view.presentScene(newScene, transition: SKTransition.fade(withDuration: 0.5))
-    }
-
-    func spawnHero(atX tileX: Int = 1, atY tileY: Int = 5, type: HeroType) {
-        assert(0 < tileX && tileX < grid.numCols - 1)
-        assert(1 < tileY && tileY < grid.numLanes)
-        guard let logic = gameLogicDelegate as? LevelLogic else {
-            return
-        }
-
-        let size = grid.getNodeSize()
-        let position = grid.adjustNodeOrigin(
-            size: size, position: grid.getPosition(tileX: tileX, tileY: tileY)
-        )
-
-        let stats = EntityFactory.getHeroStats(type: type)
-
-        guard logic.mana >= stats.manaCost else {
-            print("❌ Not enough mana to spawn \(type)")
-            return
-        }
-
-        logic.decreaseMana(by: stats.manaCost)
-
-        let (model, node) = EntityFactory.makeHero(type: type, position: position, size: size)
-        node.name = "hero"
-
-        heroModels[model.id] = model
-        heroNodes[model.id] = node
-        addChild(node)
-    }
-
-    private func spawnMonster(atX tileX: Int = 8, atY tileY: Int = 5) {
-        assert(0 < tileX && tileX < grid.numCols - 1)
-        assert(1 < tileY && tileY < grid.numLanes)
-
-        let size = grid.getNodeSize()
-        let position = grid.adjustNodeOrigin(
-            size: size, position: grid.getPosition(tileX: tileX, tileY: tileY)
-        )
-
-        var (model, node) = EntityFactory.makeMonster(position: position, size: size)
-        node.name = "monster"
-
-        guard let skNode = node.asSKNode else {
-            print("❌ Failed to cast RenderNode to SKNode for monster \(model.id)")
-            return
-        }
-
-        monsterModels[model.id] = model
-        monsterNodes[model.id] = node
-        addChild(skNode)
-    }
-
-    private func spawnPlayerCastle() {
-        let size = grid.getNodeSize(numTileY: 5)
-        let position = grid.adjustNodeOrigin(
-            size: size, position: grid.getPosition(tileX: 0, tileY: 2)
-        )
-
-        let (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: true)
-
-        guard let skNode = node.asSKNode else {
-            print("❌ Failed to cast RenderNode to SKNode for monster \(model.id)")
-            return
-        }
-        castleModels[model.id] = model
-        castleNodes[model.id] = node
-        addChild(skNode)
-    }
-
-    private func spawnEnemyCastle() {
-        let size = grid.getNodeSize(numTileY: 5)
-        let position = grid.adjustNodeOrigin(
-            size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 2)
-        )
-
-        var (model, node) = EntityFactory.makeCastle(position: position, size: size, isPlayer: false)
-        guard let skNode = node.asSKNode else {
-            print("❌ Failed to cast RenderNode to SKNode for monster \(model.id)")
-            return
-        }
-        castleModels[model.id] = model
-        castleNodes[model.id] = node
-        addChild(skNode)
-    }
-
-    private func spawnTask() {
-        let texture = SKTexture(imageNamed: "task")
-
-        let size = grid.getNodeSize()
-        let position = grid.adjustNodeOrigin(
-            size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 4)
-        )
-
-        let task = Task(texture: texture, size: size)
-        task.position = position
-
-        addChild(task)
-        tasks.append(task)
-    }
-
-    private func removeDeadEntities() {
-        entities = entities.filter { entity in
-            if !entity.isAlive {
-                entity.node.removeFromParent()
-                return false
-            }
-            return true
-        }
-    }
-
-    func initialiseEntities() {
-        spawnPlayerCastle()
-        spawnEnemyCastle()
-        spawnMonster(atX: 5)
-        spawnHero(atX: 3, type: .swordsman)
-    }
-
-    private func handleCollisions() {
-    }
-
-    override func didMove(to view: SKView) {
-        initialiseEntities()
-        physicsWorld.contactDelegate = self
-        LevelModelRegistry.shared.monsterModels = monsterModels
-        LevelModelRegistry.shared.monsterNodes = monsterNodes
-        LevelModelRegistry.shared.heroModels = heroModels
-        LevelModelRegistry.shared.heroNodes = heroNodes
-        LevelModelRegistry.shared.gameLogicDelegate = gameLogicDelegate
-    }
-}
-
-extension LevelScene {
-    func isMonsterInRange(_ archerPosition: CGPoint, range: CGFloat) -> Bool {
-        for (_, model) in monsterModels {
-            let distance = (model.position - archerPosition).length()
-            if distance <= range {
-                return true
-            }
-        }
-        return false
-    }
-
-    func spawnArrow(from position: CGPoint, damage: Int) {
-        let arrow = Arrow(damage: damage)
-        arrow.position = position
-
-        // Adjust if needed: shoot toward the right
-        let direction: CGFloat = 1
-        arrow.physicsBody?.velocity = CGVector(dx: 500 * direction, dy: 0)
-
-        addChild(arrow)
-    }
-
-    func updateHeroes(deltaTime: TimeInterval) {
-        for (id, var model) in heroModels {
-            guard let node = heroNodes[id] else { continue }
-
-            // Decrease knockback timer
-            model.knockbackTimer = max(0, model.knockbackTimer - deltaTime)
-
-            if model.knockbackTimer == 0 {
-                // Resume forward movement (to the right)
-                node.physicsBody?.velocity = CGVector(dx: model.speed, dy: 0)
-            }
-
-            // Attack logic (optional)
-            if model.type == .archer {
-                let currentTime = CACurrentMediaTime()
-                if currentTime - model.lastAttackTime > model.attackCooldown {
-                    if isMonsterInRange(model.position, range: model.attackRange) {
-                        spawnArrow(from: model.position, damage: model.attack)
-                        model.lastAttackTime = currentTime
-                    }
+        // 🧟 Monster hits player castle
+        if names.contains("monster") && names.contains("player-castle") {
+            print("✅ Monster collided with player castle")
+            if let castle = [nodeA, nodeB].first(where: { $0.name == "player-castle" }) {
+                ActionPerformer.perform(DamageAction(amount: 1000), on: castle)
+                if let logic = gameLogicDelegate as? LevelLogic {
+                    logic.playerCastleHealth -= 1000
                 }
             }
-
-            // Sync position
-            model.position = node.position
-            heroModels[id] = model
         }
-    }
 
-    func updateMonsters(deltaTime: TimeInterval) {
-        for (id, var model) in monsterModels {
-            guard let node = monsterNodes[id] else { continue }
-
-            // Decrease knockback timer
-            model.knockbackTimer = max(0, model.knockbackTimer - deltaTime)
-
-            if model.knockbackTimer == 0 {
-                // Resume forward movement
-                node.physicsBody?.velocity = CGVector(dx: -model.speed, dy: 0)
+        // 🛡️ Hero hits monster castle
+        if names.contains("hero") && names.contains("monster-castle") {
+            print("✅ Hero collided with monster castle")
+            if let castle = [nodeA, nodeB].first(where: { $0.name == "monster-castle" }) {
+                ActionPerformer.perform(DamageAction(amount: 10), on: castle)
+                if let logic = gameLogicDelegate as? LevelLogic {
+                    logic.monsterCastleHealth -= 10
+                }
             }
+        }
 
-            // Sync model position back
-            model.position = node.position
-            monsterModels[id] = model
+        // ⚔️ Monster collides with hero
+        if let monster = [nodeA, nodeB].first(where: { $0.name == "monster" }) as? GameEntity,
+           let hero = [nodeA, nodeB].first(where: { $0.name == "hero" }) as? GameEntity {
+            print("✅ Monster collided with hero")
+            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: 1, dy: 0), duration: 0.2, speed: 30), on: monster)
+            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: -1, dy: 0), duration: 0.2, speed: 30), on: hero)
+
+            ActionPerformer.perform(DamageAction(amount: monster.attack), on: hero)
+            ActionPerformer.perform(DamageAction(amount: hero.attack), on: monster)
         }
     }
 }
+
+// MARK: - Supporting Types
+
+struct Grid {
+    let width: Double
+    let height: Double
+    let numCols: Int
+    let numLanes: Int
+    let laneSpacing: Double
+    let tileSize: CGSize
+
+    func getPosition(tileX: Int, tileY: Int) -> CGSize {
+        CGSize(width: Double(tileX) * tileSize.width,
+               height: Double(tileY) * tileSize.height + max(Double(tileY - 1), 0) * laneSpacing)
+    }
+
+    func getNodeSize(numTileX: Int = 1, numTileY: Int = 1) -> CGSize {
+        CGSize(width: Double(numTileX) * tileSize.width,
+               height: Double(numTileY) * tileSize.height + Double(numTileY - 1) * laneSpacing)
+    }
+
+    func adjustNodeOrigin(size: CGSize, position: CGSize) -> CGPoint {
+        CGPoint(x: position.width + size.width / 2, y: position.height + size.height / 2)
+    }
+
+    init(width: Double = 1_000, height: Double = 700, numCols: Int = 10, numLanes: Int = 7, laneSpacing: Double = 10) {
+        self.width = width
+        self.height = height
+        self.numCols = numCols
+        self.numLanes = numLanes
+        self.laneSpacing = laneSpacing
+        self.tileSize = CGSize(width: width / Double(numCols), height: (height - laneSpacing * Double(numLanes - 1)) / Double(numLanes))
+    }
+}
+
+protocol LevelLogicDelegate {
+    var playerCastleHealth: Int { get }
+    var monsterCastleHealth: Int { get }
+    var timeLeft: Int { get }
+    var isWin: Bool { get }
+    func decreaseMana(by amount: Int)
+    func reset()
+}
+

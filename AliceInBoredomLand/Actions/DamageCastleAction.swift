@@ -10,14 +10,13 @@ import SpriteKit
 struct DamageCastleAction: Action {
     let amount: Int
     let isPlayerCastle: Bool
+    let logic: LevelLogic
 
-    func perform(on node: RenderNode, modelId: UUID) {
-        if let logic = LevelModelRegistry.shared.gameLogicDelegate as? LevelLogic {
-            if isPlayerCastle {
-                logic.decrePlayerCastleHealth(amount: amount)
-            } else {
-                logic.decreMonsterCastleHealth(amount: amount)
-            }
+    func perform(on target: GameEntity) {
+        if isPlayerCastle {
+            logic.playerCastleHealth -= amount
+        } else {
+            logic.monsterCastleHealth -= amount
         }
     }
 }

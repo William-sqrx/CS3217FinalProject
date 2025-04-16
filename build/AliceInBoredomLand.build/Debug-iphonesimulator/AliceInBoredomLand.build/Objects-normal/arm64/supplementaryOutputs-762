@@ -1,0 +1,18 @@
+"/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/AliceInBoredomLand/Models/LevelCastleModel.swift":
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelCastleModel.dia"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelCastleModel.swiftconstvalues"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelCastleModel.d"
+  object: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelCastleModel.o"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelCastleModel.swiftdeps"
+"/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/AliceInBoredomLand/Models/HeroModel.swift":
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/HeroModel.dia"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/HeroModel.d"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/HeroModel.swiftconstvalues"
+  object: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/HeroModel.o"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/HeroModel.swiftdeps"
+"/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/AliceInBoredomLand/Models/LevelLogic.swift":
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelLogic.d"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelLogic.dia"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelLogic.swiftdeps"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelLogic.swiftconstvalues"
+  object: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelLogic.o"

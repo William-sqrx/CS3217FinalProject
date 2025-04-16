@@ -8,51 +8,40 @@
 import Foundation
 import SpriteKit
 
-class Task: SKSpriteNode {
-
+class Task: GameEntity {
     var availableFrames = 14
 
-    var node: SKSpriteNode {
-        self
-    }
-
-    init(texture: SKTexture, size: CGSize) {
-        super.init(texture: texture, color: .clear, size: size)
+    init(position: CGPoint, size: CGSize) {
+        let physics = PhysicsComponent(
+            size: size,
+            isDynamic: true,
+            categoryBitMask: BitMask.task,
+            contactTestBitMask: BitMask.task,
+            collisionBitMask: BitMask.task
+        )
+        super.init(textureName: "task", size: size, position: position, health: 1, attack: 0, moveSpeed: -100, physics: physics)
+        self.name = "task"
+        self.velocity = CGVector(dx: moveSpeed, dy: 0)
         self.isUserInteractionEnabled = true
-
-        self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
-        self.physicsBody?.affectedByGravity = false
-        self.physicsBody?.isDynamic = true
-        self.physicsBody?.contactTestBitMask = BitMask.task
-        self.physicsBody?.collisionBitMask = BitMask.task
-        self.physicsBody?.velocity = CGVector(dx: -100, dy: 0)
-        self.userData = NSMutableDictionary()
-        self.userData?["entity"] = self
     }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func update(deltaTime: TimeInterval) {
+    override func update(deltaTime: TimeInterval) {
+        super.update(deltaTime: deltaTime)
         if availableFrames < 0 {
             removeFromParent()
-        }
-
-        if node.position.x < size.width {
-            self.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-        } else {
-            self.physicsBody?.velocity = CGVector(dx: -100, dy: 0)
         }
         availableFrames -= 1
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let scene = self.scene as? LevelScene,
-        let logic = scene.gameLogicDelegate as? LevelLogic {
+           let logic = scene.gameLogicDelegate as? LevelLogic {
             logic.increaseMana(by: 10)
         }
         removeFromParent()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

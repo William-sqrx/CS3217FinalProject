@@ -1,0 +1,18 @@
+"/Users/william_sqrx/Desktop/CS3217FinalProject/AliceInBoredomLand/Protocols/LevelEntity.swift":
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelEntity.swiftdeps"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelEntity.d"
+  object: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelEntity.o"
+  const-values: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelEntity.swiftconstvalues"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelEntity.dia"
+"/Users/william_sqrx/Desktop/CS3217FinalProject/AliceInBoredomLand/Models/Task.swift":
+  const-values: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Task.swiftconstvalues"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Task.swiftdeps"
+  object: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Task.o"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Task.dia"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Task.d"
+"/Users/william_sqrx/Desktop/CS3217FinalProject/AliceInBoredomLand/Protocols/LevelLogicDelegate.swift":
+  dependencies: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelLogicDelegate.d"
+  object: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelLogicDelegate.o"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelLogicDelegate.swiftdeps"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelLogicDelegate.dia"
+  const-values: "/Users/william_sqrx/Desktop/CS3217FinalProject/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelLogicDelegate.swiftconstvalues"

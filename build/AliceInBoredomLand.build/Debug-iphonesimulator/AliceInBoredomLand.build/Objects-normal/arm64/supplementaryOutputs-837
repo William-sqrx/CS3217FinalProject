@@ -1,0 +1,18 @@
+"/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/AliceInBoredomLand/Protocols/Renderable.swift":
+  object: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Renderable.o"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Renderable.swiftconstvalues"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Renderable.swiftdeps"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Renderable.dia"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/Renderable.d"
+"/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/AliceInBoredomLand/Protocols/RenderNode.swift":
+  const-values: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode.swiftconstvalues"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode.d"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode.swiftdeps"
+  object: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode.o"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode.dia"
+"/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/AliceInBoredomLand/Utils/BitMask.swift":
+  object: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/BitMask.o"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/BitMask.swiftdeps"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/BitMask.dia"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/BitMask.d"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/BitMask.swiftconstvalues"

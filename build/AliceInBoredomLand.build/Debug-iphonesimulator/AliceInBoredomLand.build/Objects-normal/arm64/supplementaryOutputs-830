@@ -1,0 +1,18 @@
+"/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/AliceInBoredomLand/LevelScene/LevelScene.swift":
+  const-values: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelScene.swiftconstvalues"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelScene.d"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelScene.swiftdeps"
+  object: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelScene.o"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelScene.dia"
+"/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/AliceInBoredomLand/Extensions/RenderNode+Extension.swift":
+  const-values: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode+Extension.swiftconstvalues"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode+Extension.dia"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode+Extension.d"
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode+Extension.swiftdeps"
+  object: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/RenderNode+Extension.o"
+"/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/AliceInBoredomLand/LevelScene/LevelScene+Collisions.swift":
+  swift-dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelScene+Collisions.swiftdeps"
+  diagnostics: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelScene+Collisions.dia"
+  dependencies: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelScene+Collisions.d"
+  object: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelScene+Collisions.o"
+  const-values: "/Users/william_sqrx/Desktop/CS3217/CS3217FinalProject_oop_working/build/AliceInBoredomLand.build/Debug-iphonesimulator/AliceInBoredomLand.build/Objects-normal/arm64/LevelScene+Collisions.swiftconstvalues"

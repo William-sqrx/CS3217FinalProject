@@ -12,16 +12,8 @@ struct KnockbackAction: Action {
     let direction: CGVector
     let duration: TimeInterval
     let speed: CGFloat
-
-    func perform(on node: RenderNode, modelId: UUID) {
-        node.physicsBody?.velocity = direction * speed
-
-        if var model = LevelModelRegistry.shared.getMonsterModel(id: modelId) {
-            model.knockbackTimer = duration
-            LevelModelRegistry.shared.setMonsterModel(id: model.id, model: model)
-        } else if var model = LevelModelRegistry.shared.getHeroModel(id: modelId) {
-            model.knockbackTimer = duration
-            LevelModelRegistry.shared.setHeroModel(id: model.id, model: model)
-        }
+    func perform(on target: GameEntity) {
+        target.velocity = direction * speed
+        target.knockbackTimer = duration
     }
 }
