@@ -31,6 +31,11 @@ class LevelEntity: SKSpriteNode {
         self.setupPhysics(using: physics)
     }
 
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     private func setupPhysics(using component: PhysicsComponent) {
         self.physicsBody = SKPhysicsBody(rectangleOf: component.size)
         self.physicsBody?.isDynamic = component.isDynamic
@@ -39,11 +44,6 @@ class LevelEntity: SKSpriteNode {
         self.physicsBody?.collisionBitMask = component.collisionBitMask
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.allowsRotation = false
-    }
-
-    @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     func update(deltaTime: TimeInterval) {

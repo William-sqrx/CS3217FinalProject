@@ -24,7 +24,7 @@ class Arrow: LevelEntity {
                    health: 1, attack: damage, moveSpeed: 500,
                    physics: physics)
         self.startPosition = position
-        self.physicsBody?.mass = 0
+        self.physicsBody?.mass = 0 // Need to refactor into PhysicsComponent?
     }
 
     override func update(deltaTime: TimeInterval) {

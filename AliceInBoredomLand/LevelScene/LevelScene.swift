@@ -107,7 +107,6 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         checkWinLose()
     }
 
-
     private func removeDeadEntities() {
         entities.removeAll { entity in
             if entity.health <= 0 {
