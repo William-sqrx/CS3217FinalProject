@@ -19,7 +19,8 @@ class Task: GameEntity {
             contactTestBitMask: BitMask.task,
             collisionBitMask: BitMask.task
         )
-        super.init(textureName: "task", size: size, position: position, health: 1, attack: 0, moveSpeed: -100, physics: physics)
+        super.init(textureName: "task", size: size, position: position, health: 1, attack: 0,
+                   moveSpeed: -100, physics: physics)
         self.name = "task"
         self.velocity = CGVector(dx: moveSpeed, dy: 0)
         self.isUserInteractionEnabled = true
@@ -41,6 +42,7 @@ class Task: GameEntity {
         removeFromParent()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

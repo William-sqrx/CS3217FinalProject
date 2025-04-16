@@ -20,7 +20,8 @@ class Arrow: GameEntity {
             contactTestBitMask: BitMask.enemyEntity,
             collisionBitMask: 0
         )
-        super.init(textureName: "arrow", size: size, position: position, health: 1, attack: damage, moveSpeed: 0, physics: physics)
+        super.init(textureName: "arrow", size: size, position: position, health: 1, attack: damage,
+                   moveSpeed: 0, physics: physics)
         self.name = "arrow"
         self.startPosition = position
         self.physicsBody?.mass = 0
@@ -35,6 +36,7 @@ class Arrow: GameEntity {
         }
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -22,6 +22,7 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         self.scaleMode = .aspectFit
     }
 
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -38,7 +39,7 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         spawnHero(type: "swordsman")
     }
 
-    func spawnHero(tileY: Int = 5, type: String) {
+    func spawnHero(type: String, tileY: Int = 5) {
         let size = grid.getNodeSize()
         let pos = grid.adjustNodeOrigin(size: size, position: grid.getPosition(tileX: 1, tileY: tileY))
 
@@ -95,7 +96,7 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         removeDeadEntities()
         checkWinLose()
     }
-    
+
     func spawnTask() {
         let size = grid.getNodeSize()
         let pos = grid.adjustNodeOrigin(size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 1))
@@ -115,7 +116,9 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func checkWinLose() {
-        guard let logic = gameLogicDelegate as? LevelLogic else { return }
+        guard let logic = gameLogicDelegate as? LevelLogic else {
+            return
+        }
 
         if logic.monsterCastleHealth <= 0 {
             endLevel(text: "You Win 🎉")
@@ -133,7 +136,7 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         label.position = CGPoint(x: grid.width / 2, y: grid.height / 2 + 50)
         addChild(label)
     }
-    
+
     func didBegin(_ contact: SKPhysicsContact) {
         guard
             let nodeA = contact.bodyA.node as? GameEntity,
@@ -146,9 +149,9 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         if names.contains("monster") && names.contains("player-castle") {
             print("✅ Monster collided with player castle")
             if let castle = [nodeA, nodeB].first(where: { $0.name == "player-castle" }) {
-                ActionPerformer.perform(DamageAction(amount: 1000), on: castle)
+                ActionPerformer.perform(DamageAction(amount: 1_000), on: castle)
                 if let logic = gameLogicDelegate as? LevelLogic {
-                    logic.playerCastleHealth -= 1000
+                    logic.playerCastleHealth -= 1_000
                 }
             }
         }
@@ -168,8 +171,10 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         if let monster = [nodeA, nodeB].first(where: { $0.name == "monster" }) as? GameEntity,
            let hero = [nodeA, nodeB].first(where: { $0.name == "hero" }) as? GameEntity {
             print("✅ Monster collided with hero")
-            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: 1, dy: 0), duration: 0.2, speed: 30), on: monster)
-            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: -1, dy: 0), duration: 0.2, speed: 30), on: hero)
+            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: 1, dy: 0), duration: 0.2, speed: 30),
+                                    on: monster)
+            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: -1, dy: 0), duration: 0.2, speed: 30),
+                                    on: hero)
 
             ActionPerformer.perform(DamageAction(amount: monster.attack), on: hero)
             ActionPerformer.perform(DamageAction(amount: hero.attack), on: monster)
@@ -207,7 +212,8 @@ struct Grid {
         self.numCols = numCols
         self.numLanes = numLanes
         self.laneSpacing = laneSpacing
-        self.tileSize = CGSize(width: width / Double(numCols), height: (height - laneSpacing * Double(numLanes - 1)) / Double(numLanes))
+        self.tileSize = CGSize(width: width / Double(numCols),
+                               height: (height - laneSpacing * Double(numLanes - 1)) / Double(numLanes))
     }
 }
 
@@ -219,4 +225,3 @@ protocol LevelLogicDelegate {
     func decreaseMana(by amount: Int)
     func reset()
 }
-

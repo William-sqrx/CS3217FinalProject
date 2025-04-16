@@ -7,7 +7,7 @@
 
 import Foundation
 
-//struct Grid {
+// struct Grid {
 //    let width: Double
 //    let height: Double
 //    let numCols: Int
@@ -29,12 +29,14 @@ import Foundation
 //        CGPoint(x: position.width + size.width / 2, y: position.height + size.height / 2)
 //    }
 //
-//    init(width: Double = 1_000, height: Double = 700, numCols: Int = 10, numLanes: Int = 7, laneSpacing: Double = 10) {
+//    init(width: Double = 1_000, height: Double = 700, numCols: Int = 10, numLanes: Int = 7,
+// laneSpacing: Double = 10) {
 //        self.width = width
 //        self.height = height
 //        self.numCols = numCols
 //        self.numLanes = numLanes
 //        self.laneSpacing = laneSpacing
-//        self.tileSize = CGSize(width: width / Double(numCols), height: (height - laneSpacing * Double(numLanes - 1)) / Double(numLanes))
+//        self.tileSize = CGSize(width: width / Double(numCols),
+// height: (height - laneSpacing * Double(numLanes - 1)) / Double(numLanes))
 //    }
-//}
+// }

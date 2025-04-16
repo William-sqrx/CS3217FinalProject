@@ -17,10 +17,12 @@ class Monster: GameEntity {
             contactTestBitMask: BitMask.playerEntity,
             collisionBitMask: BitMask.playerEntity
         )
-        super.init(textureName: "monster", size: size, position: position, health: 100, attack: 1000, moveSpeed: 20, physics: physics)
+        super.init(textureName: "monster", size: size, position: position, health: 100, attack: 1_000,
+                   moveSpeed: 20, physics: physics)
         self.name = "monster"
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -30,4 +32,3 @@ class Monster: GameEntity {
         super.update(deltaTime: deltaTime)
     }
 }
-

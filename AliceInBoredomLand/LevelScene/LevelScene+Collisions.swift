@@ -5,9 +5,9 @@
 ////  Created by Wijaya William on 18/3/25.
 ////
 //
-//import SpriteKit
+// import SpriteKit
 //
-//extension LevelScene: SKPhysicsContactDelegate {
+// extension LevelScene: SKPhysicsContactDelegate {
 //    func didBegin(_ contact: SKPhysicsContact) {
 //        guard
 //            let nodeA = contact.bodyA.node as? GameEntity,
@@ -42,11 +42,13 @@
 //        if let monster = [nodeA, nodeB].first(where: { $0.name == "monster" }) as? GameEntity,
 //           let hero = [nodeA, nodeB].first(where: { $0.name == "hero" }) as? GameEntity {
 //            print("✅ Monster collided with hero")
-//            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: 1, dy: 0), duration: 0.2, speed: 30), on: monster)
-//            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: -1, dy: 0), duration: 0.2, speed: 30), on: hero)
+//            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: 1, dy: 0), duration: 0.2,
+// speed: 30), on: monster)
+//            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: -1, dy: 0), duration: 0.2,
+// speed: 30), on: hero)
 //
 //            ActionPerformer.perform(DamageAction(amount: monster.attack), on: hero)
 //            ActionPerformer.perform(DamageAction(amount: hero.attack), on: monster)
 //        }
 //    }
-//}
+// }

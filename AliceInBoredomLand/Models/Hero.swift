@@ -14,12 +14,15 @@ class Hero: GameEntity {
     var attackRange: CGFloat = 500
     var lastAttackTime: TimeInterval = 0
 
-    init(textureName: String, size: CGSize, position: CGPoint, health: Int, attack: Int, moveSpeed: CGFloat, manaCost: Int, physics: PhysicsComponent) {
+    init(textureName: String, size: CGSize, position: CGPoint, health: Int, attack: Int, moveSpeed: CGFloat,
+         manaCost: Int, physics: PhysicsComponent) {
         self.manaCost = manaCost
-        super.init(textureName: textureName, size: size, position: position, health: health, attack: attack, moveSpeed: moveSpeed, physics: physics)
+        super.init(textureName: textureName, size: size, position: position,
+                   health: health, attack: attack, moveSpeed: moveSpeed, physics: physics)
         self.name = "hero"
     }
 
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -33,4 +36,3 @@ class Hero: GameEntity {
         (currentTime - lastAttackTime) > attackCooldown
     }
 }
-

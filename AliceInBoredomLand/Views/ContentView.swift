@@ -34,11 +34,11 @@ struct ContentView: View {
 
                     // Button to spawn a Swordsman
                     Button("Spawn Swordsman") {
-                        gameScene.spawnHero(tileY: tileY, type: "swordsman")
+                        gameScene.spawnHero(type: "swordsman", tileY: tileY)
                     }
 
                     Button("Spawn Tank") {
-                        gameScene.spawnHero(tileY: tileY, type: "tank")
+                        gameScene.spawnHero(type: "tank", tileY: tileY)
                     }
 
                     Text("Mana: \(gameLogic.mana)")

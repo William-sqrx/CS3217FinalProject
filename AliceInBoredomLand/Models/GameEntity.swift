@@ -18,7 +18,8 @@ class GameEntity: SKSpriteNode {
     var moveSpeed: CGFloat
     var knockbackTimer: TimeInterval = 0
 
-    init(textureName: String, size: CGSize, position: CGPoint, health: Int, attack: Int, moveSpeed: CGFloat, physics: PhysicsComponent) {
+    init(textureName: String, size: CGSize, position: CGPoint, health: Int, attack: Int,
+         moveSpeed: CGFloat, physics: PhysicsComponent) {
         let texture = SKTexture(imageNamed: textureName)
         self.health = health
         self.attack = attack
@@ -40,6 +41,7 @@ class GameEntity: SKSpriteNode {
         self.physicsBody?.allowsRotation = false
     }
 
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
