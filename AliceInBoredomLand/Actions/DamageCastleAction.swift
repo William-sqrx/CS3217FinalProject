@@ -12,7 +12,7 @@ struct DamageCastleAction: Action {
     let isPlayerCastle: Bool
     let logic: LevelLogic
 
-    func perform(on target: GameEntity) {
+    func perform(on target: LevelEntity) {
         if isPlayerCastle {
             logic.playerCastleHealth -= amount
         } else {

@@ -8,7 +8,7 @@
 import SpriteKit
 
 struct ActionPerformer {
-    static func perform(_ action: Action, on target: GameEntity) {
+    static func perform(_ action: Action, on target: LevelEntity) {
         action.perform(on: target)
     }
 }

@@ -12,8 +12,8 @@ struct KnockbackAction: Action {
     let direction: CGVector
     let duration: TimeInterval
     let speed: CGFloat
-    
-    func perform(on target: GameEntity) {
+
+    func perform(on target: LevelEntity) {
         target.velocity = direction * speed
         target.knockbackTimer = duration
     }

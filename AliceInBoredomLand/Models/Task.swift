@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-class Task: GameEntity {
+class Task: LevelEntity {
     var availableFrames = 14
 
     init(position: CGPoint, size: CGSize) {
@@ -37,7 +37,7 @@ class Task: GameEntity {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let scene = self.scene as? LevelScene,
-           let logic = scene.gameLogicDelegate as? LevelLogic {
+           let logic = scene.levelLogicDelegate as? LevelLogic {
             logic.increaseMana(by: 10)
         }
         removeFromParent()

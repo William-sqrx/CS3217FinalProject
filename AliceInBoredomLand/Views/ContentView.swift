@@ -9,39 +9,39 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    @StateObject var gameLogic = LevelLogic()
-    private let gameScene: LevelScene
+    @StateObject var levelLogic = LevelLogic()
+    private let levelScene: LevelScene
     private let tileY = 5
 
     init() {
         let logic = LevelLogic()
-        let scene = LevelScene(gameLogicDelegate: logic, grid: Grid())
-        self._gameLogic = StateObject(wrappedValue: logic)
-        self.gameScene = scene
+        let scene = LevelScene(levelLogicDelegate: logic, grid: Grid())
+        self._levelLogic = StateObject(wrappedValue: logic)
+        self.levelScene = scene
     }
 
     var body: some View {
         ZStack {
-            SpriteView(scene: gameScene, debugOptions: [.showsPhysics])
+            SpriteView(scene: levelScene, debugOptions: [.showsPhysics])
                 .ignoresSafeArea()
             VStack {
                 Spacer()
                 HStack {
                     // Button to spawn an Archer
                     Button("Spawn Archer") {
-                        gameScene.spawnHero(type: "archer", tileY: tileY)
+                        levelScene.spawnHero(type: "archer", tileY: tileY)
                     }
 
                     // Button to spawn a Swordsman
                     Button("Spawn Swordsman") {
-                        gameScene.spawnHero(type: "swordsman", tileY: tileY)
+                        levelScene.spawnHero(type: "swordsman", tileY: tileY)
                     }
 
                     Button("Spawn Tank") {
-                        gameScene.spawnHero(type: "tank", tileY: tileY)
+                        levelScene.spawnHero(type: "tank", tileY: tileY)
                     }
 
-                    Text("Mana: \(gameLogic.mana)")
+                    Text("Mana: \(levelLogic.mana)")
                         .padding()
 
                     // Add more buttons for different hero types...

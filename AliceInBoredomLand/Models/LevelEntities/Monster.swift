@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-class Monster: GameEntity {
+class Monster: LevelEntity {
     init(position: CGPoint, size: CGSize) {
         let physics = PhysicsComponent(
             size: size,

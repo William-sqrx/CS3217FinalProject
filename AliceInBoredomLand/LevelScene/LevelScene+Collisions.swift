@@ -10,8 +10,8 @@
 // extension LevelScene: SKPhysicsContactDelegate {
 //    func didBegin(_ contact: SKPhysicsContact) {
 //        guard
-//            let nodeA = contact.bodyA.node as? GameEntity,
-//            let nodeB = contact.bodyB.node as? GameEntity
+//            let nodeA = contact.bodyA.node as? LevelEntity,
+//            let nodeB = contact.bodyB.node as? LevelEntity
 //        else { return }
 //
 //        let names = [nodeA.name, nodeB.name]
@@ -21,7 +21,7 @@
 //            print("✅ Monster collided with player castle")
 //            if let castle = [nodeA, nodeB].first(where: { $0.name == "player-castle" }) {
 //                ActionPerformer.perform(DamageAction(amount: 1000), on: castle)
-//                if let logic = gameLogicDelegate as? LevelLogic {
+//                if let logic = levelLogicDelegate as? LevelLogic {
 //                    logic.playerCastleHealth -= 1000
 //                }
 //            }
@@ -32,15 +32,15 @@
 //            print("✅ Hero collided with monster castle")
 //            if let castle = [nodeA, nodeB].first(where: { $0.name == "monster-castle" }) {
 //                ActionPerformer.perform(DamageAction(amount: 10), on: castle)
-//                if let logic = gameLogicDelegate as? LevelLogic {
+//                if let logic = levelLogicDelegate as? LevelLogic {
 //                    logic.monsterCastleHealth -= 10
 //                }
 //            }
 //        }
 //
 //        // ⚔️ Monster collides with hero
-//        if let monster = [nodeA, nodeB].first(where: { $0.name == "monster" }) as? GameEntity,
-//           let hero = [nodeA, nodeB].first(where: { $0.name == "hero" }) as? GameEntity {
+//        if let monster = [nodeA, nodeB].first(where: { $0.name == "monster" }) as? LevelEntity,
+//           let hero = [nodeA, nodeB].first(where: { $0.name == "hero" }) as? LevelEntity {
 //            print("✅ Monster collided with hero")
 //            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: 1, dy: 0), duration: 0.2,
 // speed: 30), on: monster)

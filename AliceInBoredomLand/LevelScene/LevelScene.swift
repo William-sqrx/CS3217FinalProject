@@ -8,15 +8,17 @@
 import SpriteKit
 
 class LevelScene: SKScene, SKPhysicsContactDelegate {
-    var entities: [GameEntity] = []
-    var gameLogicDelegate: LevelLogicDelegate
+    var entities: [LevelEntity] = []
+    var levelLogicDelegate: LevelLogicDelegate
     var frameCounter = 0
     var grid: Grid
     let factory = EntityFactory()
 
-    init(gameLogicDelegate: LevelLogicDelegate, grid: Grid) {
-        self.gameLogicDelegate = gameLogicDelegate
+    init(levelLogicDelegate: LevelLogicDelegate, grid: Grid) {
+        self.entities = []
+        self.levelLogicDelegate = levelLogicDelegate
         self.grid = grid
+
         super.init(size: CGSize(width: grid.width, height: grid.height))
         self.backgroundColor = .gray
         self.scaleMode = .aspectFit
@@ -44,7 +46,7 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         let pos = grid.adjustNodeOrigin(size: size, position: grid.getPosition(tileX: 1, tileY: tileY))
 
         guard let hero = factory.makeHero(type: type, position: pos, size: size),
-              let logic = gameLogicDelegate as? LevelLogic,
+              let logic = levelLogicDelegate as? LevelLogic,
               logic.mana >= hero.manaCost else {
             print("❌ Not enough mana or invalid hero type")
             return
@@ -72,6 +74,14 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         entities.append(castle)
     }
 
+    func spawnTask() {
+        let size = grid.getNodeSize()
+        let pos = grid.adjustNodeOrigin(size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 1))
+        let task = Task(position: pos, size: size)
+        addChild(task)
+        entities.append(task)
+    }
+
     override func update(_ currentTime: TimeInterval) {
         frameCounter += 1
         if frameCounter.isMultiple(of: 30) {
@@ -97,13 +107,6 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         checkWinLose()
     }
 
-    func spawnTask() {
-        let size = grid.getNodeSize()
-        let pos = grid.adjustNodeOrigin(size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 1))
-        let task = Task(position: pos, size: size)
-        addChild(task)
-        entities.append(task)
-    }
 
     private func removeDeadEntities() {
         entities.removeAll { entity in
@@ -116,7 +119,7 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func checkWinLose() {
-        guard let logic = gameLogicDelegate as? LevelLogic else {
+        guard let logic = levelLogicDelegate as? LevelLogic else {
             return
         }
 
@@ -139,8 +142,8 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
 
     func didBegin(_ contact: SKPhysicsContact) {
         guard
-            let nodeA = contact.bodyA.node as? GameEntity,
-            let nodeB = contact.bodyB.node as? GameEntity
+            let nodeA = contact.bodyA.node as? LevelEntity,
+            let nodeB = contact.bodyB.node as? LevelEntity
         else { return }
 
         let names = [nodeA.name, nodeB.name]
@@ -150,7 +153,7 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
             print("✅ Monster collided with player castle")
             if let castle = [nodeA, nodeB].first(where: { $0.name == "player-castle" }) {
                 ActionPerformer.perform(DamageAction(amount: 1_000), on: castle)
-                if let logic = gameLogicDelegate as? LevelLogic {
+                if let logic = levelLogicDelegate as? LevelLogic {
                     logic.playerCastleHealth -= 1_000
                 }
             }
@@ -161,15 +164,15 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
             print("✅ Hero collided with monster castle")
             if let castle = [nodeA, nodeB].first(where: { $0.name == "monster-castle" }) {
                 ActionPerformer.perform(DamageAction(amount: 10), on: castle)
-                if let logic = gameLogicDelegate as? LevelLogic {
+                if let logic = levelLogicDelegate as? LevelLogic {
                     logic.monsterCastleHealth -= 10
                 }
             }
         }
 
         // ⚔️ Monster collides with hero
-        if let monster = [nodeA, nodeB].first(where: { $0.name == "monster" }) as? GameEntity,
-           let hero = [nodeA, nodeB].first(where: { $0.name == "hero" }) as? GameEntity {
+        if let monster = [nodeA, nodeB].first(where: { $0.name == "monster" }),
+           let hero = [nodeA, nodeB].first(where: { $0.name == "hero" }) {
             print("✅ Monster collided with hero")
             ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: 1, dy: 0), duration: 0.2, speed: 30),
                                     on: monster)

@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-class Castle: GameEntity {
+class Castle: LevelEntity {
     let isPlayer: Bool
 
     init(position: CGPoint, size: CGSize, isPlayer: Bool) {

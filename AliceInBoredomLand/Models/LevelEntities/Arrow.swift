@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-class Arrow: GameEntity {
+class Arrow: LevelEntity {
     let maxRange: CGFloat = 800
     private var startPosition: CGPoint = .zero
 
