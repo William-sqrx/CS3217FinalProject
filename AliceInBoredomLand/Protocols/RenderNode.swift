@@ -20,3 +20,9 @@ protocol RenderNode {
     func applyVelocity(_ vector: CGVector)
     func remove()
 }
+
+extension RenderNode {
+    var asSKNode: SKNode? {
+        self as? SKNode
+    }
+}

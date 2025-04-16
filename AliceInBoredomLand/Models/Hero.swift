@@ -22,11 +22,6 @@ class Hero: GameEntity {
         self.name = "hero"
     }
 
-    @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     override func update(deltaTime: TimeInterval) {
         self.velocity = CGVector(dx: moveSpeed, dy: 0)
         super.update(deltaTime: deltaTime)

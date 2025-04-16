@@ -20,9 +20,4 @@ class Swordsman: Hero {
         super.init(textureName: "swordsman", size: size, position: position, health: 100, attack: 50, moveSpeed: 20,
                    manaCost: 15, physics: physics)
     }
-
-    @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 }
