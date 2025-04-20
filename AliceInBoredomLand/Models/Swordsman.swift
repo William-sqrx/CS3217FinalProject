@@ -35,16 +35,10 @@ class Swordsman: Hero, EntityCreatable {
             manaCost: Swordsman.defaultManaCost,
             physics: physics
         )
-<<<<<<< HEAD
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-=======
-        super.init(textureName: "swordsman", size: size, position: position,
-                   health: 100, attack: 50, moveSpeed: 20, manaCost: 15,
-                   physics: physics)
->>>>>>> 26c767df24ddb08540903dea7855e5478b35718d
     }
 }
 
