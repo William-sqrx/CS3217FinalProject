@@ -12,6 +12,11 @@ struct ContentView: View {
     @StateObject var gameLogic = LevelLogic()
     private let gameScene: LevelScene
     private let tileY = 5
+    private let heroTypes: [HeroTypeEntry] = [
+        HeroTypeEntry(type: Swordsman.self),
+        HeroTypeEntry(type: Tank.self)
+    ]
+
 
     init() {
         let logic = LevelLogic()
@@ -27,24 +32,13 @@ struct ContentView: View {
             VStack {
                 Spacer()
                 HStack {
-                    // Button to spawn an Archer
-//                    Button("Spawn Archer") {
-//                        gameScene.spawnHero(atY: tileY, type: .archer)
-//                    }
-
-                    // Button to spawn a Swordsman
-                    Button("Spawn Swordsman") {
-                        gameScene.spawnHero(tileY: tileY, type: "swordsman")
+                    ForEach(heroTypes) { entry in
+                        Button("Spawn \(entry.label)") {
+                            gameScene.spawnHero(tileY: tileY, type: entry.type)
+                        }
                     }
-
-                    Button("Spawn Tank") {
-                        gameScene.spawnHero(tileY: tileY, type: "tank")
-                    }
-
                     Text("Mana: \(gameLogic.mana)")
                         .padding()
-
-                    // Add more buttons for different hero types...
                 }
                 .padding()
             }

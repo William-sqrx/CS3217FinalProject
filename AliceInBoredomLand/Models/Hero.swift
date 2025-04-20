@@ -10,18 +10,30 @@ import SpriteKit
 
 class Hero: GameEntity {
     var manaCost: Int
-    var attackCooldown: TimeInterval = 0.1
-    var attackRange: CGFloat = 500
+    var attackCooldown: TimeInterval
+    var attackRange: CGFloat
     var lastAttackTime: TimeInterval = 0
 
-    init(textureName: String, size: CGSize, position: CGPoint, health: Int, attack: Int, moveSpeed: CGFloat, manaCost: Int, physics: PhysicsComponent) {
-        self.manaCost = manaCost
-        super.init(textureName: textureName, size: size, position: position, health: health, attack: attack, moveSpeed: moveSpeed, physics: physics)
-        self.name = "hero"
-    }
+    static let defaultAttackCooldown: TimeInterval = 0.1
+    static let defaultAttackRange: CGFloat = 500
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    init(
+        textureName: String,
+        size: CGSize,
+        position: CGPoint,
+        health: Int,
+        attack: Int,
+        moveSpeed: CGFloat,
+        manaCost: Int,
+        physics: PhysicsComponent,
+        attackCooldown: TimeInterval = Hero.defaultAttackCooldown,
+        attackRange: CGFloat = Hero.defaultAttackRange
+    ) {
+        self.manaCost = manaCost
+        self.attackCooldown = attackCooldown
+        self.attackRange = attackRange
+        super.init(textureName: textureName, size: size, position: position, health: health, attack: attack, moveSpeed: moveSpeed, physics: physics)
+        self.renderNode.name = "hero"
     }
 
     override func update(deltaTime: TimeInterval) {
@@ -33,4 +45,3 @@ class Hero: GameEntity {
         (currentTime - lastAttackTime) > attackCooldown
     }
 }
-
