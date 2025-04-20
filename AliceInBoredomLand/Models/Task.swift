@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-class Task: GameEntity {
+class Task: LevelEntity {
     var availableFrames = 14
 
     init(position: CGPoint, size: CGSize) {

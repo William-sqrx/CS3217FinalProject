@@ -8,20 +8,23 @@
 import SpriteKit
 
 class LevelScene: SKScene, SKPhysicsContactDelegate {
-    var entities: [GameEntity] = []
-    var gameLogicDelegate: LevelLogicDelegate
+    var entities: [LevelEntity] = []
+    var levelLogicDelegate: LevelLogicDelegate
     var frameCounter = 0
     var grid: Grid
     let factory = EntityFactory()
 
-    init(gameLogicDelegate: LevelLogicDelegate, grid: Grid) {
-        self.gameLogicDelegate = gameLogicDelegate
+    init(levelLogicDelegate: LevelLogicDelegate, grid: Grid) {
+        self.entities = []
+        self.levelLogicDelegate = levelLogicDelegate
         self.grid = grid
+
         super.init(size: CGSize(width: grid.width, height: grid.height))
         self.backgroundColor = .gray
         self.scaleMode = .aspectFit
     }
 
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -79,6 +82,21 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         entities.append(castle)
     }
 
+    func spawnProjectile(type: String, isPlayer: Bool, size: CGSize, position: CGPoint, damage: Int) {
+        let projectile = factory.makeProjectile(type: "arrow",
+                                               isPlayer: isPlayer, size: size, position: position, damage: damage)
+        addChild(projectile)
+        entities.append(projectile)
+    }
+
+    func spawnTask() {
+        let size = grid.getNodeSize()
+        let pos = grid.adjustNodeOrigin(size: size, position: grid.getPosition(tileX: grid.numCols - 1, tileY: 1))
+        let task = Task(position: pos, size: size)
+        addChild(task)
+        entities.append(task)
+    }
+
     override func update(_ currentTime: TimeInterval) {
         frameCounter += 1
         if frameCounter.isMultiple(of: 30) {
@@ -96,6 +114,13 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
             entity.update(deltaTime: deltaTime)
             if let hero = entity as? Hero, hero.shouldAttack(currentTime: currentTime) {
                 hero.lastAttackTime = currentTime
+            }
+            if let archer = entity as? Archer {
+                for otherEntity in entities where
+                abs(archer.position.x - otherEntity.position.x) < archer.attackRange && otherEntity is Monster {
+                    spawnProjectile(type: "",
+                                    isPlayer: true, size: Arrow.arrowSize, position: archer.position, damage: 20)
+                }
             }
         }
 
@@ -132,7 +157,9 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func checkWinLose() {
-        guard let logic = gameLogicDelegate as? LevelLogic else { return }
+        guard let logic = levelLogicDelegate as? LevelLogic else {
+            return
+        }
 
         if logic.monsterCastleHealth <= 0 {
             endLevel(text: "You Win 🎉")
@@ -174,7 +201,7 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
             print("✅ Hero collided with monster castle")
             if let castle = [entityA, entityB].first(where: { $0.renderNode.name == "monster-castle" }) {
                 ActionPerformer.perform(DamageAction(amount: 10), on: castle)
-                if let logic = gameLogicDelegate as? LevelLogic {
+                if let logic = levelLogicDelegate as? LevelLogic {
                     logic.monsterCastleHealth -= 10
                 }
             }
@@ -183,8 +210,10 @@ class LevelScene: SKScene, SKPhysicsContactDelegate {
         if let monster = [entityA, entityB].first(where: { $0.renderNode.name == "monster" }),
            let hero = [entityA, entityB].first(where: { $0.renderNode.name == "hero" }) {
             print("✅ Monster collided with hero")
-            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: 1, dy: 0), duration: 0.2, speed: 30), on: monster)
-            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: -1, dy: 0), duration: 0.2, speed: 30), on: hero)
+            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: 1, dy: 0), duration: 0.2, speed: 30),
+                                    on: monster)
+            ActionPerformer.perform(KnockbackAction(direction: CGVector(dx: -1, dy: 0), duration: 0.2, speed: 30),
+                                    on: hero)
 
             ActionPerformer.perform(DamageAction(amount: monster.attack), on: hero)
             ActionPerformer.perform(DamageAction(amount: hero.attack), on: monster)

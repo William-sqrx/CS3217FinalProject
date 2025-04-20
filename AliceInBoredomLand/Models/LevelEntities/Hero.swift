@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-class Hero: GameEntity {
+class Hero: LevelEntity {
     var manaCost: Int
     var attackCooldown: TimeInterval
     var attackRange: CGFloat

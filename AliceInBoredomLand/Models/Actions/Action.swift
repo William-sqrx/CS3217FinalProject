@@ -9,5 +9,5 @@ import SpriteKit
 
 /// Base protocol for all actions an entity can perform.
 protocol Action {
-    func perform(on target: GameEntity)
+    func perform(on target: LevelEntity)
 }

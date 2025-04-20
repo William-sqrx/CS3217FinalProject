@@ -13,7 +13,7 @@ class LevelLogic: ObservableObject, LevelLogicDelegate {
     @Published var timeLeft: Int = 60
     @Published var mana: Int = 40
     var isWin: Bool { monsterCastleHealth <= 0 && playerCastleHealth > 0 }
-    
+
     func increaseMana(by amount: Int) {
             mana += amount
     }

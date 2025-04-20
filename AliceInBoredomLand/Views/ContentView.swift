@@ -9,8 +9,8 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    @StateObject var gameLogic = LevelLogic()
-    private let gameScene: LevelScene
+    @StateObject var levelLogic = LevelLogic()
+    private let levelScene: LevelScene
     private let tileY = 5
     private let heroTypes: [HeroTypeEntry] = [
         HeroTypeEntry(type: Swordsman.self),
@@ -20,14 +20,14 @@ struct ContentView: View {
 
     init() {
         let logic = LevelLogic()
-        let scene = LevelScene(gameLogicDelegate: logic, grid: Grid())
-        self._gameLogic = StateObject(wrappedValue: logic)
-        self.gameScene = scene
+        let scene = LevelScene(levelLogicDelegate: logic, grid: Grid())
+        self._levelLogic = StateObject(wrappedValue: logic)
+        self.levelScene = scene
     }
 
     var body: some View {
         ZStack {
-            SpriteView(scene: gameScene, debugOptions: [.showsPhysics])
+            SpriteView(scene: levelScene, debugOptions: [.showsPhysics])
                 .ignoresSafeArea()
             VStack {
                 Spacer()

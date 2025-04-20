@@ -9,7 +9,8 @@ import SpriteKit
 
 struct DamageAction: Action {
     let amount: Int
-    func perform(on target: GameEntity) {
+    
+    func perform(on target: LevelEntity) {
         target.takeDamage(amount)
     }
 }

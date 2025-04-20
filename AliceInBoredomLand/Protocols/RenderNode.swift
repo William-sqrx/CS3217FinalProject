@@ -21,3 +21,9 @@ protocol RenderNode {
     func setUserInteraction(enabled: Bool)
     func setOnTouch(_ handler: @escaping () -> Void)
 }
+
+extension RenderNode {
+    var asSKNode: SKNode? {
+        self as? SKNode
+    }
+}

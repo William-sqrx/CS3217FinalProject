@@ -1,5 +1,5 @@
 //
-//  GameEntity.swift
+//  LevelEntity.swift
 //  AliceInBoredomLand
 //
 //  Created by Wijaya William on 14/4/25.
@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-// MARK: - Base Game Entity
+// MARK: - Base Level Entity
 
 /// The root class for all in-game entities.
 /// Combines game logic, physics, and rendering into one object.
