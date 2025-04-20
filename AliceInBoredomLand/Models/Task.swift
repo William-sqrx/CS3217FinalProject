@@ -20,28 +20,27 @@ class Task: GameEntity {
             collisionBitMask: BitMask.task
         )
         super.init(textureName: "task", size: size, position: position, health: 1, attack: 0, moveSpeed: -100, physics: physics)
-        self.name = "task"
-        self.velocity = CGVector(dx: moveSpeed, dy: 0)
-        self.isUserInteractionEnabled = true
+
+        renderNode.name = "task"
+        renderNode.setUserInteraction(enabled: true)
+        renderNode.setOnTouch { [weak self] in
+            guard let self = self else { return }
+            if let scene = self.renderNode as? SpriteKitRenderNode,
+               let skScene = scene.spriteNode.scene as? SKScene,
+               let levelScene = skScene as? LevelScene,
+               let logic = levelScene.gameLogicDelegate as? LevelLogic {
+                logic.increaseMana(by: 10)
+            }
+            self.renderNode.removeFromScene()
+        }
     }
 
     override func update(deltaTime: TimeInterval) {
         super.update(deltaTime: deltaTime)
+        renderNode.velocity = CGVector(dx: moveSpeed, dy: 0)
         if availableFrames < 0 {
-            removeFromParent()
+            renderNode.removeFromScene()
         }
         availableFrames -= 1
-    }
-
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let scene = self.scene as? LevelScene,
-           let logic = scene.gameLogicDelegate as? LevelLogic {
-            logic.increaseMana(by: 10)
-        }
-        removeFromParent()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

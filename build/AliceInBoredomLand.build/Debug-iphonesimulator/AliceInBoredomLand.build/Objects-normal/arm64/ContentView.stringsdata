@@ -7,23 +7,15 @@
         "key": "Mana: %lld",
         "location": {
           "startingColumn": 26,
-          "startingLine": 44
-        }
-      },
-      {
-        "comment": "",
-        "key": "Spawn Swordsman",
-        "location": {
-          "startingColumn": 28,
-          "startingLine": 36
-        }
-      },
-      {
-        "comment": "",
-        "key": "Spawn Tank",
-        "location": {
-          "startingColumn": 28,
           "startingLine": 40
+        }
+      },
+      {
+        "comment": "",
+        "key": "Spawn %@",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 36
         }
       }
     ]

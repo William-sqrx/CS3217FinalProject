@@ -8,26 +8,41 @@
 import Foundation
 import SpriteKit
 
-class Monster: GameEntity {
-    init(position: CGPoint, size: CGSize) {
-        let physics = PhysicsComponent(
-            size: size,
-            isDynamic: true,
-            categoryBitMask: BitMask.enemyEntity,
-            contactTestBitMask: BitMask.playerEntity,
-            collisionBitMask: BitMask.playerEntity
-        )
-        super.init(textureName: "monster", size: size, position: position, health: 100, attack: 1000, moveSpeed: 20, physics: physics)
-        self.name = "monster"
+class Monster: GameEntity, EntityCreatable {
+    static let defaultHealth = 100
+    static let defaultAttack = 1000
+    static let defaultMoveSpeed: CGFloat = 20
+
+    static var typeName: String { String(describing: Self.self).lowercased() }
+
+    static func create(position: CGPoint, size: CGSize) -> GameEntity {
+        return Monster(position: position, size: size)
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    init(position: CGPoint, size: CGSize) {
+        let physics = PhysicsFactory.monster(size: size)
+        super.init(
+            textureName: Monster.typeName,
+            size: size,
+            position: position,
+            health: Monster.defaultHealth,
+            attack: Monster.defaultAttack,
+            moveSpeed: Monster.defaultMoveSpeed,
+            physics: physics
+        )
+        self.renderNode.name = Monster.typeName
     }
 
     override func update(deltaTime: TimeInterval) {
-        self.velocity = CGVector(dx: -moveSpeed, dy: 0)
+        self.velocity = CGVector(dx: -Monster.defaultMoveSpeed, dy: 0)
         super.update(deltaTime: deltaTime)
     }
 }
 
+extension Monster: GridSpawnable {
+    static func spawn(at tileX: Int, tileY: Int, grid: Grid) -> GameEntity {
+        let size = grid.getNodeSize()
+        let pos = grid.adjustNodeOrigin(size: size, position: grid.getPosition(tileX: tileX, tileY: tileY))
+        return Monster(position: pos, size: size)
+    }
+}

@@ -9,23 +9,24 @@ import Foundation
 import SpriteKit
 
 class Castle: GameEntity {
-    let isPlayer: Bool
+    static let defaultHealth = 10000
+    static let defaultAttack = 0
+    static let defaultMoveSpeed: CGFloat = 0
+
+    static var typeName: String { String(describing: Self.self).lowercased() }
 
     init(position: CGPoint, size: CGSize, isPlayer: Bool) {
-        self.isPlayer = isPlayer
         let textureName = isPlayer ? "player-castle" : "enemy-castle"
-        let physics = PhysicsComponent(
+        let physics = PhysicsFactory.castle(size: size, isPlayer: isPlayer)
+        super.init(
+            textureName: textureName,
             size: size,
-            isDynamic: false,
-            categoryBitMask: isPlayer ? BitMask.playerEntity : BitMask.enemyEntity,
-            contactTestBitMask: isPlayer ? BitMask.enemyEntity : BitMask.playerEntity,
-            collisionBitMask: isPlayer ? BitMask.enemyEntity : BitMask.playerEntity
+            position: position,
+            health: Castle.defaultHealth,
+            attack: Castle.defaultAttack,
+            moveSpeed: Castle.defaultMoveSpeed,
+            physics: physics
         )
-        super.init(textureName: textureName, size: size, position: position, health: 500, attack: 0, moveSpeed: 0, physics: physics)
-        self.name = isPlayer ? "player-castle" : "monster-castle"
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        self.renderNode.name = isPlayer ? "player-castle" : "monster-castle"
     }
 }
